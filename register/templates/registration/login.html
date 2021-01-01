@@ -1,0 +1,13 @@
+{% extends "main/home.html" %}
+{% load crispy_forms_tags %}
+
+<div class = 'loginform'>
+    {% block unauthform %}
+    <form method="POST" class="from-group">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <p>Don't have an accoount? Create one <a href="/register">here</a></p>
+        <button type="submit" class="btn btn-success">Login</button>	
+    </form>
+    {% endblock %}
+</div>

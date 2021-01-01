@@ -1,0 +1,85 @@
+<!doctype html>
+{% load crispy_forms_tags %}
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <style type="text/css">
+            * {
+            margin: 0;
+            padding: 0;
+            }
+
+            body {
+            background: #F5F6F4;
+            }
+            .form {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            /* bring your own prefixes */
+            transform: translate(-50%, -50%);
+            }
+
+
+            /* CSS HEX */
+            /* --razzmic-berry: #7b517bff;
+            --black-coffee: #363032ff;
+            --alabaster: #e0e3ddff;
+            --uranian-blue: #9ed8faff;
+            --star-command-blue: #2875a4ff; */
+
+            /* CSS HSL */
+            /* --razzmic-berry: hsla(300, 21%, 40%, 1);
+            --black-coffee: hsla(340, 6%, 20%, 1);
+            --alabaster: hsla(90, 10%, 88%, 1);
+            --uranian-blue: hsla(202, 90%, 80%, 1);
+            --star-command-blue: hsla(203, 61%, 40%, 1); */
+
+            /* SCSS HEX */
+            /* $razzmic-berry: #7b517bff;
+            $black-coffee: #363032ff;
+            $alabaster: #e0e3ddff;
+            $uranian-blue: #9ed8faff;
+            $star-command-blue: #2875a4ff; */
+
+            /* SCSS HSL */
+            /* $razzmic-berry: hsla(300, 21%, 40%, 1);
+            $black-coffee: hsla(340, 6%, 20%, 1);
+            $alabaster: hsla(90, 10%, 88%, 1);
+            $uranian-blue: hsla(202, 90%, 80%, 1);
+            $star-command-blue: hsla(203, 61%, 40%, 1); */
+
+            /* SCSS RGB */
+            /* $razzmic-berry: rgba(123, 81, 123, 1);
+            $black-coffee: rgba(54, 48, 50, 1);
+            $alabaster: rgba(224, 227, 221, 1);
+            $uranian-blue: rgba(158, 216, 250, 1);
+            $star-command-blue: rgba(40, 117, 164, 1); */
+
+            /* SCSS Gradient */
+            /* $gradient-top: linear-gradient(0deg, #7b517bff, #363032ff, #e0e3ddff, #9ed8faff, #2875a4ff);
+            $gradient-right: linear-gradient(90deg, #7b517bff, #363032ff, #e0e3ddff, #9ed8faff, #2875a4ff);
+            $gradient-bottom: linear-gradient(180deg, #7b517bff, #363032ff, #e0e3ddff, #9ed8faff, #2875a4ff);
+            $gradient-left: linear-gradient(270deg, #7b517bff, #363032ff, #e0e3ddff, #9ed8faff, #2875a4ff);
+            $gradient-top-right: linear-gradient(45deg, #7b517bff, #363032ff, #e0e3ddff, #9ed8faff, #2875a4ff);
+            $gradient-bottom-right: linear-gradient(135deg, #7b517bff, #363032ff, #e0e3ddff, #9ed8faff, #2875a4ff);
+            $gradient-top-left: linear-gradient(225deg, #7b517bff, #363032ff, #e0e3ddff, #9ed8faff, #2875a4ff);
+            $gradient-bottom-left: linear-gradient(315deg, #7b517bff, #363032ff, #e0e3ddff, #9ed8faff, #2875a4ff);
+            $gradient-radial: radial-gradient(#7b517bff, #363032ff, #e0e3ddff, #9ed8faff, #2875a4ff); */
+        </style>
+        <title>{% block title %}Ray Brokerage{% endblock %}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+        
+    </head>
+    <body>
+        <div id="content", name="content", class = 'main'>
+            {% block content %}
+            {% endblock %}
+        </div>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    </body>
+</html>

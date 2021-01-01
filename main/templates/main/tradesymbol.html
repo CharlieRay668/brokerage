@@ -1,0 +1,159 @@
+{% extends "main/home.html" %}
+
+{% block otherlinks %}
+<a href = '/home/'>Home</a>
+{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block constantcontent %}
+    <html>
+        <head>
+            <style>
+                .welcomemessage {
+                    margin: auto;
+                    text-align: center;
+                }
+                .equityform{
+                    margin: auto;
+                    width: 50%;
+                }
+                #id_quantity {
+                    width: 10%;
+                }
+                #id_action {
+                    width: 16%;
+                }
+                #id_order_type {
+                    width: 20%;
+                }
+                #id_order_expiration {
+                    width: 10%;
+                }
+                #id_limit_price {
+                    width: 16%;
+                }
+                .searchsubmit {
+                    border: none;
+                    text-align: center;
+                    font-size: 16px;
+                    background-color: #E0E3DD;
+                    border-radius: 10px;
+                    width: 50px;
+                }
+                .autocomplete {
+                    /*the container must be positioned relative:*/
+                    position: relative;
+                    display: inline-block;
+                }
+                input {
+                    border: 1px solid transparent;
+                    background-color: #f1f1f1;
+                    padding: 10px;
+                    font-size: 16px;
+                }
+                input[type=text] {
+                    background-color: #f1f1f1;
+                    width: 100%;
+                }
+                input[type=submit] {
+                    background-color: #2875A4;
+                    color: #fff;
+                }
+                .autocomplete-items {
+                    position: absolute;
+                    border: 1px solid #d4d4d4;
+                    border-bottom: none;
+                    border-top: none;
+                    z-index: 99;
+                    /*position the autocomplete items to be the same width as the container:*/
+                    top: 100%;
+                    left: 0;
+                    right: 0;
+                }
+                .autocomplete-items div {
+                    padding: 10px;
+                    cursor: pointer;
+                    background-color: #fff;
+                    border-bottom: 1px solid #d4d4d4;
+                }
+                .autocomplete-items div:hover {
+                    /*when hovering an item:*/
+                    background-color: #e9e9e9;
+                }
+                .autocomplete-active {
+                    /*when navigating through the items using the arrow keys:*/
+                    background-color: #2875A4 !important;
+                    color: #ffffff;
+                }
+                #contact button[type="submit"] {
+                    cursor: pointer;
+                    width: 100%;
+                    border: none;
+                    background: #2875A4;
+                    color: #FFF;
+                    margin: 0 0 5px;
+                    padding: 10px;
+                    font-size: 15px;
+                    border-radius: 5px;
+                }
+
+                #contact button[type="submit"]:hover {
+                    background: #43A047;
+                    -webkit-transition: background 0.3s ease-in-out;
+                    -moz-transition: background 0.3s ease-in-out;
+                    transition: background-color 0.3s ease-in-out;
+                }
+
+                #contact button[type="submit"]:active {
+                    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+                }
+            </style>
+            <body>
+                <div class= 'welcomemessage'>
+                    <h1>{{stock_symbol}}</h1>
+                    <br>
+                    <h4 id ='timeclock'>{{curr_time}}</h4>
+                </div>
+                <div class='equityform'>
+                    <form id="contact" action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <fieldset>
+                            {{form | crispy}}
+                        </fieldset>
+                        <fieldset>
+                          <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Place Trade</button>
+                        </fieldset>
+                      </form>
+                </div>
+                <script>
+                    // var update_loop = setInterval(clock, 1000);
+                    var update_limit = setInterval(limit_order, 1000);
+                    clock();
+                    limit_order();
+                    function clock(){
+                        var xhttp = new XMLHttpRequest();
+                        var prevtime = document.getElementById("timeclock").innerHTML
+                        xhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                document.getElementById("timeclock").innerHTML = JSON.parse(this.responseText).clocktime;
+                            } else {
+                                document.getElementById("timeclock").innerHTML = prevtime;
+                            }
+                        };
+                        xhttp.open("GET", "clock/", true);
+                        xhttp.send();
+                    }
+                    function limit_order() {
+                        var order_type = document.getElementById("id_order_type")
+                        var selectedValue = order_type.options[order_type.selectedIndex].value;
+                        document.getElementById("div_id_limit_price").style.display = "none";
+                        if (selectedValue == 1 || selectedValue == 4){
+                            document.getElementById("div_id_limit_price").style.display = "block";
+                        }
+                    }
+                </script>
+            </body>
+        </head>
+    </html>
+{% endblock %}

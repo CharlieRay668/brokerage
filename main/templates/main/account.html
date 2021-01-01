@@ -1,0 +1,303 @@
+{% extends "main/home.html" %}
+
+{% block otherlinks %}
+<a href = '/home/'>Home</a>
+{% endblock %}
+
+{% block constantcontent %}
+    <html>
+        <head>
+            <style>
+                .welcomemessage {
+                    margin: auto;
+                    text-align: center;
+                }
+                .balancecard {
+                    margin: auto;
+                    text-align: center;
+                    background-color: #E0E3DD;
+                    width: 400px;
+                    height: 75px;
+                    border-radius: 10px;
+                }
+                .balancebutton {
+                    border: none;
+                    background-color: #F5F6F4;
+                }
+                .balancebutton:hover {
+                    color: blue;
+                }
+                #balanceChart {
+                    display: block;
+                }
+                .balancebutton:focus {outline:0;}
+
+                .positions {
+                    width: 90%;
+                    padding-left: 70px;
+                    padding-top: 20px;
+                }
+                #positiontable {
+                    font-family: Arial, Helvetica, sans-serif;
+                    border-collapse: collapse;
+                    width: 100%;
+                }
+
+                #positiontable td, #positiontable th {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                }
+
+                #positiontable tr:nth-child(even){background-color: #EBEDE9;}
+
+                #positiontable tr:hover {background-color: #E0E3DD;}
+
+                #positiontable th {
+                    padding-top: 12px;
+                    padding-bottom: 12px;
+                    text-align: left;
+                    background-color: #2875A4;
+                    color:
+                     white;
+                }
+
+                .profit[data-status="negative"] {
+                    color : red
+                }
+
+                .profit[data-status="positive"] {
+                    color : green
+                }
+                
+                .closeposition {
+                    border: none;
+                    text-align: center;
+                    font-size: 16px;
+                    cursor: pointer;
+                    width: 100%;
+                    background-color: #FF6666;
+                    border-color: red;
+                    padding: 3px 3px;
+                    color: black;
+                    border-radius: 10px;
+                }
+                .addposition {
+                    border: none;
+                    text-align: center;
+                    font-size: 16px;
+                    cursor: pointer;
+                    width: 100%;
+                    background-color: #90ee90;
+                    border-color: green;
+                    padding: 3px 3px;
+                    color: black;
+                    border-radius: 10px;
+                }
+                .positionchart {
+                    border: none;
+                    text-align: center;
+                    font-size: 16px;
+                    cursor: pointer;
+                    width: 100%;
+                    background-color: #9ED8FA;
+                    border-color: lightblue;
+                    padding: 3px 3px;
+                    color: black;
+                    border-radius: 10px;
+                }
+                .div_trade_button{
+                    margin: auto;
+                    width: 50%;
+                    padding: 10px;
+                    display: flex;
+                    align-items: center;
+                }
+                .tradebutton{
+                    margin: auto;
+                    border: none;
+                    text-align: center;
+                    font-size: 24px;
+                    cursor: pointer;
+                    width: auto;
+                    height: auto;
+                    background-color: #2875A4;
+                    border-color: blue;
+                    padding: 3px 3px;
+                    color: white;
+                    border-radius: 10px;
+                }
+
+            </style>
+            <body>
+                <div class= 'welcomemessage'>
+                    <h6>Welcome {{user.email}},
+                        Market indexes are up/down an average of __ % today
+                    </h6>
+                </div>
+                <br>
+                <div class = 'balancecard'>
+                    <h4>Account Balance</h4>
+                    <h3>$1,000,000</h3>
+                    <button class ='balancebutton' onclick="showBalance()">View Chart</button>
+                    <div id = 'balanceChart'>Balance Chart Placeholder</div>
+                </div>
+                <div class = 'positions'>
+                    <h4>
+                        Positions
+                    </h4>
+                    <table id="positiontable">
+                        <thead>
+                            <tr>
+                                <th>Instrument</th>
+                                <th>Qty</th>
+                                <th>Day Gain $</th>
+                                <th>Day Gain %</th>
+                                <th>Mark</th>
+                                <th>Change $</th>
+                                <th>Gain $</th>
+                                <th>Gain %</th>
+                                <th>Asset</th>
+                                <th>Purchase</th>
+                                <th>Delta</th>
+                                <th>Theta</th>
+                                <th>Gamma</th>
+                                <th>Vega</th>
+                                <th>Close Position</th>
+                                <th>Add To Position</th>
+                                <th>Go to Chart</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for position in equity_positions %}
+                                <tr>
+                                    <td>{{ position.symbol }}</td>
+                                    <td>{{ position.quantity }}</td>
+                                    <td>{{ position.day_gain_D }}</td>
+                                    <td>{{ position.day_gain_P }}</td>
+                                    <td>{{ position.mark }}</td>
+                                    <td>{{ position.change_D }}</td>
+                                    <td>{{ position.gain_D }}</td>
+                                    <td>{{ position.gain_P }}</td>
+                                    <td>{{ position.asset }}</td>
+                                    <td>{{ position.purchase }}</td>
+                                    <td>{{ position.delta }}</td>
+                                    <td>{{ position.theta }}</td>
+                                    <td>{{ position.gamma }}</td>
+                                    <td>{{ position.vega }}</td>
+                                    <td><button type="button" class='closeposition'>Close</button></td>
+                                    <td><button type="button" class='addposition'>Add</button></td>
+                                    <td><button type="button" class='positionchart'>Chart</button></td> 
+                                </tr>
+                            {% endfor %}
+                            {% for position in option_positions %}
+                                <tr>
+                                    <td>{{ position.symbol }}</td>
+                                    <td>{{ position.quantity }}</td>
+                                    <td>{{ position.day_gain_D }}</td>
+                                    <td>{{ position.day_gain_P }}</td>
+                                    <td>{{ position.mark }}</td>
+                                    <td>{{ position.change_D }}</td>
+                                    <td>{{ position.gain_D }}</td>
+                                    <td>{{ position.gain_P }}</td>
+                                    <td>{{ position.asset }}</td>
+                                    <td>{{ position.purchase }}</td>
+                                    <td>{{ position.delta }}</td>
+                                    <td>{{ position.theta }}</td>
+                                    <td>{{ position.gamma }}</td>
+                                    <td>{{ position.vega }}</td>
+                                    <td><button type="button" class='closeposition'>Close</button></td>
+                                    <td><button type="button" class='addposition'>Add</button></td>
+                                    <td><button type="button" class='positionchart'>Chart</button></td> 
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                      </table>
+                </div>
+                <div class='div_trade_button'>
+                    <form action="/trade" class='tradebutton'>
+                        <input type="submit" class='tradebutton' value="Place Trade" />
+                    </form>
+                </div>
+                <script>
+
+                    var update_account = setInterval(update_account, 5000);
+                    update_account();
+                    function getCookie(name) {
+                        let cookieValue = null;
+                        if (document.cookie && document.cookie !== '') {
+                            const cookies = document.cookie.split(';');
+                            for (let i = 0; i < cookies.length; i++) {
+                                const cookie = cookies[i].trim();
+                                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                    break;
+                                }
+                            }
+                        }
+                        return cookieValue;
+                    }
+                    function change_cells(table, cell_loc, name, responseText) {
+                        for(i = 0; i < responseText[name].length; i++) {
+                            var responseSymbol = Object.keys(responseText[name][i])[0]
+                            for (var row of table.rows){
+                                if (responseSymbol == row.cells[0].innerText) {
+                                    row.cells[cell_loc].innerHTML = responseText[name][i][responseSymbol]
+                                }
+                            }
+                        }
+                    }
+                    function update_account(){
+                        var table=document.getElementById("positiontable").getElementsByTagName('tbody')[0];
+                        var symbol_list = []
+                        for (var row of table.rows) {
+                            var symbol = row.cells[0].innerText
+                            symbol_list.push(symbol)
+                        }
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                var responseText = JSON.parse(this.responseText)
+                                change_cells(table, 4, 'mark', responseText)
+                                change_cells(table, 2, 'day_gain_dollar', responseText)
+                                change_cells(table, 3, 'day_gain_perc', responseText)
+                                change_cells(table, 5, 'change', responseText)
+                                // for(i = 0; i < responseText.mark.length; i++) {
+                                //     var responseSymbol = Object.keys(responseText.mark[i])[0]
+                                //     for (var row of table.rows){
+                                //         if (responseSymbol == row.cells[0].innerText) {
+                                //             row.cells[4].innerHTML = responseText.mark[i][responseSymbol]
+                                //         }
+                                //     }
+                                // }
+                                // for(i = 0; i < responseText.day_gain.length; i++) {
+                                //     var responseSymbol = Object.keys(responseText.day_gain[i])[0]
+                                //     for (var row of table.rows){
+                                //         if (responseSymbol == row.cells[0].innerText) {
+                                //             row.cells[2].innerHTML = responseText.day_gain[i][responseSymbol]
+                                //         }
+                                //     }
+                                // }
+                            }
+                        };
+                        params = {symbols:symbol_list};
+                        xhttp.open("GET", "/updateaccountdata/", true);
+                        // xhttp.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                        // xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        // var json_upload = "json_data=" + JSON.stringify(params);
+                        xhttp.send();
+                    }
+
+                    function showBalance() {
+                        var x = document.getElementById("balanceChart");
+                        if (x.style.display === "none") {
+                            x.style.display = "block";
+                        } else {
+                            x.style.display = "none";
+                        }
+                    }
+                </script>
+            </body>
+        </head>
+    </html>
+{% endblock %}
+

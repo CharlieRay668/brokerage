@@ -1,0 +1,180 @@
+{% extends "main/base.html" %}
+{% block content %}
+    <head>
+        <style type="text/css">
+            body
+            {
+                font-family: 'RobotoDraft', 'Roboto', sans-serif;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            .topnav {
+                overflow: hidden;
+                background-color: #363032;
+                border-color: black;
+                height: 3.5em;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                border:1px solid black;
+            }
+            
+            .topnav img {
+                width:48px;
+                height:48px;
+                float: left;
+                margin: 3px;
+            }
+
+            .topnav p {
+                float: right;
+                color: #D9DCD6;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+                font-size: 17px;
+            }
+
+            .topnav a {
+                float: left;
+                color: #D9DCD6;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+                font-size: 17px;
+            }
+
+            .topnav a:hover {
+                background-color: #D9DCD6;
+                color: black;
+            }
+
+            .topnav a.active {
+                background-color: #4CAF50;
+                color: white;
+            }
+            /* ADD A SEARCHBAR FEATURE */
+            /* .searchbar {
+                background-color: rgb(192, 192, 192);
+                text-align:center;
+                height:50px;
+                border:1px solid black;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                position: relative;
+                
+            }
+
+            .searchform {
+                position: relative;
+                bottom:79%;
+                left:40%;
+                width: 30em;
+            }
+            .scorecheckbox {
+                position: relative;
+                left:15%;
+                top:5px;
+                
+            } 
+            .datecheckbox {
+                position: relative;
+                left:16%;
+                top: 5px;
+            }
+            .textsearch {
+                position: relative;
+                left:17%;
+                top: 5px;     
+            }
+            .searchsubmit {
+                position: relative;
+                left:18%;
+                top: 5px;
+            }
+            .btn-success {
+                background-color: #9ED8FA;
+                border-color: #9ED8FA;
+                color: #363032;
+                border-radius: 25px;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            }
+            input {
+            margin-left: 10px;
+            }
+            .searchlabel {
+            margin-left: 200px;
+            } */
+        </style>
+    </head>
+    <body> 
+        <div class= 'topnav'>
+            <img src = "https://i.stack.imgur.com/cmxhg.png">
+            {% if not user.is_authenticated %}
+                <a href = '/register'>Register</a>
+                <a href = '/login'>Login</a>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <a href = '/account'>View Account</a>
+                <a href = '/logout'>Logout</a>
+                <p>{{ user.email }}</p>    
+            {% endif %}
+            {% block otherlinks %}
+            {% endblock %}
+        </div>
+        <!-- ADD A SEARCHBAR -->
+        <!-- <div class = 'searchbar'>
+            <div class ='sortform'>
+                <form class="form-inline" method='POST' action="/handlesort">
+                    {% csrf_token %}
+                    <div class="scorecheckbox">
+                        <label>Score <input type="checkbox" name ='scorecheckbox'></label>
+                    </div>
+                    <div class="datecheckbox">
+                        <label>Date<input type="checkbox" name = 'datecheckbox'></label>
+                    </div>
+                    <div class="textsearch">
+                    <label>Num Days<input type="text" name ='numdays' maxlength="4" size="4" value='3'></label>
+                    </div>
+                    <div class ='searchsubmit'>
+                        <button type="submit" class="btn btn-success">Sort</button>
+                    </div>
+                    <div class="textsearch">
+                    <label class='searchlabel'>Search: <input type="text" name='searchtext'></label>
+                    </div>
+                    <div class ='searchsubmit'>
+                        <button type="submit" class="btn btn-success">Search</button>
+                    </div>
+                </form>
+            </div> -->
+        </div>
+        <br>
+        {% block constantcontent %}
+        {% endblock %}
+        {% if user.is_authenticated %}
+        <div id="authenticated", name="authenticated", class = 'main'>
+            {% block authenticated %}
+            {% endblock %}
+        </div>
+        <div id = 'authform', name = 'authform', class = 'form'>
+            {% block authform %}
+            {% endblock %}
+        </div>
+        <div id='questionform', name='questionform', class = 'questionform'>
+            {% block questionform %}
+            {% endblock %}
+        </div>
+        <div, id='tradetable', name='tradetable', class='tradetable'>
+        {% endif %}
+        {% if not user.is_authenticated %}
+            <div id = 'unauthenticated', name = 'unauthenticated', class = 'main'>
+                {% block unauthenticated %}
+                {% endblock %}
+            </div>
+            <div id = 'unauthform', name = 'unauthform', class = 'form'>
+                {% block unauthform %}
+                {% endblock %}
+            </div>
+        {% endif %}
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body>
+{% endblock %}
