@@ -1,7 +1,7 @@
 {
     "username": "CRotaCarl",
     "password": "NTf&aTia!TNOGu89Ie9wPQg9f^Bs50",
-    "redirecturl" : "http://localhost:8080",
+    "redirecturl" : "http://localhost:8080s",
     "client_id" : "9QAJTJSAZZIVFTUZYEEX1CRD4ECDM86B",
     "account_id" : "455769953",
     "authurl" : "https://auth.tdameritrade.com/auth?response_type=code&redirect_uri=http://localhost:8080&client_id=9QAJTJSAZZIVFTUZYEEX1CRD4ECDM86B%40AMER.OAUTHAP",
