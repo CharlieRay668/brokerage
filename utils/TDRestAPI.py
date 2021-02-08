@@ -324,14 +324,18 @@ class Rest_Account:
             return ticker + "_" + str(month)+str(day)+str(year)+ "C"+str(strike)
         return ticker + "_" + str(month)+str(day)+str(year)+ "P"+str(strike)
 
-    def get_options_chain(self, ticker, from_date=None, to_date=None, range_="ALL", strike=None, contract_type="ALL", strike_count=1, include_quotes=False, exp_month="ALL", option_type="ALL"):
+    def get_options_chain(self, ticker, from_date=None, to_date=None, time_delta=None, range_="ALL", strike=None, contract_type="ALL", strike_count=1, include_quotes=False, exp_month="ALL", option_type="ALL"):
         # API documentation: https://developer.tdameritrade.com/option-chains/apis/get/marketdata/chains
 
         if from_date is None:
             from_date = datetime.now()
         
         if to_date is None:
-            to_date = datetime.now() + timedelta(days=30)
+            if time_delta is None:
+                to_date = datetime.now() + timedelta(days=30)
+            else:
+                #print(timedelta)
+                to_date = datetime.now() + timedelta(days=time_delta)
 
         if type(from_date) is not str:
             from_date = from_date.strftime("%Y-%m-%d'T'%H:%M:%S")
@@ -466,6 +470,7 @@ class Rest_Account:
             return None
         df = pd.concat(dfs)
         df.set_index("symbol", inplace=True)
+        df.rename(columns={'52WkHigh': 'FiftyTwoWkHigh', '52WkLow': 'FiftyTwoWkLow'}, inplace=True)
         #print(symbols)
         return df
 

@@ -2,9 +2,16 @@ import sqlite3
 from sqlite3 import Error
 import time
 import utils.TDStreamingAPI as TD_Stream
+from utils.TDRestAPI import Rest_Account
 from utils.TDStreamingAPI import Request, ClientWebsocket, WebsocketHandler
 import datetime as dt
 import _thread as thread
+
+
+def divide_chunks(list, n): 
+    #break list into chunks of n size
+    for i in range(0, len(list), n):  
+        yield list[i:i + n] 
 
 class DatabaseHandler():
     def create_connection(self, db_file):

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'users.apps.UsersConfig',
     'register.apps.RegisterConfig',
+    'custom_websocket.apps.CustomWebsocketConfig',
     'crispy_forms',
 ]
 

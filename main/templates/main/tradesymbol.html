@@ -14,37 +14,45 @@
                     margin: auto;
                     text-align: center;
                 }
-                .equityform{
-                    margin: auto;
+                .outer {
+                    margin:auto;
                     width: 50%;
+                    display: flex;
+                    border: thin solid #363032ff;
+                }
+                .equityform{
+                    margin: 20px;
+                    width: 25%;
+                }
+                #stock_vs_option {
+                    margin:auto;
+                    display: flex;
+                    width: 10%;
+                }
+                .switch-button {
+                    margin: auto;
+                    cursor: pointer;
+                    border: none;
+                    background: #2875A4;
+                    color: #FFF;
+                    padding: 10px;
+                    font-size: 15px;
+                    border-radius: 25px;
                 }
                 #id_quantity {
-                    width: 10%;
+                    width: 100%;
                 }
                 #id_action {
-                    width: 16%;
+                    width: 100%;
                 }
                 #id_order_type {
-                    width: 20%;
+                    width: 100%;
                 }
                 #id_order_expiration {
-                    width: 10%;
+                    width: 100%;
                 }
                 #id_limit_price {
-                    width: 16%;
-                }
-                .searchsubmit {
-                    border: none;
-                    text-align: center;
-                    font-size: 16px;
-                    background-color: #E0E3DD;
-                    border-radius: 10px;
-                    width: 50px;
-                }
-                .autocomplete {
-                    /*the container must be positioned relative:*/
-                    position: relative;
-                    display: inline-block;
+                    width: 100%;
                 }
                 input {
                     border: 1px solid transparent;
@@ -60,31 +68,10 @@
                     background-color: #2875A4;
                     color: #fff;
                 }
-                .autocomplete-items {
-                    position: absolute;
-                    border: 1px solid #d4d4d4;
-                    border-bottom: none;
-                    border-top: none;
-                    z-index: 99;
-                    /*position the autocomplete items to be the same width as the container:*/
-                    top: 100%;
-                    left: 0;
-                    right: 0;
-                }
-                .autocomplete-items div {
-                    padding: 10px;
-                    cursor: pointer;
-                    background-color: #fff;
-                    border-bottom: 1px solid #d4d4d4;
-                }
-                .autocomplete-items div:hover {
-                    /*when hovering an item:*/
-                    background-color: #e9e9e9;
-                }
-                .autocomplete-active {
-                    /*when navigating through the items using the arrow keys:*/
-                    background-color: #2875A4 !important;
-                    color: #ffffff;
+                .warningdiv {
+                    margin: auto;
+                    text-align: center;
+                    color: red;
                 }
                 #contact button[type="submit"] {
                     cursor: pointer;
@@ -108,27 +95,132 @@
                 #contact button[type="submit"]:active {
                     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
                 }
+                .securitydata {
+                    text-align: center;
+                    flex: 1;
+                }
+                #secuirityBAPC {
+                    margin: auto;
+                    margin-top: 3   %;
+                    text-align: center;
+                    font-size:x-large;
+                }
+                #securityChange[data-status="negative"] {
+                    color : red
+                }
+
+                #securityChange[data-status="positive"] {
+                    color : green
+                }
             </style>
             <body>
                 <div class= 'welcomemessage'>
                     <h1>{{stock_symbol}}</h1>
+                        <div id ="stock_vs_option">
+                            <button id='stockswitch' class="switch-button" onclick="stockSwitch()">Stock</button>
+                            <button id='optionswitch' class="switch-button" onclick="optionSwitch()">Option</a>
+                        </div>
                     <br>
                     <h4 id ='timeclock'>{{curr_time}}</h4>
                 </div>
-                <div class='equityform'>
-                    <form id="contact" action="" method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <fieldset>
-                            {{form | crispy}}
-                        </fieldset>
-                        <fieldset>
-                          <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Place Trade</button>
-                        </fieldset>
-                      </form>
+                <div class = "outer">
+                    <div class='equityform'>
+                        <form id="contact" action="" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <fieldset>
+                                {{form | crispy}}
+                            </fieldset>
+                            <p>As of now, order expiration does nothing</p>
+                            <fieldset>
+                            <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Place Trade</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class ='securitydata'>
+                        <div id = 'secuirityBAPC'>
+                            <div id='securityBidDiv'>
+                                <h3>Bid</h3>
+                                <p id = 'securityBid'></p>
+                            </div>
+                            <br>
+                            <div id='securityAskDiv'>
+                                <h3>Ask</h3>
+                                <p id = 'securityAsk'></p>
+                            </div>
+                            <br>
+                            <div id='securityMarkDiv'>
+                                <h3>Mark</h3>
+                                <p id = 'securityMark'></p>
+                            </div>
+                            <br>
+                            <div id='securityChangeDiv'>
+                                <h3>Day Change %</h3>
+                                <p id = 'securityChange'></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div class ='warningdiv' id ='warning_div'><p id="warning_text"></p></div>
                 <script>
+                    function stockSwitch() {
+                        var url = window.location.href
+                        if (url.includes('_')) {
+                            ticker = url.split('_')[0]
+                            window.location.replace(ticker+"/")
+                        }
+                    }
+                    function optionSwitch() {
+                        var url = window.location.href
+                        var url = window.location.href
+                        if (url.includes('_')) {
+                            ticker = url.split('_')[0]
+                            window.location.replace(ticker+"/option/")
+                        } else {
+                            window.location.replace(url+"option/")
+                        }
+                    }
+                    const selectElement = document.getElementById('id_order_type');
+                    selectElement.addEventListener('change', (event) => {
+                        selectedValue = event.target.value
+                        limit_price = document.getElementById("div_id_limit_price")
+                        submit_btn = document.getElementById("contact-submit")
+                        warning_msg = document.getElementById("warning_text")
+                        warning_div = document.getElementById("warning_div")
+                        warning_div.style.display = "none"
+                        limit_price.style.display = "none";
+                        submit_btn.style.display = "block";
+                        if (selectedValue != 2){
+                            //limit_price.style.display = "block";
+                            submit_btn.style.display = "none";
+                            warning_msg.innerHTML = "WARNING: As of now, only market orders are allowed"
+                            warning_div.style.display = "block"
+                        }
+                    });
+                    function switchOption() {
+
+                    }
+                    //var update_loop = setInterval(update_price, 1000);
+                    update_price(); 
+                    function update_price() {
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                var BAPC = document.getElementById('secuirityBAPC')
+                                var responseText = JSON.parse(this.responseText)
+                                //+ responseText['high_52'] + ' ' + responseText['low_52'] + ' '
+                                //BAPC.innerHTML = responseText['bid'] + ' ' + responseText['ask'] + ' ' + responseText['mark'] + ' ' + responseText['mark_percent_change']
+                                document.getElementById("securityBid").innerText = responseText['bid']
+                                document.getElementById("securityAsk").innerText = responseText['ask']
+                                document.getElementById("securityMark").innerText = responseText['mark']
+                                document.getElementById("securityChange").innerText = responseText['mark_percent_change'] + '%'
+                            }
+                        };
+                        xhttp.open("GET", "/getdata/"+"{{stock_symbol}}", true);
+                        xhttp.send();
+                    }
+                    
                     // var update_loop = setInterval(clock, 1000);
-                    var update_limit = setInterval(limit_order, 1000);
+                    //var update_limit = setInterval(limit_order, 1000);
                     clock();
                     limit_order();
                     function clock(){

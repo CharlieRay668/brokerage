@@ -1,4 +1,5 @@
 {% extends "main/base.html" %}
+{% load static %}
 {% block content %}
     <head>
         <style type="text/css">
@@ -51,102 +52,84 @@
                 background-color: #4CAF50;
                 color: white;
             }
-            /* ADD A SEARCHBAR FEATURE */
-            /* .searchbar {
-                background-color: rgb(192, 192, 192);
-                text-align:center;
-                height:50px;
-                border:1px solid black;
-                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-                position: relative;
-                
+            
+            .welcomemessage {
+                margin: auto;
+                text-align: center;
             }
 
-            .searchform {
-                position: relative;
-                bottom:79%;
-                left:40%;
-                width: 30em;
+            #leaderboard {
+                width: 25%;
+                padding-top: 20px;
+                text-align: center;
+                margin: auto;
             }
-            .scorecheckbox {
-                position: relative;
-                left:15%;
-                top:5px;
-                
-            } 
-            .datecheckbox {
-                position: relative;
-                left:16%;
-                top: 5px;
+
+            #leaderboard-table {
+                font-family: Arial, Helvetica, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+                margin-top: 5%;
             }
-            .textsearch {
-                position: relative;
-                left:17%;
-                top: 5px;     
+
+            #leaderboard-table td, #leaderboard-table th {
+                border: 1px solid #ddd;
+                padding: 8px;
             }
-            .searchsubmit {
-                position: relative;
-                left:18%;
-                top: 5px;
+
+            #leaderboard-table tr:nth-child(even){background-color: #EBEDE9;}
+
+            #leaderboard-table tr:hover {background-color: #E0E3DD;}
+
+            #leaderboard-table th {
+                padding-top: 12px;
+                padding-bottom: 12px;
+                text-align: left;
+                background-color: #2875A4;
+                color:white;
             }
-            .btn-success {
-                background-color: #9ED8FA;
-                border-color: #9ED8FA;
-                color: #363032;
-                border-radius: 25px;
-                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            }
-            input {
-            margin-left: 10px;
-            }
-            .searchlabel {
-            margin-left: 200px;
-            } */
         </style>
     </head>
     <body> 
         <div class= 'topnav'>
-            <img src = "https://i.stack.imgur.com/cmxhg.png">
+            <img src = "{% static 'main/images/RillionLogo.png' %}">
+            {% block otherlinks %}
+            {% endblock %}
             {% if not user.is_authenticated %}
                 <a href = '/register'>Register</a>
                 <a href = '/login'>Login</a>
-            {% endif %}
+            {% endif %} 
             {% if user.is_authenticated %}
                 <a href = '/account'>View Account</a>
+                <a href = '/history/orders'>View history</a>
+                <a href = '/stats'>View stats</a>
                 <a href = '/logout'>Logout</a>
                 <p>{{ user.email }}</p>    
             {% endif %}
-            {% block otherlinks %}
-            {% endblock %}
-        </div>
-        <!-- ADD A SEARCHBAR -->
-        <!-- <div class = 'searchbar'>
-            <div class ='sortform'>
-                <form class="form-inline" method='POST' action="/handlesort">
-                    {% csrf_token %}
-                    <div class="scorecheckbox">
-                        <label>Score <input type="checkbox" name ='scorecheckbox'></label>
-                    </div>
-                    <div class="datecheckbox">
-                        <label>Date<input type="checkbox" name = 'datecheckbox'></label>
-                    </div>
-                    <div class="textsearch">
-                    <label>Num Days<input type="text" name ='numdays' maxlength="4" size="4" value='3'></label>
-                    </div>
-                    <div class ='searchsubmit'>
-                        <button type="submit" class="btn btn-success">Sort</button>
-                    </div>
-                    <div class="textsearch">
-                    <label class='searchlabel'>Search: <input type="text" name='searchtext'></label>
-                    </div>
-                    <div class ='searchsubmit'>
-                        <button type="submit" class="btn btn-success">Search</button>
-                    </div>
-                </form>
-            </div> -->
         </div>
         <br>
         {% block constantcontent %}
+        <div class= 'welcomemessage'>
+            <h6>Welcome, here is the leaderboard for this month, go ahead and create an account to compete.</h6>
+        </div>
+        <div id="leaderboard">
+            <h4>Leaderboard</h4>
+            <table id="leaderboard-table">
+                <!-- <thead>
+                    <tr>
+                        <th>Place</th>
+                        <th>Username</th>
+                    </tr>
+                </thead> -->
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Octotoo</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
         {% endblock %}
         {% if user.is_authenticated %}
         <div id="authenticated", name="authenticated", class = 'main'>

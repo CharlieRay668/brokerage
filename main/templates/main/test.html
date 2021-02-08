@@ -1,0 +1,27 @@
+{% extends "main/home.html" %}
+
+
+{% block constantcontent %}
+    <html>
+        <head>
+            <style>
+
+            </style>
+            <body>
+                <h5>Test page</h5>
+                <script>
+                    let socket = new WebSocket('ws://localhost:8000/ws/');
+                    let timer = null;
+                    socket.onopen = () => {
+                        timer = setInterval(() => {
+                            socket.send('hello');
+                        }, 1000);
+                    };
+                    socket.onclose = socket.onerror = () => {
+                        clearInterval(timer);
+                    };
+                </script>
+            </body>
+        </head>
+    </html>
+{% endblock %}

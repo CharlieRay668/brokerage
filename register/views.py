@@ -14,11 +14,15 @@ def register(response):
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password1')
             user = authenticate(username=email, password=password)
-            login(response, user)
-        return redirect("/home")
+            if user is not None:
+                login(response, user)
+            else:
+                form = RegisterForm()
+                error_msg = "Failed to create account. Your password may be too simple or there may already be a user with this email."
+                return render(response, 'register/register.html', {"form":form, "error_msg":error_msg})
+            return redirect("/home")
     else:
         form = RegisterForm()
-
     return render(response, "register/register.html", {"form":form})
 
 def signin(response):
@@ -28,8 +32,13 @@ def signin(response):
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
             user = authenticate(username=email, password=password)
-            login(response, user)
-        return redirect('/home')
+            if user is not None:
+                login(response, user)
+            else:
+                form = LoginForm()
+                error_msg = "Failed to sign in, wrong password or email"
+                return render(response, 'registration/login.html', {"form":form, "error_msg":error_msg})
+            return redirect('/home')
     else:
         form = LoginForm()
     

@@ -1,0 +1,33 @@
+{% extends "main/home.html" %}
+
+{% block otherlinks %}
+<a href = '/home/'>Home</a>
+{% endblock %}
+
+{% block constantcontent %}
+    <html>
+        <head>
+            <style>
+                .welcomemessage {
+                    margin: auto;
+                    text-align: center;
+                }
+            </style>
+            <body>
+                <div class= 'welcomemessage'>
+                    <h2>Stats for  {{user.email}}</h2>
+                    <br>
+                    <div id ="stats">
+                        <h5>Wins: </h5><span>{{wins}}</span>
+                        <br>
+                        <h5>Losses: </h5><span>{{losses}}</span>
+                        <br>
+                        <h5>Total Profit: </h5><span>{{profit}}%</span>
+                    </div>
+                </div>
+                <br>
+            </body>
+        </head>
+    </html>
+{% endblock %}
+

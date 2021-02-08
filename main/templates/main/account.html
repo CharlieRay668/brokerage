@@ -60,12 +60,12 @@
                     color:
                      white;
                 }
-
-                .profit[data-status="negative"] {
+                
+                .profit#negative{
                     color : red
                 }
 
-                .profit[data-status="positive"] {
+                .profit#positive{
                     color : green
                 }
                 
@@ -168,37 +168,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for position in equity_positions %}
+                            {% for position in positions %}
                                 <tr>
                                     <td>{{ position.symbol }}</td>
                                     <td>{{ position.quantity }}</td>
-                                    <td>{{ position.day_gain_D }}</td>
-                                    <td>{{ position.day_gain_P }}</td>
+                                    <td class="profit" >{{ position.day_gain_D }}</td>
+                                    <td class="profit">{{ position.day_gain_P }}</td>
                                     <td>{{ position.mark }}</td>
-                                    <td>{{ position.change_D }}</td>
-                                    <td>{{ position.gain_D }}</td>
-                                    <td>{{ position.gain_P }}</td>
-                                    <td>{{ position.asset }}</td>
-                                    <td>{{ position.purchase }}</td>
-                                    <td>{{ position.delta }}</td>
-                                    <td>{{ position.theta }}</td>
-                                    <td>{{ position.gamma }}</td>
-                                    <td>{{ position.vega }}</td>
-                                    <td><button type="button" class='closeposition'>Close</button></td>
-                                    <td><button type="button" class='addposition'>Add</button></td>
-                                    <td><button type="button" class='positionchart'>Chart</button></td> 
-                                </tr>
-                            {% endfor %}
-                            {% for position in option_positions %}
-                                <tr>
-                                    <td>{{ position.symbol }}</td>
-                                    <td>{{ position.quantity }}</td>
-                                    <td>{{ position.day_gain_D }}</td>
-                                    <td>{{ position.day_gain_P }}</td>
-                                    <td>{{ position.mark }}</td>
-                                    <td>{{ position.change_D }}</td>
-                                    <td>{{ position.gain_D }}</td>
-                                    <td>{{ position.gain_P }}</td>
+                                    <td class="profit">{{ position.change_D }}</td>
+                                    <td class="profit">{{ position.gain_D }}</td>
+                                    <td class="profit">{{ position.gain_P }}</td>
                                     <td>{{ position.asset }}</td>
                                     <td>{{ position.purchase }}</td>
                                     <td>{{ position.delta }}</td>
@@ -220,7 +199,7 @@
                 </div>
                 <script>
 
-                    var update_account = setInterval(update_account, 5000);
+                    //var update_account = setInterval(update_account, 1000);
                     update_account();
                     function getCookie(name) {
                         let cookieValue = null;
@@ -242,6 +221,11 @@
                             for (var row of table.rows){
                                 if (responseSymbol == row.cells[0].innerText) {
                                     row.cells[cell_loc].innerHTML = responseText[name][i][responseSymbol]
+                                    if (responseText[name][i][responseSymbol] > 0) {
+                                        row.cells[cell_loc].id = 'positive'
+                                    } else if (responseText[name][i][responseSymbol] < 0) {
+                                        row.cells[cell_loc].id = 'negative'
+                                    }
                                 }
                             }
                         }
@@ -257,10 +241,16 @@
                         xhttp.onreadystatechange = function() {
                             if (this.readyState == 4 && this.status == 200) {
                                 var responseText = JSON.parse(this.responseText)
-                                change_cells(table, 4, 'mark', responseText)
                                 change_cells(table, 2, 'day_gain_dollar', responseText)
                                 change_cells(table, 3, 'day_gain_perc', responseText)
+                                change_cells(table, 4, 'mark', responseText)
                                 change_cells(table, 5, 'change', responseText)
+                                change_cells(table, 6, 'gain_dollar', responseText)
+                                change_cells(table, 7, 'gain_perc', responseText)
+                                change_cells(table, 10, 'delta', responseText)
+                                change_cells(table, 11, 'theta', responseText)
+                                change_cells(table, 12, 'gamma', responseText)
+                                change_cells(table, 12, 'vega', responseText)
                                 // for(i = 0; i < responseText.mark.length; i++) {
                                 //     var responseSymbol = Object.keys(responseText.mark[i])[0]
                                 //     for (var row of table.rows){
