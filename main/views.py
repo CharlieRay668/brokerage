@@ -17,7 +17,9 @@ import time
 import uuid
 
 #GLOBAL VARIABLES
-REST_API = Rest_Account('utils\keys.json')
+# VS code keys location
+# REST_API = Rest_Account('utils\keys.json')
+REST_API = Rest_Account('keys.json')
 
 
 ORDER_ACTION_CHOICES = {1: "Buy",
