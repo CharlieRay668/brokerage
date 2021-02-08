@@ -32,7 +32,9 @@ ORDER_TYPE_CHOICES = {1: "Limit",
                     6: "Traling Stop $"}
 ORDER_EXPIRATION_CHOICES = {1: "Day", 2:"GTC"}
 
-DATABASE = r'C:\Users\charl\Desktop\BROkerage\papertrade\utils\tda_db.sqlite3'
+# VS code db.
+# DATABASE = r'C:\Users\charl\Desktop\BROkerage\papertrade\utils\tda_db.sqlite3'
+DATABASE = r'tda_db.sqlite3'
 DATABASE_HANDLER = DatabaseHandler()
 DATABASE_CONNECTION = DATABASE_HANDLER.create_connection(DATABASE)
 REST_HANDLER = RestHandler(REST_API)
