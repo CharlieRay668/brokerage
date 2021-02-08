@@ -159,6 +159,8 @@ def calc_trade(df):
 def account(response):
     user = response.user
     positions = user.positions.all()
+    if len(positions) == 0:
+        return render(response, "main/account.html", {'positions': positions}) 
     df = pd.DataFrame(list(positions.values()))
     dfs = []
     ids = set(list(df['position_id']))
@@ -184,6 +186,8 @@ def history(response, order_trades):
 def stats(response):
     user = response.user
     positions = user.positions.all()
+    if len(positions) == 0:
+        return render(response, "main/stats.html", {'wins': 0, 'losses': 0, 'profit':0})
     df = pd.DataFrame(list(positions.values()))
     dfs = []
     ids = set(list(df['position_id']))
