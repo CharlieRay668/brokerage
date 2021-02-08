@@ -173,6 +173,8 @@ def history(response, order_trades):
     user = response.user
     positions = user.positions.all()
     if order_trades == 'trades':
+        if len(positions) == 0:
+            return render(response, "main/history.html", {'positions': positions, 'trades': True})
         df = pd.DataFrame(list(positions.values()))
         dfs = []
         ids = set(list(df['position_id']))
