@@ -94,7 +94,9 @@ class DatabaseHandler():
 
 class RestHandler():
     def __init__(self, rest_account, all_quotes=[]):
-        database = r'C:\Users\charl\Desktop\BROkerage\papertrade\utils\tda_db.sqlite3'
+        # VS CODE DB
+        # database = r'C:\Users\charl\Desktop\BROkerage\papertrade\utils\tda_db.sqlite3'
+        database = r'tda_db.sqlite3'
         self.rest_account = rest_account
         self.all_quotes = all_quotes
         self.db_handler = DatabaseHandler()
