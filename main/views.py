@@ -335,6 +335,9 @@ def get_option_chain(response, symbol, description):
 def getdata(response, symbol):
     json_response = {}
     cur = DATABASE_CONNECTION.cursor()
+    if not symbol in REST_HANDLER.get_symbols():
+        REST_HANDLER.add_symbol(symbol)
+        time.sleep(2)
     sql = "SELECT bidPrice,askPrice,mark,markPercentChangeInDouble from tda_data WHERE symbol ='%s'"%(symbol)
     cur.execute(sql)
     data = cur.fetchall()[0]
