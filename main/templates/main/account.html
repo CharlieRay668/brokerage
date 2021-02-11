@@ -184,7 +184,7 @@
                                     <td>{{ position.theta }}</td>
                                     <td>{{ position.gamma }}</td>
                                     <td>{{ position.vega }}</td>
-                                    <td><button type="button" class='closeposition'>Close</button></td>
+                                    <td><button type="button" onclick="close_position('{{position.symbol}}')" class='closeposition'>Close</button></td>
                                     <td><button type="button" class='addposition'>Add</button></td>
                                     <td><button type="button" class='positionchart'>Chart</button></td> 
                                 </tr>
