@@ -342,9 +342,9 @@ def getdata(response, symbol):
     cur.execute(sql)
     data = cur.fetchall()[0]
     json_response['bid'] = round(data[0],2)
-    json_response['ask'] = round(data[0],2)
-    json_response['mark'] = round(data[0],2)
-    json_response['mark_percent_change'] = round(data[0],2)
+    json_response['ask'] = round(data[1],2)
+    json_response['mark'] = round(data[2],2)
+    json_response['mark_percent_change'] = round(data[3],2)
     return JsonResponse(json_response)
 
 def tradesymbolclock(response):
