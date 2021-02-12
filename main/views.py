@@ -171,7 +171,6 @@ def account(response):
     symbols = [position.symbol for position in positions if position.symbol not in REST_HANDLER.get_symbols()]
     for symbol in symbols:
         REST_HANDLER.add_symbol(symbol)
-        time.sleep(2)
     positions = [calc_df(df) for df in dfs if calc_df(df) is not None]
     return render(response, "main/account.html", {'positions': positions})
 
