@@ -312,13 +312,11 @@ def tradesymbol_chain(response, symbol):
     fmt = "%m/%d/%Y, %I:%M:%S"
     eastern = timezone('US/Eastern')
     curr_time = dt.datetime.now(eastern).strftime(fmt)
-    start = dt.datetime.now()
     chain = REST_API.get_options_chain(symbol, time_delta=720, strike_count=1, contract_type='CALL')
-    testtime = dt.datetime.now()-start
     expiries = chain['description'].to_list()
     expiries = [' '.join(expiry.split(' ')[:4]) for expiry in expiries]
     expiries = json.dumps(expiries)
-    return render(response, "main/tradesymbolchain.html", {'stock_symbol':symbol, 'curr_time':curr_time, "chain":chain, "expiries":expiries, 'testtime':testtime})
+    return render(response, "main/tradesymbolchain.html", {'stock_symbol':symbol, 'curr_time':curr_time, "chain":chain, "expiries":expiries})
 
 def get_option_chain(response, symbol, description):
     start = dt.datetime.now()
@@ -337,7 +335,7 @@ def get_option_chain(response, symbol, description):
     chain = json.dumps(chain.to_json())
     test_dict = json.dumps([{'test':{'one':1,'two':2,'three':3}}])
     indexes = json.dumps(indexes)
-    return JsonResponse({'chain':chain, 'indexes':indexes, 'test':test_dict, 'testtime':testtime})
+    return JsonResponse({'chain':chain, 'indexes':indexes, 'test':test_dict, 'testtime':str(testtime)})
 
 def getdata(response, symbol):
     json_response = {}
