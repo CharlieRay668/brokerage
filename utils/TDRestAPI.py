@@ -361,13 +361,13 @@ class Rest_Account:
             payload["strike"] = strike
         else:
             payload["range"] = range_
-        
+        start = datetime.now()
         response = self.session.get(url=endpoint, headers=headers, params=payload, timeout=20)
         if response.status_code == 401:
             self.update_access_token()
             headers = {'Authorization': "Bearer {}".format(self.access_token)}
             response = self.session.get(url=endpoint, headers=headers, params=payload, timeout=20)
-        
+        testtime = datetime.now()-start
         json_data = response.json()
 
         dfs = []
@@ -406,7 +406,7 @@ class Rest_Account:
         #     "rho",
         #     "underlyingPrice"
         # ] + an expiration column
-        return df
+        return df, testtime
 
     # def get_large_quotes(self, symbols, chunk_size):
     #     chunk_list = [symbols[i * chunk_size:(i + 1) * chunk_size] for i in range((len(symbols) + chunk_size - 1) // chunk_size )]
