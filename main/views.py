@@ -312,7 +312,7 @@ def tradesymbol_chain(response, symbol):
     fmt = "%m/%d/%Y, %I:%M:%S"
     eastern = timezone('US/Eastern')
     curr_time = dt.datetime.now(eastern).strftime(fmt)
-    chain = REST_API.get_options_chain(symbol, time_delta=720, strike_count=1, contract_type='CALL')
+    chain, testtime = REST_API.get_options_chain(symbol, time_delta=720, strike_count=1, contract_type='CALL')
     expiries = chain['description'].to_list()
     expiries = [' '.join(expiry.split(' ')[:4]) for expiry in expiries]
     expiries = json.dumps(expiries)
