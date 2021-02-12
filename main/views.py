@@ -312,11 +312,13 @@ def tradesymbol_chain(response, symbol):
     fmt = "%m/%d/%Y, %I:%M:%S"
     eastern = timezone('US/Eastern')
     curr_time = dt.datetime.now(eastern).strftime(fmt)
+    start = dt.datetime.now()
     chain = REST_API.get_options_chain(symbol, time_delta=720, strike_count=1, contract_type='CALL')
+    testtime = dt.datetime.now()-start
     expiries = chain['description'].to_list()
     expiries = [' '.join(expiry.split(' ')[:4]) for expiry in expiries]
     expiries = json.dumps(expiries)
-    return render(response, "main/tradesymbolchain.html", {'stock_symbol':symbol, 'curr_time':curr_time, "chain":chain, "expiries":expiries})
+    return render(response, "main/tradesymbolchain.html", {'stock_symbol':symbol, 'curr_time':curr_time, "chain":chain, "expiries":expiries, 'testtime':testtime})
 
 def get_option_chain(response, symbol, description):
     chain = REST_API.get_options_chain(symbol, time_delta=720, strike_count=12, contract_type='ALL')

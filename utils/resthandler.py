@@ -115,7 +115,7 @@ class RestHandler():
                 for index, row in quotes.iterrows():
                     row = row.to_dict()
                     self.db_handler.update_data(self.conn, row, row['symbol'])
-                if 0.5 - ((time.time() - starttime) % 60.0) <= 0:
+                if 1.0 - ((time.time() - starttime) % 60.0) <= 0:
                     continue
                 else:
                     time.sleep(1 - ((time.time() - starttime) % 60.0))
