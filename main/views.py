@@ -11,6 +11,7 @@ from .forms import CreateNewPosition
 from .models import Position, Order, Trade, EquityPosition, OptionPosition
 from utils.TDRestAPI import Rest_Account
 from utils.resthandler import RestHandler, DatabaseHandler
+from utils.apihandler import ActivityHandler
 import os
 import sqlite3
 import time
@@ -40,6 +41,7 @@ DATABASE = r'tda_db.sqlite3'
 DATABASE_HANDLER = DatabaseHandler()
 DATABASE_CONNECTION = DATABASE_HANDLER.create_connection(DATABASE)
 REST_HANDLER = RestHandler(REST_API)
+ACTIVITY_HANDLER = ActivityHandler()
 # STREAMER_HANDLER = StreamerHandler()
 
 
@@ -295,6 +297,8 @@ def tradesymbol(response, symbol):
             columns = [col[0] for col in description]
             position_info = [dict(zip(columns, row)) for row in cur.fetchall()]
             # Create ans save the new position.
+            activity = [symbol, quantity, fill_price, action]
+            ACTIVITY_HANDLER.add_activity(activity)
             new_position = Position(position_id=position_id, symbol=symbol, quantity=quantity, fill_price=fill_price, position_info=position_info, order_action=action, order_type=order_type, order_expiration=order_expiration, order_execution_date=order_execution_date, limit_price=limit_price)
             new_position.save()
             user.positions.add(new_position)
@@ -378,5 +382,6 @@ def account_positions(response):
 
 def get_activity(response):
     return_dict = {}
-    return_dict['Hello'] = ['World!']
+    return_dict['activity'] = ACTIVITY_HANDLER.get_activity()
+    ACTIVITY_HANDLER.clear_activity()
     return JsonResponse(return_dict)
