@@ -375,3 +375,8 @@ def account_positions(response):
             for col in columns:
                 return_dict[col].append({symbol:position_dict[col]})
     return JsonResponse(return_dict)
+
+def get_activity(response):
+    return_dict = {}
+    return_dict['Hello'] = ['World!']
+    return JsonResponse(return_dict)
