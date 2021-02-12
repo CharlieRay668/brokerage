@@ -16,6 +16,8 @@ import os
 import sqlite3
 import time
 import uuid
+import logging
+logger = logging.getLogger(__name__)
 
 #GLOBAL VARIABLES
 # VS code keys location
@@ -330,11 +332,13 @@ def get_specific_date(description):
     if len(day) < 2:
         day = '0'+day
     expiration = dt.date(year, month, day)
+    logger.error(expiration)
     return year +'-'+ month +'-'+ day + ':' + str((expiration-dt.date.today()).days)
 
 
 def get_option_chain(response, symbol, description):
     specific_date = get_specific_date(description)
+    logger.error(specific_date)
     start = dt.datetime.now()
     chain = REST_API.get_options_chain(symbol, time_delta=720, strike_count=12, contract_type='ALL')
     chain['description'] = chain['description'].apply(lambda x: ' '.join(x.split(' ')[:4]))
