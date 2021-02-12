@@ -185,7 +185,7 @@
                                     <td>{{ position.gamma }}</td>
                                     <td>{{ position.vega }}</td>
                                     <td><button type="button" onclick="close_position('{{position.symbol}}')" class='closeposition'>Close</button></td>
-                                    <td><button type="button" class='addposition'>Add</button></td>
+                                    <td><button type="button" onclick="add_position('{{position.symbol}}')" class='addposition'>Add</button></td>
                                     <td><button type="button" class='positionchart'>Chart</button></td> 
                                 </tr>
                             {% endfor %}
@@ -198,7 +198,12 @@
                     </form>
                 </div>
                 <script>
-
+                    function close_position(symbol) {
+                        window.location.replace('/tradesymbol/'+symbol)
+                    }
+                    function add_position(symbol) {
+                        window.location.replace('/tradesymbol/'+symbol)
+                    }
                     //var update_account = setInterval(update_account, 1000);
                     update_account();
                     function getCookie(name) {
@@ -251,29 +256,10 @@
                                 change_cells(table, 11, 'theta', responseText)
                                 change_cells(table, 12, 'gamma', responseText)
                                 change_cells(table, 12, 'vega', responseText)
-                                // for(i = 0; i < responseText.mark.length; i++) {
-                                //     var responseSymbol = Object.keys(responseText.mark[i])[0]
-                                //     for (var row of table.rows){
-                                //         if (responseSymbol == row.cells[0].innerText) {
-                                //             row.cells[4].innerHTML = responseText.mark[i][responseSymbol]
-                                //         }
-                                //     }
-                                // }
-                                // for(i = 0; i < responseText.day_gain.length; i++) {
-                                //     var responseSymbol = Object.keys(responseText.day_gain[i])[0]
-                                //     for (var row of table.rows){
-                                //         if (responseSymbol == row.cells[0].innerText) {
-                                //             row.cells[2].innerHTML = responseText.day_gain[i][responseSymbol]
-                                //         }
-                                //     }
-                                // }
                             }
                         };
                         params = {symbols:symbol_list};
                         xhttp.open("GET", "/updateaccountdata/", true);
-                        // xhttp.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-                        // xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                        // var json_upload = "json_data=" + JSON.stringify(params);
                         xhttp.send();
                     }
 
