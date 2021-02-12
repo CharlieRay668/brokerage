@@ -361,15 +361,15 @@ class Rest_Account:
             payload["strike"] = strike
         else:
             payload["range"] = range_
-        start = datetime.now()
+        
         response = self.session.get(url=endpoint, headers=headers, params=payload, timeout=20)
         if response.status_code == 401:
             self.update_access_token()
             headers = {'Authorization': "Bearer {}".format(self.access_token)}
             response = self.session.get(url=endpoint, headers=headers, params=payload, timeout=20)
-        testtime = datetime.now()-start
+        
         json_data = response.json()
-
+        start = datetime.now()
         dfs = []
         for map_name in ["putExpDateMap", "callExpDateMap"]:
             try:
@@ -388,6 +388,7 @@ class Rest_Account:
             return None
         df = pd.concat(dfs)
         df.set_index("symbol", inplace=True)
+        testtime = datetime.now()-start
         # columns = [
         #     "symbol",
         #     "bidPrice",
