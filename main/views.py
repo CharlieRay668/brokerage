@@ -322,20 +322,7 @@ def tradesymbol_chain(response, symbol):
     return render(response, "main/tradesymbolchain.html", {'stock_symbol':symbol, 'curr_time':curr_time, "chain":chain, "expiries":expiries})
 
 def get_specific_date(description):
-    lookup = {
-            'Jan' : '01',
-            'Feb' : '02',
-            'Mar' : '03',
-            'Apr' : '04',
-            'May' : '05',
-            'Jun' : '06',
-            'Jul' : '07',
-            'Aug' : '08',
-            'Sep' : '09',
-            'Oct' : '10',
-            'Nov' : '11',
-            'Dec' : '12'
-        }
+    lookup = {'Jan' : '01','Feb' : '02','Mar' : '03','Apr' : '04','May' : '05','Jun' : '06','Jul' : '07','Aug' : '08','Sep' : '09','Oct' : '10','Nov' : '11','Dec' : '12'}
     description = description.split(' ')
     month = lookup[description[0]]
     day = description[1]
@@ -343,7 +330,7 @@ def get_specific_date(description):
     if len(day) < 2:
         day = '0'+day
     expiration = dt.date(year, month, day)
-    return year +'-'+ month +'-'+ day + ':' + str((expiration-dt.date.today()).days())
+    return year +'-'+ month +'-'+ day + ':' + str((expiration-dt.date.today()).days)
 
 
 def get_option_chain(response, symbol, description):
