@@ -319,9 +319,9 @@ def tradesymbol_chain(response, symbol):
     return render(response, "main/tradesymbolchain.html", {'stock_symbol':symbol, 'curr_time':curr_time, "chain":chain, "expiries":expiries})
 
 def get_option_chain(response, symbol, description):
-    start = dt.datetime.now()
+    
     chain = REST_API.get_options_chain(symbol, time_delta=720, strike_count=12, contract_type='ALL')
-    testtime = dt.datetime.now()-start
+    start = dt.datetime.now()
     chain['description'] = chain['description'].apply(lambda x: ' '.join(x.split(' ')[:4]))
     def parse_strike(strike):
         strike = strike.split('_')[1]
@@ -335,6 +335,7 @@ def get_option_chain(response, symbol, description):
     chain = json.dumps(chain.to_json())
     test_dict = json.dumps([{'test':{'one':1,'two':2,'three':3}}])
     indexes = json.dumps(indexes)
+    testtime = dt.datetime.now()-start
     return JsonResponse({'chain':chain, 'indexes':indexes, 'test':test_dict, 'testtime':str(testtime)})
 
 def getdata(response, symbol):
