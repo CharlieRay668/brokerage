@@ -152,7 +152,8 @@
                             if (this.readyState == 4 && this.status == 200) {
                                 var responseText = JSON.parse(this.responseText)
                                 alert(responseText)
-                                alert(JSON.parse(responseText['testtime']))
+                                testtime = JSON.parse(responseText['testtime'])
+                                alert(testtime)
                                 chain = JSON.parse(responseText['chain'])
                                 indexes = JSON.parse(responseText['indexes'])
                                 chain = JSON.parse(chain)
