@@ -18,6 +18,7 @@ urlpatterns = [
     path("deleteall/", views.clear_positions, name='deleteall'),
     path("history/<str:order_trades>", views.history, name='history'),
     path("stats/", views.stats, name='stats'),
+    path("activity/", views.get_activity, name='activity'),
     websocket("ws/", views.websocket_view)
     # path("create/", views.create, name="create"),
     # path("viewclass/<str:classname>/", views.viewclass, name="ap"),
