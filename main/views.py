@@ -168,6 +168,10 @@ def account(response):
     ids = set(list(df['position_id']))
     for pid in ids:
         dfs.append(df[df['position_id'] == pid])
+    symbols = [position.symbol for position in positions if position.symbol not in REST_HANDLER.get_symbols()]
+    for symbol in symbols:
+        REST_HANDLER.add_symbol(symbol)
+        time.sleep(2)
     positions = [calc_df(df) for df in dfs if calc_df(df) is not None]
     return render(response, "main/account.html", {'positions': positions})
 
@@ -312,7 +316,7 @@ def tradesymbol_chain(response, symbol):
     fmt = "%m/%d/%Y, %I:%M:%S"
     eastern = timezone('US/Eastern')
     curr_time = dt.datetime.now(eastern).strftime(fmt)
-    chain, testtime = REST_API.get_options_chain(symbol, time_delta=720, strike_count=1, contract_type='CALL')
+    chain = REST_API.get_options_chain(symbol, time_delta=720, strike_count=1, contract_type='CALL')
     expiries = chain['description'].to_list()
     expiries = [' '.join(expiry.split(' ')[:4]) for expiry in expiries]
     expiries = json.dumps(expiries)
