@@ -324,7 +324,7 @@ class Rest_Account:
             return ticker + "_" + str(month)+str(day)+str(year)+ "C"+str(strike)
         return ticker + "_" + str(month)+str(day)+str(year)+ "P"+str(strike)
 
-    def get_options_chain(self, ticker, from_date=None, to_date=None, time_delta=None, range_="ALL", strike=None, contract_type="ALL", strike_count=1, include_quotes=False, exp_month="ALL", option_type="ALL"):
+    def get_options_chain(self, ticker, from_date=None, to_date=None, time_delta=None, range_="ALL", strike=None, contract_type="ALL", strike_count=1, include_quotes=False, exp_month="ALL", option_type="ALL", specific_date=None):
         # API documentation: https://developer.tdameritrade.com/option-chains/apis/get/marketdata/chains
 
         if from_date is None:
@@ -369,49 +369,40 @@ class Rest_Account:
             response = self.session.get(url=endpoint, headers=headers, params=payload, timeout=20)
         
         json_data = response.json()
-        start = datetime.now()
-        dfs = []
-        for map_name in ["putExpDateMap", "callExpDateMap"]:
-            try:
-                date_map = json_data[map_name]
-            except KeyError:
-                continue
-            for date in date_map:
-                strikes = date_map[date]
-                for strike in strikes:
-                    contract = date_map[date][strike][0]
-                    if type(contract["optionDeliverablesList"]) is list:
-                        contract["optionDeliverablesList"] = contract["optionDeliverablesList"][0]
-                    dfs.append(pd.DataFrame(contract, index=[0]))
+        if specific_date is None:
+            dfs = []
+            for map_name in ["putExpDateMap", "callExpDateMap"]:
+                
+                try:
+                    date_map = json_data[map_name]
+                except KeyError:
+                    continue
+                for date in date_map:
+                    
+                    strikes = date_map[date]
+                    for strike in strikes:
+                        contract = date_map[date][strike][0]
+                        if type(contract["optionDeliverablesList"]) is list:
+                            contract["optionDeliverablesList"] = contract["optionDeliverablesList"][0]
+                        dfs.append(pd.DataFrame(contract, index=[0]))
+        else:
+            df = pd.DataFrame.from_dict(json_data)
+            dfs = []
+            puts = df['putExpDateMap'][specific_date]
+            calls = df['callExpDateMap'][specific_date]
+            puts = pd.DataFrame.from_dict(puts, orient= 'index')
+            for index, row in puts.iterrows():
+                dfs.append(pd.DataFrame.from_dict([row[0]]))
+            calls = pd.DataFrame.from_dict(calls, orient= 'index')
+            for index, row in calls.iterrows():
+                dfs.append(pd.DataFrame.from_dict([row[0]]))
+
         if len(dfs) == 0:
             print("No options data for", ticker)
             return None
         df = pd.concat(dfs)
         df.set_index("symbol", inplace=True)
-        testtime = datetime.now()-start
-        # columns = [
-        #     "symbol",
-        #     "bidPrice",
-        #     "bidSize",
-        #     "askPrice",
-        #     "askSize",
-        #     "lastPrice",
-        #     "quoteTimeInLong",
-        #     "strikePrice",
-        #     "contractType",
-        #     "underlying",
-        #     "delta",
-        #     "gamma",
-        #     "theta",
-        #     "vega",
-        #     "rho",
-        #     "underlyingPrice"
-        # ] + an expiration column
-        return df, testtime
-
-    # def get_large_quotes(self, symbols, chunk_size):
-    #     chunk_list = [symbols[i * chunk_size:(i + 1) * chunk_size] for i in range((len(symbols) + chunk_size - 1) // chunk_size )]
-    #     for chunk in chunk_list:
+        return df
 
 
     def get_quotes(self, symbols):

@@ -318,10 +318,35 @@ def tradesymbol_chain(response, symbol):
     expiries = json.dumps(expiries)
     return render(response, "main/tradesymbolchain.html", {'stock_symbol':symbol, 'curr_time':curr_time, "chain":chain, "expiries":expiries})
 
+def get_specific_date(description):
+    lookup = {
+            'Jan' : '01',
+            'Feb' : '02',
+            'Mar' : '03',
+            'Apr' : '04',
+            'May' : '05',
+            'Jun' : '06',
+            'Jul' : '07',
+            'Aug' : '08',
+            'Sep' : '09',
+            'Oct' : '10',
+            'Nov' : '11',
+            'Dec' : '12'
+        }
+    description = description.split(' ')
+    month = lookup[description[0]]
+    day = description[1]
+    year = description[3]
+    if len(day) < 2:
+        day = '0'+day
+    expiration = dt.date(year, month, day)
+    return year +'-'+ month +'-'+ day + ':' + str((expiration-dt.date.today()).days())
+
+
 def get_option_chain(response, symbol, description):
-    
-    chain, testtime = REST_API.get_options_chain(symbol, time_delta=720, strike_count=12, contract_type='ALL')
-    #start = dt.datetime.now()
+    specific_date = get_specific_date(description)
+    start = dt.datetime.now()
+    chain = REST_API.get_options_chain(symbol, time_delta=720, strike_count=12, contract_type='ALL')
     chain['description'] = chain['description'].apply(lambda x: ' '.join(x.split(' ')[:4]))
     def parse_strike(strike):
         strike = strike.split('_')[1]
@@ -330,13 +355,12 @@ def get_option_chain(response, symbol, description):
         elif 'C' in strike:
             return strike.split('C')[1]
     chain['strike'] = chain.index.to_series().apply(parse_strike)
-    chain = chain[chain['description'] == description]
     indexes = chain.index.to_list() 
     chain = json.dumps(chain.to_json())
-    test_dict = json.dumps([{'test':{'one':1,'two':2,'three':3}}])
     indexes = json.dumps(indexes)
+    testtime = dt.datetime.now()-start
     #testtime = dt.datetime.now()-start
-    return JsonResponse({'chain':chain, 'indexes':indexes, 'test':test_dict, 'testtime':str(testtime)})
+    return JsonResponse({'chain':chain, 'indexes':indexes, 'testtime':str(testtime)})
 
 def getdata(response, symbol):
     json_response = {}
