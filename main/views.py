@@ -329,13 +329,12 @@ def get_specific_date(description):
     month = lookup[description[1]]
     day = description[2]    
     year = description[3]
-    return (month, day, year)
     if len(day) < 2:
         day = '0'+day
-    expiration = dt.date(year, month, day)
+    expiration = dt.date(int(year), int(month), int(day))
     
     logger.error(expiration)
-    #return year +'-'+ month +'-'+ day + ':' + str((expiration-dt.date.today()).days)
+    return year +'-'+ month +'-'+ day + ':' + str((expiration-dt.date.today()).days)
 
 
 def get_option_chain(response, symbol, description):
