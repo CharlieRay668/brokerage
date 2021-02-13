@@ -335,7 +335,7 @@ def get_specific_date(description):
 
 def get_option_chain(response, symbol, description):
     specific_date = get_specific_date(description)
-    specific_date = '2021-02-19:6'
+    #specific_date = '2021-02-19:6'
     chain = REST_API.get_options_chain(symbol, time_delta=720, strike_count=12, contract_type='ALL', specific_date=specific_date)
     #chain = REST_API.get_options_chain(symbol, time_delta=720, strike_count=12, contract_type='ALL')
     chain['description'] = chain['description'].apply(lambda x: ' '.join(x.split(' ')[:4]))
