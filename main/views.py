@@ -332,13 +332,14 @@ def get_specific_date(description):
     if len(day) < 2:
         day = '0'+day
     expiration = dt.date(year, month, day)
+    return expiration
     logger.error(expiration)
-    return year +'-'+ month +'-'+ day + ':' + str((expiration-dt.date.today()).days)
+    #return year +'-'+ month +'-'+ day + ':' + str((expiration-dt.date.today()).days)
 
 
 def get_option_chain(response, symbol, description):
     logger.error("Whatup")
-    #specific_date = get_specific_date(description)
+    specific_date = get_specific_date(description)
     #logger.error(specific_date)
     start = dt.datetime.now()
     chain = REST_API.get_options_chain(symbol, time_delta=720, strike_count=12, contract_type='ALL')
@@ -354,8 +355,7 @@ def get_option_chain(response, symbol, description):
     chain = json.dumps(chain.to_json())
     indexes = json.dumps(indexes)
     testtime = dt.datetime.now()-start
-    #testtime = dt.datetime.now()-start
-    return JsonResponse({'chain':chain, 'indexes':indexes, 'testtime':str(testtime)})
+    return JsonResponse({'chain':chain, 'indexes':indexes, 'testtime':str(specific_date)})
 
 def getdata(response, symbol):
     json_response = {}
