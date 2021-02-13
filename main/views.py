@@ -338,8 +338,8 @@ def get_specific_date(description):
 
 def get_option_chain(response, symbol, description):
     logger.error("Whatup")
-    specific_date = get_specific_date(description)
-    logger.error(specific_date)
+    #specific_date = get_specific_date(description)
+    #logger.error(specific_date)
     start = dt.datetime.now()
     chain = REST_API.get_options_chain(symbol, time_delta=720, strike_count=12, contract_type='ALL')
     chain['description'] = chain['description'].apply(lambda x: ' '.join(x.split(' ')[:4]))
