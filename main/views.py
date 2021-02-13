@@ -337,6 +337,7 @@ def get_specific_date(description):
 
 
 def get_option_chain(response, symbol, description):
+    logger.error("Whatup")
     specific_date = get_specific_date(description)
     logger.error(specific_date)
     start = dt.datetime.now()
