@@ -348,7 +348,6 @@ def get_option_chain(response, symbol, description):
     indexes = chain.index.to_list() 
     chain = json.dumps(chain.to_json())
     indexes = json.dumps(indexes)
-    testtime = dt.datetime.now()-start
     return JsonResponse({'chain':chain, 'indexes':indexes, 'testtime':str(specific_date)})
 
 def getdata(response, symbol):
