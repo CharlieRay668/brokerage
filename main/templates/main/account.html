@@ -204,7 +204,7 @@
                     function add_position(symbol) {
                         window.location.replace('/tradesymbol/'+symbol)
                     }
-                    var update_account = setInterval(update_account, 1000);
+                    var update_account_loop = setInterval(update_account, 1000);
                     update_account();
                     function getCookie(name) {
                         let cookieValue = null;

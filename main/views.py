@@ -332,12 +332,9 @@ def get_specific_date(description):
     expiration = dt.date(int(year), int(month), int(day))
     return year +'-'+ month +'-'+ day + ':' + str((expiration-dt.date.today()).days)
 
-
-def get_option_chain(response, symbol, description):
+def get_option_chain(response, symbol, description, strike_count):
     specific_date = get_specific_date(description)
-    #specific_date = '2021-02-19:6'
-    chain = REST_API.get_options_chain(symbol, time_delta=720, strike_count=12, contract_type='ALL', specific_date=specific_date)
-    #chain = REST_API.get_options_chain(symbol, time_delta=720, strike_count=12, contract_type='ALL')
+    chain = REST_API.get_options_chain(symbol, time_delta=720, strike_count=strike_count, contract_type='ALL', specific_date=specific_date)
     chain['description'] = chain['description'].apply(lambda x: ' '.join(x.split(' ')[:4]))
     def parse_strike(strike):
         strike = strike.split('_')[1]
@@ -349,7 +346,7 @@ def get_option_chain(response, symbol, description):
     indexes = chain.index.to_list() 
     chain = json.dumps(chain.to_json())
     indexes = json.dumps(indexes)
-    return JsonResponse({'chain':chain, 'indexes':indexes, 'testtime':str(specific_date)})
+    return JsonResponse({'chain':chain, 'indexes':indexes})
 
 def getdata(response, symbol):
     json_response = {}
