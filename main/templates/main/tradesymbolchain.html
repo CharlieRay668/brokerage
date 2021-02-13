@@ -110,7 +110,8 @@
                     <h4 id ='timeclock'>{{curr_time}}</h4>
                 </div>
                 <div id="strikediv">
-                    <input type="number" id ='numstrikes'>12</input>
+                    <label>Enter desired number of strikes</label>
+                    <input type="number" id ='num_strikes'>2</input>
                 </div>
                 <div id="chaindiv">
                 </div>
@@ -230,7 +231,7 @@
                     }
                     function add_buttons() {    
                         chain_div = document.getElementById("chaindiv");
-                        num_strikes = document.getElementById("num_strikes").innerHTML;
+                        num_strikes = document.getElementById("num_strikes").value;
                         for (var i = 0; i < jsexpiries.length; i++) {       
                             button = document.createElement("button");
                             i_tag = document.createElement("i");
