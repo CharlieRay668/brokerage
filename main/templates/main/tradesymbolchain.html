@@ -111,13 +111,14 @@
                 </div>
                 <div id="strikediv">
                     <label>Enter desired number of strikes</label>
-                    <input type="number" id ='num_strikes' value='12'></input>
+                    <input type="number" id ='num_strikes'></input>
                 </div>
                 <div id="chaindiv">
                 </div>
                 <div id="expirydiv" style="display: none;">
                 </div>
                 <script>
+                    document.getElementById("num_strikes").defaultValue = "12";
                     var jsexpiries = {{ expiries|safe }};
                     var months = {
                         'Jan' : '01',
