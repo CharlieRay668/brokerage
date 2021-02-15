@@ -253,8 +253,12 @@
                         }
                     }
                     add_buttons();
-
+                    function remove_buttons() {
+                        chain_div = document.getElementById("chaindiv");
+                        chain_div.innerHTML = "";
+                    }
                     function updateStrikes() {
+                        remove_buttons();
                         add_buttons();
                     }
                 </script>
