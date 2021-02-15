@@ -388,6 +388,8 @@ class Rest_Account:
         else:
             df = pd.DataFrame.from_dict(json_data)
             dfs = []
+            df['putExpDateMap'].index = [x.split(":")[0] for x in df['putExpDateMap'].index]
+            df['callExpDateMap'].index = [x.split(":")[0] for x in df['callExpDateMap'].index]
             puts = df['putExpDateMap'][specific_date]
             calls = df['callExpDateMap'][specific_date]
             puts = pd.DataFrame.from_dict(puts, orient= 'index')

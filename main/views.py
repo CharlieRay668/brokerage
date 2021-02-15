@@ -329,8 +329,7 @@ def get_specific_date(description):
     year = description[3]
     if len(day) < 2:
         day = '0'+day
-    expiration = dt.date(int(year), int(month), int(day))
-    return year +'-'+ month +'-'+ day + ':' + str((expiration-dt.date.today()).days)
+    return year +'-'+ month +'-'+ day
 
 def get_option_chain(response, symbol, description, strike_count):
     specific_date = get_specific_date(description)
