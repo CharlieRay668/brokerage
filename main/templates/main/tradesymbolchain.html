@@ -235,6 +235,7 @@
                     function add_buttons() {    
                         chain_div = document.getElementById("chaindiv");
                         num_strikes = document.getElementById("num_strikes").value;
+                        alert(num_strikes)
                         for (var i = 0; i < jsexpiries.length; i++) {       
                             button = document.createElement("button");
                             i_tag = document.createElement("i");
@@ -254,7 +255,7 @@
                     add_buttons();
 
                     function updateStrikes() {
-                        add_buttons()
+                        add_buttons();
                     }
                 </script>
             </body>
