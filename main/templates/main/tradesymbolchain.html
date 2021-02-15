@@ -11,7 +11,6 @@
         <head>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
             <style>
-
                 .welcomemessage {
                     margin: auto;
                     text-align: center;
@@ -30,6 +29,7 @@
                     padding: 10px;
                     font-size: 15px;
                     border-radius: 25px;
+                    box-shadow: 0 6px 10px 0 rgba(0, 0, 0 , .1);
                 }
                 #chaindiv {
                     margin:auto;
@@ -46,6 +46,7 @@
                     padding: 10px;
                     font-size: 15px;
                     border-radius: 3px;
+                    box-shadow: 0 6px 10px 0 rgba(0, 0, 0 , .1);
                 }
                 #expiry-button + #expiry-button {
                     margin-top: 10px;
@@ -101,6 +102,24 @@
                 #strikediv {
                     display: block;
                     margin: auto;
+                    text-align: center;
+                }
+                #strikediv #num_strikes {
+                    width: 13%;
+                    background: #fff;
+                    color: #a3a3a3;
+                    font: inherit;
+                    box-shadow: 0 6px 10px 0 rgba(0, 0, 0 , .1);
+                    border: 0;
+                    outline: 0;
+                    padding: 10px 19px;
+                }
+                #strikediv #update_strike {
+                    display: block;
+                    box-shadow: 0 6px 10px 0 rgba(0, 0, 0 , .1);
+                }
+                #strikediv #update_chain {
+                    box-shadow: 0 6px 10px 0 rgba(0, 0, 0 , .1);
                 }
             </style>
             <body>
@@ -108,14 +127,14 @@
                     <h1 id='stock_symbol'>{{stock_symbol}}</h1>
                         <div id ="stock_vs_option">
                             <a id='stockswitch' class="switch-button" href="../">Stock</a>
-                            <button id='optionswitch' class="switch-button">Option</button>
+                            <button id='optionswitch' class="switch-button" onclick="window.location.reload()">Option</button>
                         </div>
                     <br>
                     <h4 id ='timeclock'>{{curr_time}}</h4>
                 </div>
                 <div id="strikediv">
-                    <label>Enter desired number of strikes</label>
-                    <input type="number" id ='num_strikes'></input>
+                    <!-- <label>Enter desired number of strikes</label> -->
+                    <input type="number" id ='num_strikes' placeholder="Desired Number of Strikes"></input>
                     <button id = 'update_strike' class="switch-button" onclick="updateStrikes()">Update</button>
                     <button id = 'update_chain' class="switch-button" onclick="updateChain()" style="display: none;">Update</button>
                 </div>
@@ -124,7 +143,7 @@
                 <div id="expirydiv" style="display: none;">
                 </div>
                 <script>
-                    document.getElementById("num_strikes").defaultValue = "12";
+                    // document.getElementById("num_strikes").defaultValue = "12";
                     var jsexpiries = {{ expiries|safe }};
                     var months = {
                         'Jan' : '01',
@@ -242,7 +261,9 @@
                     function add_buttons() {    
                         chain_div = document.getElementById("chaindiv");
                         num_strikes = document.getElementById("num_strikes").value;
-
+                        if (num_strikes == 0) {
+                            num_strikes = 12;
+                        }
                         for (var i = 0; i < jsexpiries.length; i++) {       
                             button = document.createElement("button");
                             i_tag = document.createElement("i");

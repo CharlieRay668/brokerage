@@ -162,6 +162,7 @@
                                 <th>Theta</th>
                                 <th>Gamma</th>
                                 <th>Vega</th>
+                                <th>Symbol</th> 
                                 <th>Close Position</th>
                                 <th>Add To Position</th>
                                 <th>Go to Chart</th>
@@ -170,7 +171,11 @@
                         <tbody>
                             {% for position in positions %}
                                 <tr>
-                                    <td>{{ position.symbol }}</td>
+                                    {% if position.asset == 'OPTION' %}
+                                        <td>{{ position.description }}</td>
+                                    {% else %}
+                                        <td>{{ position.symbol }}</td>
+                                    {% endif %}
                                     <td>{{ position.quantity }}</td>
                                     <td class="profit" >{{ position.day_gain_D }}</td>
                                     <td class="profit">{{ position.day_gain_P }}</td>
@@ -184,9 +189,10 @@
                                     <td>{{ position.theta }}</td>
                                     <td>{{ position.gamma }}</td>
                                     <td>{{ position.vega }}</td>
+                                    <td>{{ position.symbol }}</td> 
                                     <td><button type="button" onclick="close_position('{{position.symbol}}')" class='closeposition'>Close</button></td>
                                     <td><button type="button" onclick="add_position('{{position.symbol}}')" class='addposition'>Add</button></td>
-                                    <td><button type="button" class='positionchart'>Chart</button></td> 
+                                    <td><button type="button" class='positionchart'>Chart</button></td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -224,7 +230,7 @@
                         for(i = 0; i < responseText[name].length; i++) {
                             var responseSymbol = Object.keys(responseText[name][i])[0]
                             for (var row of table.rows){
-                                if (responseSymbol == row.cells[0].innerText) {
+                                if (responseSymbol == row.cells[14].innerText) {
                                     row.cells[cell_loc].innerHTML = responseText[name][i][responseSymbol]
                                     if (responseText[name][i][responseSymbol] > 0) {
                                         row.cells[cell_loc].id = 'positive'
@@ -239,7 +245,7 @@
                         var table=document.getElementById("positiontable").getElementsByTagName('tbody')[0];
                         var symbol_list = []
                         for (var row of table.rows) {
-                            var symbol = row.cells[0].innerText
+                            var symbol = row.cells[14].innerText
                             symbol_list.push(symbol)
                         }
                         var xhttp = new XMLHttpRequest();

@@ -68,11 +68,11 @@ def get_position_dict(position):
     if type(position) == dict:
         symbol = position['symbol']
         quantity = position['quantity']
-        purchase = position['fill_price']
+        purchase = round(position['fill_price'],2)
     else:
         symbol = position.symbol
         quantity = position.quantity
-        purchase = position.fill_price
+        purchase = round(position.fill_price,2)
     cur = DATABASE_CONNECTION.cursor()
     columns = ['symbol','mark','quantity','asset','purchase','day_gain_dollar','change','day_gain_perc','gain_dollar','gain_per','delta','theta','gamma','vega']
     return_dict = {}
@@ -82,7 +82,7 @@ def get_position_dict(position):
         REST_HANDLER.add_symbol(symbol)
         time.sleep(2)
     if DATABASE_HANDLER.check_symbol_exist(DATABASE_CONNECTION, symbol):
-        sql = "SELECT mark,closePrice,assetType,delta,gamma,theta,vega from tda_data WHERE symbol ='%s'"%(symbol)
+        sql = "SELECT mark,closePrice,assetType,delta,gamma,theta,vega,description from tda_data WHERE symbol ='%s'"%(symbol)
         cur.execute(sql)
         data = cur.fetchall()[0]
         mark = round(data[0],2)
@@ -92,11 +92,17 @@ def get_position_dict(position):
         gamma = data[4]
         theta = data[5]
         vega = data[6]
-        day_gain_dollar = round((mark-close_price)*quantity,2)
-        value = round(close_price*quantity, 2)
+        description = data[7]
+        if asset == 'OPTION':
+            day_gain_dollar = round(((mark-close_price)*quantity)*100,2)
+            gain_dollar = round(((mark*quantity) - (purchase*quantity))*100,2)
+            value = round(close_price*quantity*100, 2)
+        else:
+            gain_dollar = round((mark*quantity) - (purchase*quantity),2)
+            day_gain_dollar = round((mark-close_price)*quantity,2)
+            value = round(close_price*quantity, 2)
         day_gain_perc = round((day_gain_dollar/value)*100,2)
         change = round(mark-close_price, 2)
-        gain_dollar = round((mark*quantity) - (purchase*quantity),2)
         gain_perc = round(((mark/purchase)-1)*100,2)
     else:
         REST_HANDLER.add_symbol(symbol)
@@ -112,6 +118,8 @@ def get_position_dict(position):
         theta = None
         gamma = None
         vega = None
+        description = None
+
     return_dict['symbol'] = symbol
     return_dict['mark'] = mark
     return_dict['quantity'] = quantity
@@ -126,6 +134,7 @@ def get_position_dict(position):
     return_dict['theta'] = theta
     return_dict['gamma'] = gamma
     return_dict['vega'] = vega
+    return_dict['description'] = description
     return return_dict
 
 def calc_df(df, exclude_zeros=True):
@@ -144,6 +153,7 @@ def calc_df(df, exclude_zeros=True):
 
 def calc_trade(df):
     if sum(df['quantity']) == 0:
+        asset_type = df['position_info'].iloc[0][0]['assetType']
         received = 0
         spent = 0
         for index, row in df.iterrows():
@@ -156,6 +166,8 @@ def calc_trade(df):
         df.reset_index(inplace=True)
         open_date = df['order_execution_date'].iloc[0]
         close_date = df['order_execution_date'].iloc[-1]
+        if asset_type == 'OPTION':
+            dollar_profit = dollar_profit*100
         return {'symbol':df['symbol'][0], 'perc_profit':perc_profit, 'dollar_profit':dollar_profit, 'date_opened':open_date, 'date_close':close_date}
 
 def account(response):
