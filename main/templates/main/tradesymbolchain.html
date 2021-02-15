@@ -101,7 +101,7 @@
             </style>
             <body>
                 <div class= 'welcomemessage'>
-                    <h1>{{stock_symbol}}</h1>
+                    <h1 id='stock_symbol'>{{stock_symbol}}</h1>
                         <div id ="stock_vs_option">
                             <a id='stockswitch' class="switch-button" href="../">Stock</a>
                             <button id='optionswitch' class="switch-button">Option</button>
@@ -112,6 +112,7 @@
                 <div id="strikediv">
                     <label>Enter desired number of strikes</label>
                     <input type="number" id ='num_strikes'></input>
+                    <button class="switch-button" onclick="updateStrikes()">Update</button>
                 </div>
                 <div id="chaindiv">
                 </div>
@@ -149,6 +150,7 @@
                         window.location.replace("/tradesymbol/"+symbol)
                     }
                     function build_chain(expiry, num_strikes){
+                        document.getElementById("stock_symbol").innerText = expiry
                         chain_div = document.getElementById('chaindiv')
                         chain_div.style.display = "none";
                         var xhttp = new XMLHttpRequest();
@@ -250,6 +252,10 @@
                         }
                     }
                     add_buttons();
+
+                    function updateStrikes() {
+                        add_buttons()
+                    }
                 </script>
             </body>
         </head>
