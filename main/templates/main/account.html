@@ -5,281 +5,167 @@
 {% endblock %}
 
 {% block constantcontent %}
-    <html>
-        <head>
-            <style>
-                .welcomemessage {
-                    margin: auto;
-                    text-align: center;
-                }
-                .balancecard {
-                    margin: auto;
-                    text-align: center;
-                    background-color: #E0E3DD;
-                    width: 400px;
-                    height: 75px;
-                    border-radius: 10px;
-                }
-                .balancebutton {
-                    border: none;
-                    background-color: #F5F6F4;
-                }
-                .balancebutton:hover {
-                    color: blue;
-                }
-                #balanceChart {
-                    display: block;
-                }
-                .balancebutton:focus {outline:0;}
+    <style>
+        .profit#negative{
+            color : #f06f6c
+        }
 
-                .positions {
-                    width: 90%;
-                    padding-left: 70px;
-                    padding-top: 20px;
-                }
-                #positiontable {
-                    font-family: Arial, Helvetica, sans-serif;
-                    border-collapse: collapse;
-                    width: 100%;
-                }
-
-                #positiontable td, #positiontable th {
-                    border: 1px solid #ddd;
-                    padding: 8px;
-                }
-
-                #positiontable tr:nth-child(even){background-color: #EBEDE9;}
-
-                #positiontable tr:hover {background-color: #E0E3DD;}
-
-                #positiontable th {
-                    padding-top: 12px;
-                    padding-bottom: 12px;
-                    text-align: left;
-                    background-color: #2875A4;
-                    color:
-                     white;
-                }
-                
-                .profit#negative{
-                    color : red
-                }
-
-                .profit#positive{
-                    color : green
-                }
-                
-                .closeposition {
-                    border: none;
-                    text-align: center;
-                    font-size: 16px;
-                    cursor: pointer;
-                    width: 100%;
-                    background-color: #FF6666;
-                    border-color: red;
-                    padding: 3px 3px;
-                    color: black;
-                    border-radius: 10px;
-                }
-                .addposition {
-                    border: none;
-                    text-align: center;
-                    font-size: 16px;
-                    cursor: pointer;
-                    width: 100%;
-                    background-color: #90ee90;
-                    border-color: green;
-                    padding: 3px 3px;
-                    color: black;
-                    border-radius: 10px;
-                }
-                .positionchart {
-                    border: none;
-                    text-align: center;
-                    font-size: 16px;
-                    cursor: pointer;
-                    width: 100%;
-                    background-color: #9ED8FA;
-                    border-color: lightblue;
-                    padding: 3px 3px;
-                    color: black;
-                    border-radius: 10px;
-                }
-                .div_trade_button{
-                    margin: auto;
-                    width: 50%;
-                    padding: 10px;
-                    display: flex;
-                    align-items: center;
-                }
-                .tradebutton{
-                    margin: auto;
-                    border: none;
-                    text-align: center;
-                    font-size: 24px;
-                    cursor: pointer;
-                    width: auto;
-                    height: auto;
-                    background-color: #2875A4;
-                    border-color: blue;
-                    padding: 3px 3px;
-                    color: white;
-                    border-radius: 10px;
-                }
-
-            </style>
-            <body>
-                <div class= 'welcomemessage'>
-                    <h6>Welcome {{user.email}},
-                        Market indexes are up/down an average of __ % today
-                    </h6>
-                </div>
-                <br>
-                <div class = 'balancecard'>
-                    <h4>Account Balance</h4>
-                    <h3>$1,000,000</h3>
-                    <button class ='balancebutton' onclick="showBalance()">View Chart</button>
-                    <div id = 'balanceChart'>Balance Chart Placeholder</div>
-                </div>
-                <div class = 'positions'>
-                    <h4>
-                        Positions
-                    </h4>
-                    <table id="positiontable">
-                        <thead>
-                            <tr>
-                                <th>Instrument</th>
-                                <th>Qty</th>
-                                <th>Day Gain $</th>
-                                <th>Day Gain %</th>
-                                <th>Mark</th>
-                                <th>Change $</th>
-                                <th>Gain $</th>
-                                <th>Gain %</th>
-                                <th>Asset</th>
-                                <th>Purchase</th>
-                                <th>Delta</th>
-                                <th>Theta</th>
-                                <th>Gamma</th>
-                                <th>Vega</th>
-                                <th>Symbol</th> 
-                                <th>Close Position</th>
-                                <th>Add To Position</th>
-                                <th>Go to Chart</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for position in positions %}
-                                <tr>
-                                    {% if position.asset == 'OPTION' %}
-                                        <td>{{ position.description }}</td>
-                                    {% else %}
-                                        <td>{{ position.symbol }}</td>
-                                    {% endif %}
-                                    <td>{{ position.quantity }}</td>
-                                    <td class="profit" >{{ position.day_gain_D }}</td>
-                                    <td class="profit">{{ position.day_gain_P }}</td>
-                                    <td>{{ position.mark }}</td>
-                                    <td class="profit">{{ position.change_D }}</td>
-                                    <td class="profit">{{ position.gain_D }}</td>
-                                    <td class="profit">{{ position.gain_P }}</td>
-                                    <td>{{ position.asset }}</td>
-                                    <td>{{ position.purchase }}</td>
-                                    <td>{{ position.delta }}</td>
-                                    <td>{{ position.theta }}</td>
-                                    <td>{{ position.gamma }}</td>
-                                    <td>{{ position.vega }}</td>
-                                    <td>{{ position.symbol }}</td> 
-                                    <td><button type="button" onclick="close_position('{{position.symbol}}')" class='closeposition'>Close</button></td>
-                                    <td><button type="button" onclick="add_position('{{position.symbol}}')" class='addposition'>Add</button></td>
-                                    <td><button type="button" class='positionchart'>Chart</button></td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                      </table>
-                </div>
-                <div class='div_trade_button'>
-                    <form action="/trade" class='tradebutton'>
-                        <input type="submit" class='tradebutton' value="Place Trade" />
-                    </form>
-                </div>
-                <script>
-                    function close_position(symbol) {
-                        window.location.replace('/tradesymbol/'+symbol)
+        .profit#positive{
+            color : #72ca72
+        }
+    </style>
+    
+    <div style="text-align: center;">
+        <h2>Welcome {{user.email}}, Market indexes are up/down an average of __ % today</h2>
+    </div>
+    <br>
+    <div class="card text-white bg-primary mb-3" style="max-width: 20rem; text-align: center; margin: auto;">
+        <div class="card-header">Account Balance</div>
+        <div class="card-body">
+            <h4 class="card-title">$1,000,000</h4>
+            <p class="card-text">View chart</p>
+        </div>
+    </div>
+    <div>
+        <h4 style="text-align: center;">
+            Positions
+        </h4>
+        <table class="table table-hover" id="positiontable">
+            <thead>
+              <tr>
+                <th scope="col">Instrument</th>
+                <th scope="col">Qty</th>
+                <th scope="col">Day Gain $</th>
+                <th scope="col">Day Gain %</th>
+                <th scope="col">Mark</th>
+                <th scope="col">Change $</th>
+                <th scope="col">Gain $</th>
+                <th scope="col">Gain %</th>
+                <th scope="col">Asset</th>
+                <th scope="col">Purchase</th>
+                <th scope="col">Delta</th>
+                <th scope="col">Theta</th>
+                <th scope="col">Gamma</th>
+                <th scope="col">Vega</th>
+                <th scope="col">Symbol</th>
+                <th scope="col">Add To Position</th>
+                <th scope="col">Close Position</th>
+                <th scope="col">Go to Chart</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for position in positions %}
+                    <tr class="table-active">
+                        {% if position.asset == 'OPTION' %}
+                            <th scope="row">{{ position.description }}</th>
+                        {% else %}
+                            <th scope="row">{{ position.symbol }}</th>
+                        {% endif %}
+                        <td>{{ position.quantity }}</td>
+                        <td class="profit" >{{ position.day_gain_D }}</td>
+                        <td class="profit">{{ position.day_gain_P }}</td>
+                        <td>{{ position.mark }}</td>
+                        <td class="profit">{{ position.change_D }}</td>
+                        <td class="profit">{{ position.gain_D }}</td>
+                        <td class="profit">{{ position.gain_P }}</td>
+                        <td>{{ position.asset }}</td>
+                        <td>{{ position.purchase }}</td>
+                        <td>{{ position.delta }}</td>
+                        <td>{{ position.theta }}</td>
+                        <td>{{ position.gamma }}</td>
+                        <td>{{ position.vega }}</td>
+                        <td>{{ position.symbol }}</td>
+                        <td><button type="button" class="btn btn-success btn-sm" onclick="close_position('{{position.symbol}}')">Add</button></td>
+                        <td><button type="button" class="btn btn-danger btn-sm" onclick="add_position('{{position.symbol}}')">Close</button></td>
+                        <td><button type="button" class="btn btn-info btn-sm">Chart</button></td>
+                    </tr>
+                {% endfor %}
+              <!-- <tr>
+                <th scope="row">Default</th>
+                <td>Column content</td>
+                <td>Column content</td>
+                <td>Column content</td>
+              </tr> -->
+            </tbody>
+          </table>
+    </div>
+    <div style="text-align: center;">
+        <button type="button" class="btn btn-success" onclick="window.location.href='/trade'">Place Trade</button>
+    </div>
+    <script>
+        function close_position(symbol) {
+            window.location.replace('/tradesymbol/'+symbol)
+        }
+        function add_position(symbol) {
+            window.location.replace('/tradesymbol/'+symbol)
+        }
+        var update_account_loop = setInterval(update_account, 1000);
+        update_account();
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
                     }
-                    function add_position(symbol) {
-                        window.location.replace('/tradesymbol/'+symbol)
-                    }
-                    var update_account_loop = setInterval(update_account, 1000);
-                    update_account();
-                    function getCookie(name) {
-                        let cookieValue = null;
-                        if (document.cookie && document.cookie !== '') {
-                            const cookies = document.cookie.split(';');
-                            for (let i = 0; i < cookies.length; i++) {
-                                const cookie = cookies[i].trim();
-                                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                    break;
-                                }
-                            }
-                        }
-                        return cookieValue;
-                    }
-                    function change_cells(table, cell_loc, name, responseText) {
-                        for(i = 0; i < responseText[name].length; i++) {
-                            var responseSymbol = Object.keys(responseText[name][i])[0]
-                            for (var row of table.rows){
-                                if (responseSymbol == row.cells[14].innerText) {
-                                    row.cells[cell_loc].innerHTML = responseText[name][i][responseSymbol]
-                                    if (responseText[name][i][responseSymbol] > 0) {
-                                        row.cells[cell_loc].id = 'positive'
-                                    } else if (responseText[name][i][responseSymbol] < 0) {
-                                        row.cells[cell_loc].id = 'negative'
-                                    }
-                                }
-                            }
+                }
+            }
+            return cookieValue;
+        }
+        function change_cells(table, cell_loc, name, responseText) {
+            for(i = 0; i < responseText[name].length; i++) {
+                var responseSymbol = Object.keys(responseText[name][i])[0]
+                for (var row of table.rows){
+                    if (responseSymbol == row.cells[14].innerText) {
+                        row.cells[cell_loc].innerHTML = responseText[name][i][responseSymbol]
+                        if (responseText[name][i][responseSymbol] > 0) {
+                            row.cells[cell_loc].id = 'positive'
+                        } else if (responseText[name][i][responseSymbol] < 0) {
+                            row.cells[cell_loc].id = 'negative'
                         }
                     }
-                    function update_account(){
-                        var table=document.getElementById("positiontable").getElementsByTagName('tbody')[0];
-                        var symbol_list = []
-                        for (var row of table.rows) {
-                            var symbol = row.cells[14].innerText
-                            symbol_list.push(symbol)
-                        }
-                        var xhttp = new XMLHttpRequest();
-                        xhttp.onreadystatechange = function() {
-                            if (this.readyState == 4 && this.status == 200) {
-                                var responseText = JSON.parse(this.responseText)
-                                change_cells(table, 2, 'day_gain_dollar', responseText)
-                                change_cells(table, 3, 'day_gain_perc', responseText)
-                                change_cells(table, 4, 'mark', responseText)
-                                change_cells(table, 5, 'change', responseText)
-                                change_cells(table, 6, 'gain_dollar', responseText)
-                                change_cells(table, 7, 'gain_perc', responseText)
-                                change_cells(table, 10, 'delta', responseText)
-                                change_cells(table, 11, 'theta', responseText)
-                                change_cells(table, 12, 'gamma', responseText)
-                                change_cells(table, 12, 'vega', responseText)
-                            }
-                        };
-                        params = {symbols:symbol_list};
-                        xhttp.open("GET", "/updateaccountdata/", true);
-                        xhttp.send();
-                    }
+                }
+            }
+        }
+        function update_account(){
+            var table=document.getElementById("positiontable").getElementsByTagName('tbody')[0];
+            var symbol_list = []
+            for (var row of table.rows) {
+                var symbol = row.cells[14].innerText
+                symbol_list.push(symbol)
+            }
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var responseText = JSON.parse(this.responseText)
+                    change_cells(table, 2, 'day_gain_dollar', responseText)
+                    change_cells(table, 3, 'day_gain_perc', responseText)
+                    change_cells(table, 4, 'mark', responseText)
+                    change_cells(table, 5, 'change', responseText)
+                    change_cells(table, 6, 'gain_dollar', responseText)
+                    change_cells(table, 7, 'gain_perc', responseText)
+                    change_cells(table, 10, 'delta', responseText)
+                    change_cells(table, 11, 'theta', responseText)
+                    change_cells(table, 12, 'gamma', responseText)
+                    change_cells(table, 12, 'vega', responseText)
+                }
+            };
+            params = {symbols:symbol_list};
+            xhttp.open("GET", "/updateaccountdata/", true);
+            xhttp.send();
+        }
 
-                    function showBalance() {
-                        var x = document.getElementById("balanceChart");
-                        if (x.style.display === "none") {
-                            x.style.display = "block";
-                        } else {
-                            x.style.display = "none";
-                        }
-                    }
-                </script>
-            </body>
-        </head>
-    </html>
+        function showBalance() {
+            var x = document.getElementById("balanceChart");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
 {% endblock %}
 

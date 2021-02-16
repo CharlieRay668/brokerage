@@ -1,10 +1,11 @@
 <!doctype html>
 {% load crispy_forms_tags %}
+{% load static %}
 <html>
     <head>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/slate/bootstrap.min.css" integrity="sha384-8iuq0iaMHpnH2vSyvZMSIqQuUnQA7QM+f6srIdlgBrTSEyd//AWNMyEaSF2yPzNQ" crossorigin="anonymous">
-        <style type="text/css">
+        <!-- <style type="text/css">
             * {
             margin: 0;
             padding: 0;
@@ -70,13 +71,13 @@
 
             /* Cool Scheme 32292F and 99E1D9 */
 
-        </style>
+        </style> -->
         <title>{% block title %}Brokerage{% endblock %}</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
         
     </head>
-    <body>
+    <body data-new-gr-c-s-check-loaded="14.996.0" data-gr-ext-installed="" class="" style="" data-new-gr-c-s-loaded="14.996.0">
         <div id="content", name="content", class = 'main'>
             {% block content %}
             {% endblock %}

@@ -5,142 +5,62 @@
 {% endblock %}
 
 {% block constantcontent %}
-    <html>
-        <head>
-            <style>
-                .welcomemessage {
-                    margin: auto;
-                    text-align: center;
-                }
-                .balancecard {
-                    margin: auto;
-                    text-align: center;
-                    background-color: #E0E3DD;
-                    width: 400px;
-                    height: 75px;
-                    border-radius: 10px;
-                }
-                .balancebutton {
-                    border: none;
-                    background-color: #F5F6F4;
-                }
-                .balancebutton:hover {
-                    color: blue;
-                }
-                #balanceChart {
-                    display: block;
-                }
-                .balancebutton:focus {outline:0;}
-
-                .positions {
-                    width: 50%;
-                    padding-top: 20px;
-                    text-align: center;
-                    margin: auto;
-                }
-                #stock_vs_option {
-                    margin:auto;
-                    display: flex;
-                    width: 10%;
-                }
-                .switch-button {
-                    margin: auto;
-                    cursor: pointer;
-                    border: none;
-                    background: #2875A4;
-                    color: #FFF;
-                    padding: 10px;
-                    font-size: 15px;
-                    border-radius: 25px;
-                }
-                #positiontable {
-                    font-family: Arial, Helvetica, sans-serif;
-                    border-collapse: collapse;
-                    width: 100%;
-                    text-align: left;
-                }
-
-                #positiontable td, #positiontable th {
-                    border: 1px solid #ddd;
-                    padding: 8px;
-                }
-
-                #positiontable tr:nth-child(even){background-color: #EBEDE9;}
-
-                #positiontable tr:hover {background-color: #E0E3DD;}
-
-                #positiontable th {
-                    padding-top: 12px;
-                    padding-bottom: 12px;
-                    text-align: left;
-                    background-color: #2875A4;
-                    color:
-                     white;
-                }
-                
-            </style>
-            <body>
-                <div class= 'welcomemessage'>
-                    <h6>Welcome {{user.email}}, here are your past orders</h6>
-                    <div id ="stock_vs_option">
-                        <a href = '/history/orders' id='stockswitch' class="switch-button" onclick="stockSwitch()">Orders</a>
-                        <a href = '/history/trades' id='optionswitch' class="switch-button" onclick="optionSwitch()">Trades</a>
-                    </div>
-                </div>
-                <br>
-                <div class = 'positions'>
-                    <h4>
-                        Orders
-                    </h4>
-                    <table id="positiontable">
-                        {% if trades %}
-                            <thead>
-                                <tr>
-                                    <th>Instrument</th>
-                                    <th>% Profit</th>
-                                    <th>$ Profit</th>
-                                    <th>Open Time</th>
-                                    <th>Close Time</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for position in positions %}
-                                    <tr>
-                                        <td>{{ position.symbol }}</td>
-                                        <td>{{ position.perc_profit }}</td>
-                                        <td>{{ position.dollar_profit }}</td>
-                                        <td>{{ position.date_opened}} EST</td>
-                                        <td>{{ position.date_close}} EST</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        {% endif %}
-                        {% if not trades %}
-                            <thead>
-                                <tr>
-                                    <th>Instrument</th>
-                                    <th>Qty</th>
-                                    <th>Fill Price</th>
-                                    <th>Fill Time</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for position in positions %}
-                                    <tr>
-                                        <td>{{ position.symbol }}</td>
-                                        <td>{{ position.quantity }}</td>
-                                        <td>{{ position.fill_price }}</td>
-                                        <td>{{ position.order_execution_date}} EST</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        {% endif %}
-                      </table>
-                </div>
-                <script>
-                </script>
-            </body>
-        </head>
-    </html>
+    <div style="margin: auto; text-align: center;">
+        <h6>Welcome {{user.email}}, here are your past orders</h6>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-info btn-lg" onclick="window.location.href='/history/orders'">Orders</button>
+            <button type="button" class="btn btn-info btn-lg" onclick="window.location.href='/history/trades'">Trades</button>
+        </div>
+    </div>
+    <br>
+    <h4 style="text-align: center;">Orders</h4>
+    <div style="width: 50%; margin: auto;">
+        {% if trades %}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Instrument</th>
+                    <th scope="col">% Profit</th>
+                    <th scope="col">$ Profit</th>
+                    <th scope="col">Open Time</th>
+                    <th scope="col">Close Time</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for position in positions %}
+                        <tr class="table-active">
+                            <td scope="row">{{ position.symbol }}</td>
+                            <td>{{ position.perc_profit }}</td>
+                            <td>{{ position.dollar_profit }}</td>
+                            <td>{{ position.date_opened}} EST</td>
+                            <td>{{ position.date_close}} EST</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        {% if not trades %}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Instrument</th>
+                    <th scope="col">Qty</th>
+                    <th scope="col">Fill Price</th>
+                    <th scope="col">Fill Time</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for position in positions %}
+                        <tr class="table-active">
+                            <td scope="row">{{ position.symbol }}</td>
+                            <td>{{ position.quantity }}</td>
+                            <td>{{ position.fill_price }}</td>
+                            <td>{{ position.order_execution_date}} EST</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
 {% endblock %}
 

@@ -52,7 +52,20 @@ def clear_positions(response):
     return render(response, "main/home.html")
 
 def testview(response):
-    return render(response, "main/test.html")
+    user = response.user
+    positions = user.positions.all()
+    if False:
+        if len(positions) == 0:
+            return render(response, "main/test.html", {'positions': positions, 'trades': True})
+        df = pd.DataFrame(list(positions.values()))
+        dfs = []
+        ids = set(list(df['position_id']))
+        for pid in ids:
+            dfs.append(df[df['position_id'] == pid])
+        positions = [calc_trade(df) for df in dfs if calc_trade(df) is not None]
+        return render(response, "main/test.html", {'positions': positions, 'trades': True})
+    else:
+        return render(response, "main/test.html", {'positions': positions, 'trades': False})
 
 def home(response):
     return render(response, "main/home.html")

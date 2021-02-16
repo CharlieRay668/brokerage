@@ -1,43 +1,66 @@
-{% extends "main/base.html" %}
+{% extends "main/home.html" %}
 
-
-{% block content %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  
-    <div class="collapse navbar-collapse" id="navbarColor01">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home
-            <!-- <span class="sr-only">(current)</span> -->
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Account</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">History</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">More</a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </div>
-        </li>
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <a>{{ user.email }}</a>
-      </form>
-    </div>
-  </nav>
+{% block otherlinks %}
+<a href = '/home/'>Home</a>
 {% endblock %}
+
+{% block constantcontent %}
+    <div style="margin: auto; text-align: center;">
+        <h6>Welcome {{user.email}}, here are your past orders</h6>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-info btn-lg" onclick="window.location.href='/history/orders'">Orders</button>
+            <button type="button" class="btn btn-info btn-lg" onclick="window.location.href='/history/trades'">Trades</button>
+        </div>
+    </div>
+    <br>
+    <h4 style="text-align: center;">Orders</h4>
+    <div style="width: 50%; margin: auto;">
+        {% if trades %}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Instrument</th>
+                    <th scope="col">% Profit</th>
+                    <th scope="col">$ Profit</th>
+                    <th scope="col">Open Time</th>
+                    <th scope="col">Close Time</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for position in positions %}
+                        <tr class="table-active">
+                            <td scope="row">{{ position.symbol }}</td>
+                            <td>{{ position.perc_profit }}</td>
+                            <td>{{ position.dollar_profit }}</td>
+                            <td>{{ position.date_opened}} EST</td>
+                            <td>{{ position.date_close}} EST</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        {% if not trades %}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Instrument</th>
+                    <th scope="col">Qty</th>
+                    <th scope="col">Fill Price</th>
+                    <th scope="col">Fill Time</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for position in positions %}
+                        <tr class="table-active">
+                            <td scope="row">{{ position.symbol }}</td>
+                            <td>{{ position.quantity }}</td>
+                            <td>{{ position.fill_price }}</td>
+                            <td>{{ position.order_execution_date}} EST</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}
+

@@ -1,162 +1,77 @@
 {% extends "main/base.html" %}
 {% load static %}
 {% block content %}
-    <head>
-        <style type="text/css">
-            body
-            {
-                font-family: 'RobotoDraft', 'Roboto', sans-serif;
-                -webkit-font-smoothing: antialiased;
-            }
-
-            .topnav {
-                overflow: hidden;
-                background-color: #363032;
-                border-color: black;
-                height: 3.5em;
-                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-                border:1px solid black;
-            }
-            
-            .topnav img {
-                width:48px;
-                height:48px;
-                float: left;
-                margin: 3px;
-            }
-
-            .topnav p {
-                float: right;
-                color: #D9DCD6;
-                text-align: center;
-                padding: 14px 16px;
-                text-decoration: none;
-                font-size: 17px;
-            }
-
-            .topnav a {
-                float: left;
-                color: #D9DCD6;
-                text-align: center;
-                padding: 14px 16px;
-                text-decoration: none;
-                font-size: 17px;
-            }
-
-            .topnav a:hover {
-                background-color: #D9DCD6;
-                color: black;
-            }
-
-            .topnav a.active {
-                background-color: #4CAF50;
-                color: white;
-            }
-            
-            .welcomemessage {
-                margin: auto;
-                text-align: center;
-            }
-
-            #leaderboard {
-                width: 25%;
-                padding-top: 20px;
-                text-align: center;
-                margin: auto;
-            }
-
-            #leaderboard-table {
-                font-family: Arial, Helvetica, sans-serif;
-                border-collapse: collapse;
-                width: 100%;
-                margin-top: 5%;
-            }
-
-            #leaderboard-table td, #leaderboard-table th {
-                border: 1px solid #ddd;
-                padding: 8px;
-            }
-
-            #leaderboard-table tr:nth-child(even){background-color: #EBEDE9;}
-
-            #leaderboard-table tr:hover {background-color: #E0E3DD;}
-
-            #leaderboard-table th {
-                padding-top: 12px;
-                padding-bottom: 12px;
-                text-align: left;
-                background-color: #2875A4;
-                color:white;
-            }
-        </style>
-    </head>
-    <body> 
-        <div class= 'topnav'>
-            <img src = "{% static 'main/images/RillionLogo.png' %}">
-            {% block otherlinks %}
-            {% endblock %}
-            {% if not user.is_authenticated %}
-                <a href = '/register'>Register</a>
-                <a href = '/login'>Login</a>
-            {% endif %} 
-            {% if user.is_authenticated %}
-                <a href = '/account'>View Account</a>
-                <a href = '/history/orders'>View history</a>
-                <a href = '/stats'>View stats</a>
-                <a href = '/logout'>Logout</a>
-                <p>{{ user.email }}</p>    
-            {% endif %}
-        </div>
-        <br>
-        {% block constantcontent %}
-        <div class= 'welcomemessage'>
-            <h6>Welcome, here is the leaderboard for this month, go ahead and create an account to compete.</h6>
-        </div>
-            <div id="leaderboard">
-                <h4>Leaderboard</h4>
-                <table id="leaderboard-table">
-                    <!-- <thead>
-                        <tr>
-                            <th>Place</th>
-                            <th>Username</th>
-                        </tr>
-                    </thead> -->
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Charlie678</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        {% endblock %}
-        {% if user.is_authenticated %}
-        <div id="authenticated", name="authenticated", class = 'main'>
-            {% block authenticated %}
-            {% endblock %}
-        </div>
-        <div id = 'authform', name = 'authform', class = 'form'>
-            {% block authform %}
-            {% endblock %}
-        </div>
-        <div id='questionform', name='questionform', class = 'questionform'>
-            {% block questionform %}
-            {% endblock %}
-        </div>
-        <div, id='tradetable', name='tradetable', class='tradetable'>
-        {% endif %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <img src = "{% static 'main/images/RillionLogo.png' %}" width="40" height="40">
+    <a class="navbar-brand">Rillion</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/home">Home
+            <!-- <span class="sr-only">(current)</span> -->
+          </a>
+        </li>
         {% if not user.is_authenticated %}
-            <div id = 'unauthenticated', name = 'unauthenticated', class = 'main'>
-                {% block unauthenticated %}
-                {% endblock %}
-            </div>
-            <div id = 'unauthform', name = 'unauthform', class = 'form'>
-                {% block unauthform %}
-                {% endblock %}
-            </div>
+            <li class="nav-item">
+                <a class="nav-link" href="/register">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+            </li>
+        {% endif %} 
+        {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="/test">Dev Tab (Dont Go)</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/account">Account</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/history/orders">History</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/stats">Stats</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/trade">Trade</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
         {% endif %}
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    </body>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <a>{{ user.email }}</a>
+      </form>
+    </div>
+  </nav>
+  {% block constantcontent %}
+  {% endblock %}
+  {% if user.is_authenticated %}
+  <div id="authenticated", name="authenticated", class = 'main'>
+      {% block authenticated %}
+      {% endblock %}
+  </div>
+  <div id = 'authform', name = 'authform', class = 'form'>
+      {% block authform %}
+      {% endblock %}
+  </div>
+  {% endif %}
+  {% if not user.is_authenticated %}
+      <div id = 'unauthenticated', name = 'unauthenticated', class = 'main'>
+          {% block unauthenticated %}
+          {% endblock %}
+      </div>
+      <div id = 'unauthform', name = 'unauthform', class = 'form'>
+          {% block unauthform %}
+          {% endblock %}
+      </div>
+  {% endif %}
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 {% endblock %}
