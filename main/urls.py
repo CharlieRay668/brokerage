@@ -18,6 +18,7 @@ urlpatterns = [
     path("history/<str:order_trades>", views.history, name='history'),
     path("stats/", views.stats, name='stats'),
     path("activity/", views.get_activity, name='activity'),
+    path("test/", views.testview, name='test'),
     # path("create/", views.create, name="create"),
     # path("viewclass/<str:classname>/", views.viewclass, name="ap"),
     # path("answer/<int:id>/", views.answerquestion, name="answerquestion"),

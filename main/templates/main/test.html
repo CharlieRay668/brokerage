@@ -1,27 +1,75 @@
-{% extends "main/home.html" %}
+{% extends "main/base.html" %}
 
 
-{% block constantcontent %}
-    <html>
-        <head>
-            <style>
+{% block content %}
+<style>
+    #desktop_view {display: contents;}
+    #mobile_view {display: none;}
 
-            </style>
-            <body>
-                <h5>Test page</h5>
-                <script>
-                    let socket = new WebSocket('ws://localhost:8000/ws/');
-                    let timer = null;
-                    socket.onopen = () => {
-                        timer = setInterval(() => {
-                            socket.send('hello');
-                        }, 1000);
-                    };
-                    socket.onclose = socket.onerror = () => {
-                        clearInterval(timer);
-                    };
-                </script>
-            </body>
-        </head>
-    </html>
+    @media all and (max-width: 499px) {
+        #desktop_view {display: none;}
+        #mobile_view {display: contents;}
+    }
+</style>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home
+            <!-- <span class="sr-only">(current)</span> -->
+          </a>
+        </li>
+        <div id='mobile_view'>
+            <li class="nav-item">
+            <a class="nav-link" href="#">Mobile</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="#">History</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">More</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Separated link</a>
+            </div>
+            </li>
+        </div>
+        <div id='desktop_view'>
+            <li class="nav-item">
+            <a class="nav-link" href="#">Desktop</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="#">History</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">More</a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Separated link</a>
+            </div>
+            </li>
+        </div>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <a>{{ user.email }}</a>
+      </form>
+    </div>
+  </nav>
 {% endblock %}

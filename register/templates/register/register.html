@@ -2,6 +2,9 @@
 
 {% load crispy_forms_tags %}
 
+{% block constantcontent %}
+{% endblock %}
+
 {% block unauthform %}
     <form method="POST" class="form-group">
 		{% csrf_token %}
