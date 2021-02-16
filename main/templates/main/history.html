@@ -5,6 +5,28 @@
 {% endblock %}
 
 {% block constantcontent %}
+    <style>
+        .table {
+            width: 90%;
+            margin: auto;
+        }
+        #history-div {
+            width: 50%;
+            margin: auto;
+        }
+        @media all and (max-width: 499px) {
+            .table {
+                width: 100%;
+            }
+            .table th, td {
+                min-width: 8em;
+            }
+            #history-div {
+                width: 100%;
+                overflow-x: scroll;
+            }
+        }
+    </style>
     <div style="margin: auto; text-align: center;">
         <h6>Welcome {{user.email}}, here are your past orders</h6>
         <div class="btn-group" role="group" aria-label="Basic example">
@@ -14,7 +36,7 @@
     </div>
     <br>
     <h4 style="text-align: center;">Orders</h4>
-    <div style="width: 50%; margin: auto; overflow-x: scroll;">
+    <div id="history-div">
         {% if trades %}
             <table class="table table-hover">
                 <thead>
