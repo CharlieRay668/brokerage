@@ -14,7 +14,7 @@
             color : #72ca72
         }
         .table th, td {
-            min-width: 20em;
+            min-width: 3em;
         }
     </style>
     
@@ -60,9 +60,9 @@
                 {% for position in positions %}
                     <tr class="table-active">
                         {% if position.asset == 'OPTION' %}
-                            <th scope="row">{{ position.description }}</th>
+                            <th scope="row" style="position: -webkit-sticky; position: sticky;">{{ position.description }}</th>
                         {% else %}
-                            <th scope="row">{{ position.symbol }}</th>
+                            <th scope="row" style="position: -webkit-sticky; position: sticky;">{{ position.symbol }}</th>
                         {% endif %}
                         <td>{{ position.quantity }}</td>
                         <td class="profit" >{{ position.day_gain_D }}</td>
