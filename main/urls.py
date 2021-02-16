@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-from custom_websocket.urls import websocket
 
 urlpatterns = [
     path("", views.home, name="home"),
@@ -19,7 +18,6 @@ urlpatterns = [
     path("history/<str:order_trades>", views.history, name='history'),
     path("stats/", views.stats, name='stats'),
     path("activity/", views.get_activity, name='activity'),
-    websocket("ws/", views.websocket_view)
     # path("create/", views.create, name="create"),
     # path("viewclass/<str:classname>/", views.viewclass, name="ap"),
     # path("answer/<int:id>/", views.answerquestion, name="answerquestion"),

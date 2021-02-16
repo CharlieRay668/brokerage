@@ -54,13 +54,6 @@ def clear_positions(response):
 def testview(response):
     return render(response, "main/test.html")
 
-async def websocket_view(socket):
-    print(socket)
-    await socket.accept()
-    while True:
-        message = await socket.receive_text()
-        await socket.send_text(message)
-
 def home(response):
     return render(response, "main/home.html")
 

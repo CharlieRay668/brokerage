@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'users.apps.UsersConfig',
     'register.apps.RegisterConfig',
-    'custom_websocket.apps.CustomWebsocketConfig',
     'crispy_forms',
 ]
 
@@ -79,7 +78,7 @@ WSGI_APPLICATION = 'papertrade.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-if False:
+if True:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
