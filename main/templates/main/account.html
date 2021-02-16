@@ -13,9 +13,18 @@
         .profit#positive{
             color : #72ca72
         }
-        .table th, td {
-            min-width: 3em;
+        .table {
+            width: 80%;
         }
+        @media (max-width : 320px) {
+            .table {
+                width: 100%;
+            }
+            .table th, td {
+                min-width: 5em;
+            }
+        }
+
     </style>
     
     <div style="text-align: center;">
@@ -36,7 +45,7 @@
         <table class="table table-hover" id="positiontable">
             <thead>
               <tr>
-                <th scope="col" style="position: -webkit-sticky; position: sticky;">Instrument</th>
+                <th scope="col">Instrument</th>
                 <th scope="col">Qty</th>
                 <th scope="col">Day Gain $</th>
                 <th scope="col">Day Gain %</th>
@@ -60,9 +69,9 @@
                 {% for position in positions %}
                     <tr class="table-active">
                         {% if position.asset == 'OPTION' %}
-                            <th scope="row" style="position: -webkit-sticky; position: sticky;">{{ position.description }}</th>
+                            <th scope="row">{{ position.description }}</th>
                         {% else %}
-                            <th scope="row" style="position: -webkit-sticky; position: sticky;">{{ position.symbol }}</th>
+                            <th scope="row">{{ position.symbol }}</th>
                         {% endif %}
                         <td>{{ position.quantity }}</td>
                         <td class="profit" >{{ position.day_gain_D }}</td>
