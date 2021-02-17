@@ -9,53 +9,53 @@
 {% block constantcontent %}
     <style>
         #expirydiv table {
-                    font-family: Arial, Helvetica, sans-serif;
-                    border-collapse: collapse;
-                    width: 20%;
-                    margin: auto;
-                    border-radius:6px;
-                    -moz-border-radius:6px;
-                }
-                #expirydiv td, #expirydiv th {
-                    border: 1px solid #ddd;
-                    padding: 8px;
-                    text-align: center;
-                }
-                #expirydiv tr:nth-child(even){background-color: #EBEDE9;}
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 20%;
+            margin: auto;
+            border-radius:6px;
+            -moz-border-radius:6px;
+        }
+        #expirydiv td, #expirydiv th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        #expirydiv tr:nth-child(even){background-color: #EBEDE9;}
 
-                #expirydiv tr:hover {background-color: #E0E3DD;}
+        #expirydiv tr:hover {background-color: #E0E3DD;}
 
-                #expirydiv th {
-                    padding-top: 12px;
-                    padding-bottom: 12px;
-                    text-align: center;
-                    background-color: #7a8288;
-                    color: white;
-                    border: none;
-                    
-                }
-                #expirydiv #strike-cell {
-                    font-weight: bold;
-                }
+        #expirydiv th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: center;
+            background-color: #7a8288;
+            color: white;
+            border: none;
+            
+        }
+        #expirydiv #strike-cell {
+            font-weight: bold;
+        }
 
-                #expirydiv #call-th {
-                    background-color: #72ca72;
-                    text-align: center;
-                    border-radius:6px 6px 0px 0px;
-                }
-                #expirydiv #put-th {
-                    background-color: #f06f6c;
-                    text-align: center;
-                    border-radius:6px 6px 0px 0px;
-                }
-                #expirydiv #blank-th {
-                    background-color: #272b30;
-                }
+        #expirydiv #call-th {
+            background-color: #72ca72;
+            text-align: center;
+            border-radius:6px 6px 0px 0px;
+        }
+        #expirydiv #put-th {
+            background-color: #f06f6c;
+            text-align: center;
+            border-radius:6px 6px 0px 0px;
+        }
+        #expirydiv #blank-th {
+            background-color: #272b30;
+        }
 
-                .expiry-bid-ask-btn {
-                    border: none;
-                    background-color: rgba(221, 221, 221, 0);
-                }
+        .expiry-bid-ask-btn {
+            border: none;
+            background-color: rgba(221, 221, 221, 0);
+        }
     </style>
     <div style="margin: auto; text-align: center;">
         <h1 id='stock_symbol'>{{stock_symbol}}</h1>
@@ -94,75 +94,6 @@
             symbol = ticker + '_'+month+day+year+side+strike
             window.location.replace("/tradesymbol/"+symbol)
         }
-
-//         <table class="table table-hover">
-//   <thead>
-//     <tr>
-//       <th scope="col">Type</th>
-//       <th scope="col">Column heading</th>
-//       <th scope="col">Column heading</th>
-//       <th scope="col">Column heading</th>
-//     </tr>
-//   </thead>
-//   <tbody>
-//     <tr class="table-active">
-//       <th scope="row">Active</th>
-//       <td>Column content</td>
-//       <td>Column content</td>
-//       <td>Column content</td>
-//     </tr>
-//     <tr>
-//       <th scope="row">Default</th>
-//       <td>Column content</td>
-//       <td>Column content</td>
-//       <td>Column content</td>
-//     </tr>
-//     <tr class="table-primary">
-//       <th scope="row">Primary</th>
-//       <td>Column content</td>
-//       <td>Column content</td>
-//       <td>Column content</td>
-//     </tr>
-//     <tr class="table-secondary">
-//       <th scope="row">Secondary</th>
-//       <td>Column content</td>
-//       <td>Column content</td>
-//       <td>Column content</td>
-//     </tr>
-//     <tr class="table-success">
-//       <th scope="row">Success</th>
-//       <td>Column content</td>
-//       <td>Column content</td>
-//       <td>Column content</td>
-//     </tr>
-//     <tr class="table-danger">
-//       <th scope="row">Danger</th>
-//       <td>Column content</td>
-//       <td>Column content</td>
-//       <td>Column content</td>
-//     </tr>
-//     <tr class="table-warning">
-//       <th scope="row">Warning</th>
-//       <td>Column content</td>
-//       <td>Column content</td>
-//       <td>Column content</td>
-//     </tr>
-//     <tr class="table-info">
-//       <th scope="row">Info</th>
-//       <td>Column content</td>
-//       <td>Column content</td>
-//       <td>Column content</td>
-//     </tr>
-//     <tr class="table-light">
-//       <th scope="row">Light</th>
-//       <td>Column content</td>
-//       <td>Column content</td>
-//       <td>Column content</td>
-//     </tr>
-
-//   </tbody>
-// </table>
-
         function build_chain(expiry, num_strikes){
             document.getElementById("stock_symbol").innerText = expiry
             chain_div = document.getElementById('chaindiv')

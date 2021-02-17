@@ -11,6 +11,14 @@
             /*the container must be positioned relative:*/
             position: relative;
             display: inline-block;
+            width: 10%;
+        }
+        @media all and (max-width: 499px) {
+            .autocomplete {
+                position: relative;
+                display: inline-block;
+                width: 100%;
+            }
         }
         .autocomplete-items {
             position: absolute;
@@ -43,7 +51,7 @@
         <h4>Trade</h4>
         <form autocomplete="off" action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="autocomplete" style="width:10%;">
+            <div class="autocomplete">
                 <input id="searchBar" type="text" name="searchBar" placeholder="Stock Symbol or Name" class="form-control">
             </div>
             <input type="submit" class="btn btn-info">
