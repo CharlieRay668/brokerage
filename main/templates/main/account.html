@@ -89,8 +89,8 @@
                         <td>{{ position.gamma }}</td>
                         <td>{{ position.vega }}</td>
                         <td>{{ position.symbol }}</td>
-                        <td><button type="button" class="btn btn-success btn-sm" onclick="close_position('{{position.symbol}}')">Add</button></td>
-                        <td><button type="button" class="btn btn-danger btn-sm" onclick="add_position('{{position.symbol}}')">Close</button></td>
+                        <td><button type="button" class="btn btn-success btn-sm" onclick="add_position('{{position.symbol}}')">Add</button></td>
+                        <td><button type="button" class="btn btn-danger btn-sm" onclick="close_position('{{position.symbol}}')">Close</button></td>
                         <td><button type="button" class="btn btn-info btn-sm">Chart</button></td>
                     </tr>
                 {% endfor %}
