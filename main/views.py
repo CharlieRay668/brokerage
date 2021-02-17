@@ -243,6 +243,9 @@ def tradesymbol(response, symbol):
     fmt = "%m/%d/%Y, %I:%M:%S"
     eastern = timezone('US/Eastern')
     curr_time = dt.datetime.now(eastern).strftime(fmt)
+    if not symbol in REST_HANDLER.get_symbols():
+        REST_HANDLER.add_symbol(symbol)
+        time.sleep(2)
     if response.method == "POST":
         form = CreateNewPosition()
         print(response.POST)
