@@ -56,6 +56,30 @@
             border: none;
             background-color: rgba(221, 221, 221, 0);
         }
+        #strikediv {
+            margin: auto;
+            text-align: center;
+            width: 20%;
+        }
+        #chaindiv {
+            text-align: center;
+        }
+        #expiry-btn {
+            width: 15%;
+        }
+        @media all and (max-width: 499px) {
+            #strikediv {
+                margin: auto;
+                text-align: center;
+                width: 80%;
+            }
+            #chaindiv {
+                text-align: center;
+            }
+            #expiry-btn {
+                width: 50%;
+            }
+        }
     </style>
     <div style="margin: auto; text-align: center;">
         <h1 id='stock_symbol'>{{stock_symbol}}</h1>
@@ -66,13 +90,13 @@
         <br>
         <h4 id ='timeclock'>{{curr_time}}</h4>
     </div>
-    <div id="strikediv" style="margin: auto; width: 20%; text-align: center;">
+    <div id="strikediv">
         <input type="number" id ='num_strikes' placeholder="Desired Number of Strikes" class="form-control"></input>
         <button type="button" id = 'update_strike' class="btn btn-info btn-sm" onclick="updateStrikes()">Update</button>
         <button type="button" id = 'update_chain' class="btn btn-info btn-sm" onclick="updateChain()" style="display: none;">Update</button>
     </div>
     <br>
-    <div id="chaindiv" style="text-align: center;">
+    <div id="chaindiv">
     </div>
     <div id="expirydiv" style="display: none;">
     </div>
@@ -195,7 +219,7 @@
                 appendButton.classList.add('btn');
                 appendButton.classList.add('btn-info');
                 appendButton.classList.add('btn-sm');
-                appendButton.style.width = "15%"
+                appendButton.classList.add('expiry-btn');
                 id = "expiry-b"+String(i);
                 appendButton.id = id;
                 var expiry_text = jsexpiries[i]
