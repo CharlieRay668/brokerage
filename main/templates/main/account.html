@@ -109,10 +109,10 @@
     </div>
     <script>
         function close_position(symbol) {
-            window.location.replace('/tradesymbol/'+symbol)
+            window.location.replace('/tradesymbol/'+symbol +'/sell')
         }
         function add_position(symbol) {
-            window.location.replace('/tradesymbol/'+symbol)
+            window.location.replace('/tradesymbol/'+symbol + '/buy')
         }
         var update_account_loop = setInterval(update_account, 1000);
         update_account();
