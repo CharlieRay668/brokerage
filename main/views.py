@@ -377,6 +377,7 @@ def getdata(response, symbol):
     json_response['ask'] = round(data[1],2)
     json_response['mark'] = round(data[2],2)
     json_response['mark_percent_change'] = round(data[3],2)
+    json_response['symbols'] = REST_HANDLER.get_symbols()
     return JsonResponse(json_response)
 
 def tradesymbolclock(response):
