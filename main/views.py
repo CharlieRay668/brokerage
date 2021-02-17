@@ -105,11 +105,14 @@ def get_position_dict(position):
             value = round(close_price*quantity, 2)
         if value == 0:
             day_gain_perc = 0
+        else:
+            day_gain_perc = round((day_gain_dollar/value)*100,2)
         if purchase == 0:
             gain_perc = 0
-        day_gain_perc = round((day_gain_dollar/value)*100,2)
+        else:
+            gain_perc = round(((mark/purchase)-1)*100,2)
         change = round(mark-close_price, 2)
-        gain_perc = round(((mark/purchase)-1)*100,2)
+        
     else:
         REST_HANDLER.add_symbol(symbol)
         print('Added ', symbol)
