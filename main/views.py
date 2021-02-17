@@ -245,7 +245,7 @@ def trade(response):
     symbols = json.dumps(symbols)
     return render(response, "main/trade.html", {'autofill_symbols': symbols,})
 
-def tradesymbol(response, symbol):
+def tradesymbol(response, symbol, buy_sell="buy"):
     user = response.user
     fmt = "%m/%d/%Y, %I:%M:%S"
     eastern = timezone('US/Eastern')
