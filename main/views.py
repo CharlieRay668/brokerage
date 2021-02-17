@@ -7,7 +7,7 @@ import datetime as dt
 from pytz import timezone
 import pandas as pd
 import json
-from .forms import CreateNewPosition
+from .forms import CreateNewBuyPosition, CreateNewSellPosition
 from .models import Position, Order, Trade, EquityPosition, OptionPosition
 from utils.TDRestAPI import Rest_Account
 from utils.resthandler import RestHandler, DatabaseHandler
@@ -254,9 +254,10 @@ def tradesymbol(response, symbol, buy_sell="buy"):
         REST_HANDLER.add_symbol(symbol)
         time.sleep(2)
     if response.method == "POST":
-        form = CreateNewPosition()
-        print(response.POST)
-        form = CreateNewPosition(response.POST)
+        if buy_sell == "buy":
+            form = CreateNewBuyPosition(response.POST)
+        else:
+            form = CreateNewSellPosition(response.POST)
         if form.is_valid():
             # Get user positions
             positions = user.positions.all()
@@ -331,7 +332,10 @@ def tradesymbol(response, symbol, buy_sell="buy"):
             user.positions.add(new_position)
             return redirect('/account/')
     else:
-        form = CreateNewPosition()
+        if buy_sell == "buy":
+            form = CreateNewBuyPosition()
+        else:
+            form = CreateNewSellPosition()
     return render(response, "main/tradesymbol.html", {'stock_symbol':symbol, 'curr_time':curr_time, "form":form})
     
 
