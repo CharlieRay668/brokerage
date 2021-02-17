@@ -103,6 +103,10 @@ def get_position_dict(position):
             gain_dollar = round((mark*quantity) - (purchase*quantity),2)
             day_gain_dollar = round((mark-close_price)*quantity,2)
             value = round(close_price*quantity, 2)
+        if value == 0:
+            day_gain_perc = 0
+        if purchase == 0:
+            gain_perc = 0
         day_gain_perc = round((day_gain_dollar/value)*100,2)
         change = round(mark-close_price, 2)
         gain_perc = round(((mark/purchase)-1)*100,2)
