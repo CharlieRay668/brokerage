@@ -4,63 +4,292 @@
 <a href = '/home/'>Home</a>
 {% endblock %}
 
+{% load crispy_forms_tags %}
+
 {% block constantcontent %}
+    <style>
+        #expirydiv table {
+                    font-family: Arial, Helvetica, sans-serif;
+                    border-collapse: collapse;
+                    width: 20%;
+                    margin: auto;
+                    border-radius:6px;
+                    -moz-border-radius:6px;
+                }
+                #expirydiv td, #expirydiv th {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    text-align: center;
+                }
+                #expirydiv tr:nth-child(even){background-color: #EBEDE9;}
+
+                #expirydiv tr:hover {background-color: #E0E3DD;}
+
+                #expirydiv th {
+                    padding-top: 12px;
+                    padding-bottom: 12px;
+                    text-align: center;
+                    background-color: #7a8288;
+                    color: white;
+                    border: none;
+                    
+                }
+                #expirydiv #strike-cell {
+                    font-weight: bold;
+                }
+
+                #expirydiv #call-th {
+                    background-color: #72ca72;
+                    text-align: center;
+                    border-radius:6px 6px 0px 0px;
+                }
+                #expirydiv #put-th {
+                    background-color: #f06f6c;
+                    text-align: center;
+                    border-radius:6px 6px 0px 0px;
+                }
+                #expirydiv #blank-th {
+                    background-color: #272b30;
+                }
+
+                .expiry-bid-ask-btn {
+                    border: none;
+                    background-color: rgba(221, 221, 221, 0);
+                }
+    </style>
     <div style="margin: auto; text-align: center;">
-        <h6>Welcome {{user.email}}, here are your past orders</h6>
+        <h1 id='stock_symbol'>{{stock_symbol}}</h1>
         <div class="btn-group" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-info btn-lg" onclick="window.location.href='/history/orders'">Orders</button>
-            <button type="button" class="btn btn-info btn-lg" onclick="window.location.href='/history/trades'">Trades</button>
+            <button type="button" class="btn btn-info btn-lg" onclick="stockSwitch()">Stock</button>
+            <button type="button" class="btn btn-info btn-lg" onclick="optionSwitch()">Option</button>
         </div>
+        <br>
+        <h4 id ='timeclock'>{{curr_time}}</h4>
+    </div>
+    <div id="strikediv" style="margin: auto; width: 20%; text-align: center;">
+        <input type="number" id ='num_strikes' placeholder="Desired Number of Strikes" class="form-control"></input>
+        <button type="button" id = 'update_strike' class="btn btn-info btn-sm" onclick="updateStrikes()">Update</button>
+        <button type="button" id = 'update_chain' class="btn btn-info btn-sm" onclick="updateChain()" style="display: none;">Update</button>
     </div>
     <br>
-    <h4 style="text-align: center;">Orders</h4>
-    <div style="width: 50%; margin: auto;">
-        {% if trades %}
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">Instrument</th>
-                    <th scope="col">% Profit</th>
-                    <th scope="col">$ Profit</th>
-                    <th scope="col">Open Time</th>
-                    <th scope="col">Close Time</th>
-                </tr>
-                </thead>
-                <tbody>
-                    {% for position in positions %}
-                        <tr class="table-active">
-                            <td scope="row">{{ position.symbol }}</td>
-                            <td>{{ position.perc_profit }}</td>
-                            <td>{{ position.dollar_profit }}</td>
-                            <td>{{ position.date_opened}} EST</td>
-                            <td>{{ position.date_close}} EST</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
-        {% if not trades %}
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">Instrument</th>
-                    <th scope="col">Qty</th>
-                    <th scope="col">Fill Price</th>
-                    <th scope="col">Fill Time</th>
-                </tr>
-                </thead>
-                <tbody>
-                    {% for position in positions %}
-                        <tr class="table-active">
-                            <td scope="row">{{ position.symbol }}</td>
-                            <td>{{ position.quantity }}</td>
-                            <td>{{ position.fill_price }}</td>
-                            <td>{{ position.order_execution_date}} EST</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
+    <div id="chaindiv" style="text-align: center;">
     </div>
-{% endblock %}
+    <div id="expirydiv" style="display: none;">
+    </div>
+    <script>
+        // document.getElementById("num_strikes").defaultValue = "12";
+        var jsexpiries = {{ expiries|safe }};
+        var months = {'Jan' : '01','Feb' : '02','Mar' : '03','Apr' : '04','May' : '05','Jun' : '06','Jul' : '07','Aug' : '08','Sep' : '09','Oct' : '10','Nov' : '11','Dec' : '12'}
+        function order_strike(expiry, strike, side, buy_sell){
+            expiry = expiry.split('-')
+            ticker = expiry[0]
+            month = months[expiry[1]]
+            day = expiry[2]
+            if (day.length < 2) {
+                day = '0'+day
+            }
+            year = expiry[3]
+            year = year.substring(2)
+            strike = String(strike)
+            symbol = ticker + '_'+month+day+year+side+strike
+            window.location.replace("/tradesymbol/"+symbol)
+        }
 
+//         <table class="table table-hover">
+//   <thead>
+//     <tr>
+//       <th scope="col">Type</th>
+//       <th scope="col">Column heading</th>
+//       <th scope="col">Column heading</th>
+//       <th scope="col">Column heading</th>
+//     </tr>
+//   </thead>
+//   <tbody>
+//     <tr class="table-active">
+//       <th scope="row">Active</th>
+//       <td>Column content</td>
+//       <td>Column content</td>
+//       <td>Column content</td>
+//     </tr>
+//     <tr>
+//       <th scope="row">Default</th>
+//       <td>Column content</td>
+//       <td>Column content</td>
+//       <td>Column content</td>
+//     </tr>
+//     <tr class="table-primary">
+//       <th scope="row">Primary</th>
+//       <td>Column content</td>
+//       <td>Column content</td>
+//       <td>Column content</td>
+//     </tr>
+//     <tr class="table-secondary">
+//       <th scope="row">Secondary</th>
+//       <td>Column content</td>
+//       <td>Column content</td>
+//       <td>Column content</td>
+//     </tr>
+//     <tr class="table-success">
+//       <th scope="row">Success</th>
+//       <td>Column content</td>
+//       <td>Column content</td>
+//       <td>Column content</td>
+//     </tr>
+//     <tr class="table-danger">
+//       <th scope="row">Danger</th>
+//       <td>Column content</td>
+//       <td>Column content</td>
+//       <td>Column content</td>
+//     </tr>
+//     <tr class="table-warning">
+//       <th scope="row">Warning</th>
+//       <td>Column content</td>
+//       <td>Column content</td>
+//       <td>Column content</td>
+//     </tr>
+//     <tr class="table-info">
+//       <th scope="row">Info</th>
+//       <td>Column content</td>
+//       <td>Column content</td>
+//       <td>Column content</td>
+//     </tr>
+//     <tr class="table-light">
+//       <th scope="row">Light</th>
+//       <td>Column content</td>
+//       <td>Column content</td>
+//       <td>Column content</td>
+//     </tr>
+
+//   </tbody>
+// </table>
+
+        function build_chain(expiry, num_strikes){
+            document.getElementById("stock_symbol").innerText = expiry
+            chain_div = document.getElementById('chaindiv')
+            chain_div.style.display = "none";
+            document.getElementById('update_strike').style.display = "none";
+            document.getElementById('update_chain').style = "display: block; margin: auto;";
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var responseText = JSON.parse(this.responseText)
+                    //alert(responseText['testtime'])
+                    chain = JSON.parse(responseText['chain'])
+                    indexes = JSON.parse(responseText['indexes'])
+                    chain = JSON.parse(chain)
+                    form = document.createElement('form')
+                    var col = ["Bid", "Ask", "Strike", 'Bid', 'Ask'];
+                    var table = document.createElement("table");
+                    table.classList.add("table-hover")
+                    var tr = table.insertRow(-1);
+                    var th = document.createElement("th");
+                    th.innerHTML = "Calls";
+                    th.id = "call-th";
+                    th.colSpan =2;
+                    tr.appendChild(th);
+                    var th = document.createElement("th");
+                    th.id = 'blank-th';
+                    tr.append(th);
+                    var th = document.createElement("th");
+                    th.innerHTML = "Puts";
+                    th.id = "put-th";
+                    th.colSpan = 2;
+                    tr.appendChild(th);
+                    var tr = table.insertRow(-1);
+                    var th = document.createElement("th")
+                    for (var i = 0; i < col.length; i++) {
+                        var th = document.createElement("th");
+                        th.innerHTML = col[i];
+                        tr.appendChild(th);
+                    }
+                    for (var i = 0; i < indexes.length/2; i++) {
+                        var strike = chain['strike'][indexes[i]];
+                        tr = table.insertRow(-1);
+                        tr.classList.add("table-light")
+                        var tabCell = tr.insertCell(-1);
+                        button = document.createElement('button');
+                        button.innerHTML = chain['bid'][indexes[i+(indexes.length/2)]];
+                        side = "C";
+                        buy_sell = "sell"
+                        cmd_str = "order_strike("+"'"+String(expiry.split(' ').join('-'))+"',"+"'"+strike+"',"+"'"+side+"',"+"'"+buy_sell+"'"+")";
+                        tabCell.innerHTML = "<button onClick="+cmd_str+" class='expiry-bid-ask-btn' id='cbid';>"+button.innerHTML+"</button>";
+                        var tabCell = tr.insertCell(-1);
+                        button = document.createElement('button')
+                        button.innerHTML = chain['ask'][indexes[i+(indexes.length/2)]]
+                        side = "C";
+                        buy_sell = "buy"
+                        cmd_str = "order_strike("+"'"+String(expiry.split(' ').join('-'))+"',"+"'"+strike+"',"+"'"+side+"',"+"'"+buy_sell+"'"+")";
+                        tabCell.innerHTML = "<button onClick="+cmd_str+" class='expiry-bid-ask-btn' id='btnEdit';>"+button.innerHTML+"</button>";
+                        var tabCell = tr.insertCell(-1);
+                        tabCell.innerHTML = strike
+                        tabCell.id = 'strike-cell'
+                        var tabCell = tr.insertCell(-1);
+                        button = document.createElement('button')
+                        button.innerHTML = chain['bid'][indexes[i]]
+                        side = "P";
+                        buy_sell = "sell"
+                        cmd_str = "order_strike("+"'"+String(expiry.split(' ').join('-'))+"',"+"'"+strike+"',"+"'"+side+"',"+"'"+buy_sell+"'"+")";
+                        tabCell.innerHTML = "<button onClick="+cmd_str+" class='expiry-bid-ask-btn' id='btnEdit';>"+button.innerHTML+"</button>";
+                        var tabCell = tr.insertCell(-1);
+                        button = document.createElement('button')
+                        button.innerHTML = chain['ask'][indexes[i]]
+                        side = "P";
+                        buy_sell = "buy"
+                        cmd_str = "order_strike("+"'"+String(expiry.split(' ').join('-'))+"',"+"'"+strike+"',"+"'"+side+"',"+"'"+buy_sell+"'"+")";
+                        tabCell.innerHTML = "<button onClick="+cmd_str+" class='expiry-bid-ask-btn' id='btnEdit';>"+button.innerHTML+"</button>";
+
+                        // var tabCell = tr.insertCell(-1);
+                        // tabCell.innerHTML = chain['putCall'][indexes[i]];
+                    }
+                    var divContainer = document.getElementById("expirydiv");
+                    divContainer.innerHTML = "";
+                    divContainer.appendChild(table);
+                    divContainer.style.display = "block";
+                }
+            };
+            xhttp.open("GET", "/getchain/"+"{{stock_symbol}}/"+expiry + '/'+num_strikes, true);
+            xhttp.send();
+        }
+        function add_buttons() {    
+            chain_div = document.getElementById("chaindiv");
+            num_strikes = document.getElementById("num_strikes").value;
+            if (num_strikes == 0) {
+                num_strikes = 12;
+            }
+            for (var i = 0; i < jsexpiries.length; i++) {       
+                button = document.createElement("button");
+                i_tag = document.createElement("i");
+                break_tag = document.createElement('br');
+                appendButton = chain_div.appendChild(button);
+                appendButton.classList.add('btn');
+                appendButton.classList.add('btn-info');
+                appendButton.classList.add('btn-sm');
+                appendButton.style.width = "15%"
+                id = "expiry-b"+String(i);
+                appendButton.id = id;
+                var expiry_text = jsexpiries[i]
+                appendButton.innerText = expiry_text
+                appendButton.setAttribute( "onClick", "build_chain('"+expiry_text+"', "+num_strikes+")" );
+                appendI = appendButton.appendChild(i_tag);
+                //appendI.class = "fa fa-caret-down"
+                appendBreak = chain_div.appendChild(break_tag);
+            }
+        }
+        add_buttons();
+        function remove_buttons() {
+            chain_div = document.getElementById("chaindiv");
+            chain_div.innerHTML = "";
+        }
+        function updateStrikes() {
+            remove_buttons();
+            add_buttons();
+        }
+        function updateChain() {
+            var divContainer = document.getElementById("expirydiv");
+            divContainer.innerHTML = "";
+            num_strikes = document.getElementById("num_strikes").value;
+            expiry = document.getElementById("stock_symbol").innerText;
+            build_chain(expiry, num_strikes);
+        }
+    </script>
+{% endblock %}

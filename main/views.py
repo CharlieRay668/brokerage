@@ -52,20 +52,16 @@ def clear_positions(response):
     return render(response, "main/home.html")
 
 def testview(response):
-    user = response.user
-    positions = user.positions.all()
-    if False:
-        if len(positions) == 0:
-            return render(response, "main/test.html", {'positions': positions, 'trades': True})
-        df = pd.DataFrame(list(positions.values()))
-        dfs = []
-        ids = set(list(df['position_id']))
-        for pid in ids:
-            dfs.append(df[df['position_id'] == pid])
-        positions = [calc_trade(df) for df in dfs if calc_trade(df) is not None]
-        return render(response, "main/test.html", {'positions': positions, 'trades': True})
-    else:
-        return render(response, "main/test.html", {'positions': positions, 'trades': False})
+    symbol = "AMD"
+    fmt = "%m/%d/%Y, %I:%M:%S"
+    eastern = timezone('US/Eastern')
+    curr_time = dt.datetime.now(eastern).strftime(fmt)
+    chain = REST_API.get_options_chain(symbol, time_delta=720, strike_count=1, contract_type='CALL')
+    expiries = chain['description'].to_list()
+    expiries = [' '.join(expiry.split(' ')[:4]) for expiry in expiries]
+    expiries = json.dumps(expiries)
+    return render(response, "main/test.html", {'stock_symbol':symbol, 'curr_time':curr_time, "chain":chain, "expiries":expiries})
+
 
 def home(response):
     return render(response, "main/home.html")

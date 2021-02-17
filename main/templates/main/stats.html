@@ -1,33 +1,14 @@
 {% extends "main/home.html" %}
-
-{% block otherlinks %}
-<a href = '/home/'>Home</a>
-{% endblock %}
-
 {% block constantcontent %}
-    <html>
-        <head>
-            <style>
-                .welcomemessage {
-                    margin: auto;
-                    text-align: center;
-                }
-            </style>
-            <body>
-                <div class= 'welcomemessage'>
-                    <h2>Stats for  {{user.email}}</h2>
-                    <br>
-                    <div id ="stats">
-                        <h5>Wins: </h5><span>{{wins}}</span>
-                        <br>
-                        <h5>Losses: </h5><span>{{losses}}</span>
-                        <br>
-                        <h5>Total Profit: </h5><span>{{profit}}%</span>
-                    </div>
-                </div>
-                <br>
-            </body>
-        </head>
-    </html>
+    <br>
+    <br>
+    <br>
+    <div class="card border-info mb-3" style="max-width: 20rem; margin: auto;">
+        <div class="card-header">Stats for  {{user.email}}</div>
+        <div class="card-body">
+            <h4 class="card-title">{{ profit }}% profit</h4>
+            <p class="card-text">Total Losses: {{ losses }}, Total wins: {{ wins}}.</p>
+        </div>
+    </div>
 {% endblock %}
 
