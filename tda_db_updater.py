@@ -12,11 +12,11 @@ def divide_chunks(list, n):
     for i in range(0, len(list), n):  
         yield list[i:i + n] 
 
+def get_symbol_batch():
+    all_quotes = [item.strip() for item in open("tickers.txt", "r").readlines()]
+    return list(divide_chunks(all_quotes, 300))
+    
 while True:
-    def get_symbol_batch():
-        all_quotes = [item.strip() for item in open("tickers.txt", "r").readlines()]
-        return list(divide_chunks(all_quotes, 300))
-
         for batch in get_symbol_batch():
             starttime = time.time()
             symbols = ','.join(batch)
