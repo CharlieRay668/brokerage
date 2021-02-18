@@ -12,13 +12,14 @@ import os
 from django.core.wsgi import get_wsgi_application
 from utils.resthandler import RestHandler
 from utils.TDRestAPI import Rest_Account
+import threading
+import time
+
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'papertrade.settings')
 
 application = get_wsgi_application()
 
-import threading
-import time
 
 REST_API = Rest_Account('keys.json')
 rest_handler = REST_HANDLER = RestHandler(REST_API)
