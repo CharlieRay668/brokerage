@@ -79,6 +79,8 @@ class DatabaseHandler():
 
     def update_data(self, conn, update_dict, symbol):
         if self.check_symbol_exist(conn, symbol):
+            #self.db_cols
+            print(update_dict)
             self.update_cells(conn, update_dict, symbol)
         else:
             keys = self.db_cols
