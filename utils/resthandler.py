@@ -100,6 +100,7 @@ class RestHandler():
         self.rest_account = rest_account
         self.db_handler = DatabaseHandler()
         self.conn = self.db_handler.create_connection(database)
+        
         thread.start_new_thread(self.loop, ())
         
     def get_df(self, symbols):
@@ -122,8 +123,11 @@ class RestHandler():
 
     def get_symbol_batch(self):
         #return []
-        all_quotes = [item.strip() for item in open("tickers.txt", "r+").readlines.split("\n")]
-        return list(divide_chunks(all_quotes, 300))
+        try:
+            all_quotes = [item.strip() for item in open("tickers.txt", "r+").readlines.split("\n")]
+            return list(divide_chunks(all_quotes, 300))
+        except:
+            return []
     
     def add_symbol(self, symbol):
         try:
