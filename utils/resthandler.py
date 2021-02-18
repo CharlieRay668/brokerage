@@ -143,7 +143,10 @@ class RestHandler():
         return False
 
     def get_symbols(self):
-        return [item.strip() for item in open("tickers.txt", "r+").readlines.split("\n")]
+        try:
+            return [item.strip() for item in open("tickers.txt", "r+").readlines.split("\n")]
+        except:
+            return []
 
 # rest_act = Rest_Account('keys.json')
 # rest_handler = RestHandler(rest_act, ['TSLA', 'AMD_020521C84.5'])
