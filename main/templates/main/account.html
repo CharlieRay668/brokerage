@@ -115,6 +115,7 @@
             window.location.replace('/tradesymbol/'+symbol + '/buy')
         }
         var update_account_loop = setInterval(update_account, 1000);
+        setInterval(test_ping, 3000);
         update_account();
         function getCookie(name) {
             let cookieValue = null;
