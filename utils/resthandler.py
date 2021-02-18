@@ -128,8 +128,10 @@ class RestHandler():
     
     def add_symbol(self, symbol):
         try:
-            open("tickers.txt", "a+").write(str(symbol)+"\n")
-            return True
+            if symbol not in [item.strip() for item in open("tickers.txt", "r").readlines()]:
+                open("tickers.txt", "a+").write(str(symbol)+"\n")
+                return True
+            return False
         except:
             return False
 
