@@ -106,8 +106,6 @@ class RestHandler():
         self.db_handler = DatabaseHandler()
         self.conn = self.db_handler.create_connection(database)
         
-        thread.start_new_thread(self.loop, ())
-        
     def get_df(self, symbols):
         return self.rest_account.get_quotes(symbols)
 
@@ -125,7 +123,7 @@ class RestHandler():
                 else:
                     time.sleep(1 - ((time.time() - starttime) % 60.0))
         print("thread closing...")
-
+    
     def get_symbol_batch(self):
         #return []
         all_quotes = [item.strip() for item in open("tickers.txt", "r").readlines()]
