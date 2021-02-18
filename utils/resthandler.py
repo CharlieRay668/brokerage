@@ -80,8 +80,6 @@ class DatabaseHandler():
 
     def update_data(self, conn, update_dict, symbol):
         if self.check_symbol_exist(conn, symbol):
-            #self.db_cols
-            print(update_dict)
             self.update_cells(conn, update_dict, symbol)
         else:
             keys = self.db_cols
@@ -108,6 +106,7 @@ class RestHandler():
         self.rest_account = rest_account
         self.db_handler = DatabaseHandler()
         self.conn = self.db_handler.create_connection(database)
+        thread.start_new_thread(loop, ())
         
     def get_df(self, symbols):
         return self.rest_account.get_quotes(symbols)
@@ -120,9 +119,10 @@ class RestHandler():
                 quotes = self.rest_account.get_quotes(symbols).reset_index().fillna('')
                 for index, row in quotes.iterrows():
                     row = row.to_dict()
+                    true_dict = {}
                     for key in row.keys():
-                        if key not in COLUMNS:
-                            row.pop(key)
+                        if key in COLUMNS:
+                            true_dict[key] = row[key]
                     self.db_handler.update_data(self.conn, row, row['symbol'])
                 if 1.0 - ((time.time() - starttime) % 60.0) <= 0:
                     continue
