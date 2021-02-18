@@ -388,9 +388,9 @@ def getdata(response, symbol):
     if not symbol in REST_HANDLER.get_symbols():
         REST_HANDLER.add_symbol(symbol)
         time.sleep(2)
-    sql = "SELECT bidPrice,askPrice,mark,markPercentChangeInDouble from tda_data WHERE symbol ='%s'"%(symbol)
-    cur.execute(sql)
-    data = cur.fetchall()[0]
+    # sql = "SELECT bidPrice,askPrice,mark,markPercentChangeInDouble from tda_data WHERE symbol ='%s'"%(symbol)
+    # cur.execute(sql)
+    # data = cur.fetchall()[0]
 
     # json_response['bid'] = round(data[0],2)
     # json_response['ask'] = round(data[1],2)
