@@ -58,14 +58,6 @@ def testview(response):
     rest_symbols = REST_HANDLER.get_symbols()
     return render(response, "main/test.html", {'file_symbols':file_symbols, 'db_symbols':db_symbols, "rest_symbols":rest_symbols})
 
-def getdata(response, symbol):
-    json_response = {}
-    json_response['file_symbols'] = [item.strip() for item in open("tickers.txt").readlines()]
-    json_response['db_symbols'] = DATABASE_HANDLER.get_all_symbols(DATABASE_CONNECTION)
-    json_response['rest_symbols'] = REST_HANDLER.get_symbols()
-    return JsonResponse(json_response)
-
-
 def home(response):
     return render(response, "main/home.html")
 
@@ -391,14 +383,14 @@ def getdata(response, symbol):
     if not symbol in REST_HANDLER.get_symbols():
         REST_HANDLER.add_symbol(symbol)
         time.sleep(2)
-    # sql = "SELECT bidPrice,askPrice,mark,markPercentChangeInDouble from tda_data WHERE symbol ='%s'"%(symbol)
-    # cur.execute(sql)
-    # data = cur.fetchall()[0]
+    sql = "SELECT bidPrice,askPrice,mark,markPercentChangeInDouble from tda_data WHERE symbol ='%s'"%(symbol)
+    cur.execute(sql)
+    data = cur.fetchall()[0]
 
-    # json_response['bid'] = round(data[0],2)
-    # json_response['ask'] = round(data[1],2)
-    # json_response['mark'] = round(data[2],2)
-    # json_response['mark_percent_change'] = round(data[3],2)
+    json_response['bid'] = round(data[0],2)
+    json_response['ask'] = round(data[1],2)
+    json_response['mark'] = round(data[2],2)
+    json_response['mark_percent_change'] = round(data[3],2)
     json_response['symbols'] = REST_HANDLER.get_symbols()
     return JsonResponse(json_response)
 
