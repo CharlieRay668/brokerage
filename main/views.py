@@ -52,15 +52,18 @@ def clear_positions(response):
     return render(response, "main/home.html")
 
 def testview(response):
-    symbol = "AMD"
-    fmt = "%m/%d/%Y, %I:%M:%S"
-    eastern = timezone('US/Eastern')
-    curr_time = dt.datetime.now(eastern).strftime(fmt)
-    chain = REST_API.get_options_chain(symbol, time_delta=720, strike_count=1, contract_type='CALL')
-    expiries = chain['description'].to_list()
-    expiries = [' '.join(expiry.split(' ')[:4]) for expiry in expiries]
-    expiries = json.dumps(expiries)
-    return render(response, "main/test.html", {'stock_symbol':symbol, 'curr_time':curr_time, "chain":chain, "expiries":expiries})
+    json_response = {}
+    file_symbols = [item.strip() for item in open("tickers.txt").readlines()]
+    db_symbols = DATABASE_HANDLER.get_all_symbols(DATABASE_CONNECTION)
+    rest_symbols = REST_HANDLER.get_symbols()
+    return render(response, "main/test.html", {'file_symbols':file_symbols, 'db_symbols':db_symbols, "rest_symbols":rest_symbols})
+
+def getdata(response, symbol):
+    json_response = {}
+    json_response['file_symbols'] = [item.strip() for item in open("tickers.txt").readlines()]
+    json_response['db_symbols'] = DATABASE_HANDLER.get_all_symbols(DATABASE_CONNECTION)
+    json_response['rest_symbols'] = REST_HANDLER.get_symbols()
+    return JsonResponse(json_response)
 
 
 def home(response):

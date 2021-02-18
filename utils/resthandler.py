@@ -70,12 +70,12 @@ class DatabaseHandler():
         conn.commit()
         return cur.lastrowid
 
-    def delete_equity_row(self, conn, symbol):
-        sql = "DELETE FROM utils_data_logs_equity WHERE symbol = '%s';"%(symbol)
-        cur = conn.cursor()
-        cur.execute(sql)
-        conn.commit()
-        return cur.lastrowid
+    # def delete_equity_row(self, conn, symbol):
+    #     sql = "DELETE FROM utils_data_logs_equity WHERE symbol = '%s';"%(symbol)
+    #     cur = conn.cursor()
+    #     cur.execute(sql)
+    #     conn.commit()
+    #     return cur.lastrowid
 
     def update_data(self, conn, update_dict, symbol):
         if self.check_symbol_exist(conn, symbol):
@@ -90,6 +90,11 @@ class DatabaseHandler():
                     update_line.append(None)
             self.create_new_line(conn, update_line)
 
+    def get_all_symbols(self, conn):
+        sql = "SELECT symbol FROM tda_data"
+        cur = conn.cursor()
+        cur.execute(sql)
+        return cur.fetchall()
 
 
 class RestHandler():
