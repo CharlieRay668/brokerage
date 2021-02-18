@@ -197,7 +197,7 @@ def account(response):
     positions = [calc_df(df) for df in dfs if calc_df(df) is not None]
     return render(response, "main/account.html", {'positions': positions})
 
-def get_symbols_from_rh():
+def get_symbols_from_rh(response):
     json_response = {}
     json_response['symbols'] = REST_HANDLER.get_symbols()
     return JsonResponse(json_response)
