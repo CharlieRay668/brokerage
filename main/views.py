@@ -195,9 +195,12 @@ def account(response):
         REST_HANDLER.add_symbol(symbol)
         updates.append(symbol)
     positions = [calc_df(df) for df in dfs if calc_df(df) is not None]
-    symbols= REST_HANDLER.get_symbols()
-    return render(response, "main/account.html", {'positions': positions, 'symbols':symbols})
+    return render(response, "main/account.html", {'positions': positions})
 
+def get_symbols_from_rh():
+    json_response = {}
+    json_response['symbols'] = REST_HANDLER.get_symbols()
+    return JsonResponse(json_response)
 
 def history(response, order_trades):
     user = response.user

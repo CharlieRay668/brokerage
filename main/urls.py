@@ -20,6 +20,7 @@ urlpatterns = [
     path("stats/", views.stats, name='stats'),
     path("activity/", views.get_activity, name='activity'),
     path("test/", views.testview, name='test'),
+    path("testping/", views.get_symbols_from_rh, name='testping'),
     # path("create/", views.create, name="create"),
     # path("viewclass/<str:classname>/", views.viewclass, name="ap"),
     # path("answer/<int:id>/", views.answerquestion, name="answerquestion"),
