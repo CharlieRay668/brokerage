@@ -92,13 +92,7 @@ class DatabaseHandler():
 
 
 
-all_quotes = []
-database = r'tda_db.sqlite3'
-rest_account = Rest_Account("keys.json")
-all_quotes = all_quotes
-db_handler = DatabaseHandler()
-conn = db_handler.create_connection(database)
-thread.start_new_thread(loop, ())
+
         
 def get_df(self, symbols):
     return self.rest_account.get_quotes(symbols)
@@ -136,6 +130,14 @@ def remove_symbol(symbol):
 
 def get_symbols():
     return all_quotes
+
+all_quotes = []
+database = r'tda_db.sqlite3'
+rest_account = Rest_Account("keys.json")
+all_quotes = all_quotes
+db_handler = DatabaseHandler()
+conn = db_handler.create_connection(database)
+thread.start_new_thread(loop, ())
 
 # all_quotes = []
 # class RestHandler():
