@@ -124,7 +124,7 @@ class RestHandler():
     def get_symbol_batch(self):
         #return []
         try:
-            all_quotes = [item.strip() for item in open("tickers.txt", "r+").readlines.split("\n")]
+            all_quotes = [item.strip() for item in open("tickers.txt", "r").readlines.split("\n")]
             return list(divide_chunks(all_quotes, 300))
         except:
             return []
@@ -144,7 +144,7 @@ class RestHandler():
 
     def get_symbols(self):
         try:
-            return [item.strip() for item in open("tickers.txt", "r+").readlines.split("\n")]
+            return [item.strip() for item in open("tickers.txt", "r").readlines.split("\n")]
         except:
             return []
 
