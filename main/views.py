@@ -190,10 +190,14 @@ def account(response):
     for pid in ids:
         dfs.append(df[df['position_id'] == pid])
     symbols = [position.symbol for position in positions if position.symbol not in REST_HANDLER.get_symbols()]
+    updates = []
     for symbol in symbols:
         REST_HANDLER.add_symbol(symbol)
+        updates.append(symbol)
     positions = [calc_df(df) for df in dfs if calc_df(df) is not None]
+    symbols= REST_HANDLER.get_symbols()
     return render(response, "main/account.html", {'positions': positions, 'symbols':symbols})
+
 
 def history(response, order_trades):
     user = response.user
