@@ -5,6 +5,7 @@ from utils.TDRestAPI import Rest_Account
 import _thread as thread
 import pandas as pd
 
+COLUMNS = ['symbol', 'assetType', 'assetMainType', 'cusip', 'description', 'bidPrice', 'bidSize', 'bidId', 'askPrice', 'askSize', 'askId', 'lastPrice', 'lastSize', 'lastId', 'openPrice', 'highPrice', 'lowPrice', 'bidTick', 'closePrice', 'netChange', 'totalVolume', 'quoteTimeInLong', 'tradeTimeInLong', 'mark', 'exchange', 'exchangeName', 'marginable', 'shortable', 'volatility', 'digits', 'FiftyTwoWkHigh', 'FiftyTwoWkLow', 'nAV', 'peRatio', 'divAmount', 'divYield', 'divDate', 'securityStatus', 'regularMarketLastPrice', 'regularMarketLastSize', 'regularMarketNetChange', 'regularMarketTradeTimeInLong', 'netPercentChangeInDouble', 'markChangeInDouble', 'markPercentChangeInDouble', 'regularMarketPercentChangeInDouble', 'delayed', 'openInterest', 'moneyIntrinsicValue', 'multiplier', 'strikePrice', 'contractType', 'underlying', 'expirationDay', 'expirationMonth', 'expirationYear', 'daysToExpiration', 'timeValue', 'deliverables', 'delta', 'gamma', 'theta', 'vega', 'rho', 'theoreticalOptionValue', 'underlyingPrice', 'uvExpirationType', 'lastTradingDay', 'settlementType', 'impliedYield', 'isPennyPilot']
 
 def divide_chunks(list, n): 
     #break list into chunks of n size
@@ -119,6 +120,9 @@ class RestHandler():
                 quotes = self.rest_account.get_quotes(symbols).reset_index().fillna('')
                 for index, row in quotes.iterrows():
                     row = row.to_dict()
+                    for key in row.keys():
+                        if key not in COLUMNS:
+                            row.pop(key)
                     self.db_handler.update_data(self.conn, row, row['symbol'])
                 if 1.0 - ((time.time() - starttime) % 60.0) <= 0:
                     continue

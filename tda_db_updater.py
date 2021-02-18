@@ -3,6 +3,9 @@ from utils.resthandler import DatabaseHandler
 from utils.TDRestAPI import Rest_Account
 import time
 
+
+COLUMNS = ['symbol', 'assetType', 'assetMainType', 'cusip', 'description', 'bidPrice', 'bidSize', 'bidId', 'askPrice', 'askSize', 'askId', 'lastPrice', 'lastSize', 'lastId', 'openPrice', 'highPrice', 'lowPrice', 'bidTick', 'closePrice', 'netChange', 'totalVolume', 'quoteTimeInLong', 'tradeTimeInLong', 'mark', 'exchange', 'exchangeName', 'marginable', 'shortable', 'volatility', 'digits', 'FiftyTwoWkHigh', 'FiftyTwoWkLow', 'nAV', 'peRatio', 'divAmount', 'divYield', 'divDate', 'securityStatus', 'regularMarketLastPrice', 'regularMarketLastSize', 'regularMarketNetChange', 'regularMarketTradeTimeInLong', 'netPercentChangeInDouble', 'markChangeInDouble', 'markPercentChangeInDouble', 'regularMarketPercentChangeInDouble', 'delayed', 'openInterest', 'moneyIntrinsicValue', 'multiplier', 'strikePrice', 'contractType', 'underlying', 'expirationDay', 'expirationMonth', 'expirationYear', 'daysToExpiration', 'timeValue', 'deliverables', 'delta', 'gamma', 'theta', 'vega', 'rho', 'theoreticalOptionValue', 'underlyingPrice', 'uvExpirationType', 'lastTradingDay', 'settlementType', 'impliedYield', 'isPennyPilot']
+
 DATABASE = r'tda_db.sqlite3'
 DATABASE_HANDLER = DatabaseHandler()
 DATABASE_CONNECTION = DATABASE_HANDLER.create_connection(DATABASE)
@@ -23,6 +26,9 @@ while True:
             quotes = rest_account.get_quotes(symbols).reset_index().fillna('')
             for index, row in quotes.iterrows():
                 row = row.to_dict()
+                for key in row.keys():
+                    if key not in COLUMNS:
+                        row.pop(key)
                 DATABASE_HANDLER.update_data(DATABASE_CONNECTION, row, row['symbol'])
             if 1.0 - ((time.time() - starttime) % 60.0) <= 0:
                 continue
