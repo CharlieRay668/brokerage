@@ -123,11 +123,8 @@ class RestHandler():
 
     def get_symbol_batch(self):
         #return []
-        try:
-            all_quotes = [item.strip() for item in open("tickers.txt", "r").readlines.split("\n")]
-            return list(divide_chunks(all_quotes, 300))
-        except:
-            return []
+        all_quotes = [item.strip() for item in open("tickers.txt", "r").readlines.split("\n")]
+        return list(divide_chunks(all_quotes, 300))
     
     def add_symbol(self, symbol):
         try:
@@ -143,10 +140,7 @@ class RestHandler():
         return False
 
     def get_symbols(self):
-        try:
-            return [item.strip() for item in open("tickers.txt", "r").readlines.split("\n")]
-        except:
-            return []
+        return [item.strip() for item in open("tickers.txt", "r").readlines.split("\n")]
 
 # rest_act = Rest_Account('keys.json')
 # rest_handler = RestHandler(rest_act, ['TSLA', 'AMD_020521C84.5'])
