@@ -92,106 +92,54 @@ class DatabaseHandler():
 
 
 
-
+class RestHandler():
+    def __init__(self, rest_account, all_quotes=[]):
+        # VS CODE DB
+        # database = r'C:\Users\charl\Desktop\BROkerage\papertrade\utils\tda_db.sqlite3'
+        database = r'tda_db.sqlite3'
+        self.rest_account = rest_account
+        self.all_quotes = all_quotes
+        self.db_handler = DatabaseHandler()
+        self.conn = self.db_handler.create_connection(database)
+        thread.start_new_thread(self.loop, ())
         
-def get_df(self, symbols):
-    return self.rest_account.get_quotes(symbols)
+    def get_df(self, symbols):
+        return self.rest_account.get_quotes(symbols)
 
-def loop():
-    while True:
-        for batch in get_symbol_batch():
-            starttime = time.time()
-            symbols = ','.join(batch)
-            quotes = rest_account.get_quotes(symbols).reset_index().fillna('')
-            for index, row in quotes.iterrows():
-                row = row.to_dict()
-                db_handler.update_data(conn, row, row['symbol'])
-            if 1.0 - ((time.time() - starttime) % 60.0) <= 0:
-                continue
-            else:
-                time.sleep(1 - ((time.time() - starttime) % 60.0))
-    print("thread closing...")
+    def loop(self):
+        while True:
+            for batch in self.get_symbol_batch():
+                starttime = time.time()
+                symbols = ','.join(batch)
+                quotes = self.rest_account.get_quotes(symbols).reset_index().fillna('')
+                for index, row in quotes.iterrows():
+                    row = row.to_dict()
+                    self.db_handler.update_data(self.conn, row, row['symbol'])
+                if 1.0 - ((time.time() - starttime) % 60.0) <= 0:
+                    continue
+                else:
+                    time.sleep(1 - ((time.time() - starttime) % 60.0))
+        print("thread closing...")
 
-def get_symbol_batch():
-    return list(divide_chunks(all_quotes, 300))
+    def get_symbol_batch(self):
+        #return []
+        return list(divide_chunks(self.all_quotes, 300))
+    
+    def add_symbol(self, symbol):
+        try:
+            self.all_quotes.append(symbol)
+            return True
+        except:
+            return False
 
-def add_symbol(symbol):
-    try:
-        all_quotes.append(symbol)
-        return True
-    except:
+    def remove_symbol(self, symbol):
+        if symbol in self.all_quotes:
+            self.all_quotes.remove(symbol)
+            return True
         return False
 
-def remove_symbol(symbol):
-    if symbol in all_quotes:
-        all_quotes.remove(symbol)
-        return True
-    return False
-
-def get_symbols():
-    return all_quotes
-
-all_quotes = []
-database = r'tda_db.sqlite3'
-rest_account = Rest_Account("keys.json")
-all_quotes = all_quotes
-db_handler = DatabaseHandler()
-conn = db_handler.create_connection(database)
-thread.start_new_thread(loop, ())
-
-# all_quotes = []
-# class RestHandler():
-#     def __init__(self, rest_account):
-#         # VS CODE DB
-#         # database = r'C:\Users\charl\Desktop\BROkerage\papertrade\utils\tda_db.sqlite3'
-#         database = r'tda_db.sqlite3'
-#         self.rest_account = rest_account
-#         self.all_quotes = all_quotes
-#         self.db_handler = DatabaseHandler()
-#         self.conn = self.db_handler.create_connection(database)
-#         thread.start_new_thread(self.loop, ())
-        
-#     def get_df(self, symbols):
-#         return self.rest_account.get_quotes(symbols)
-
-#     @staticmethod
-#     def loop():
-#         while True:
-#             for batch in get_symbol_batch():
-#                 starttime = time.time()
-#                 symbols = ','.join(batch)
-#                 quotes = rest_account.get_quotes(symbols).reset_index().fillna('')
-#                 for index, row in quotes.iterrows():
-#                     row = row.to_dict()
-#                     db_handler.update_data(conn, row, row['symbol'])
-#                 if 1.0 - ((time.time() - starttime) % 60.0) <= 0:
-#                     continue
-#                 else:
-#                     time.sleep(1 - ((time.time() - starttime) % 60.0))
-#         print("thread closing...")
-
-#     @staticmethod
-#     def get_symbol_batch():
-#         return list(divide_chunks(all_quotes, 300))
-    
-#     @staticmethod
-#     def add_symbol(symbol):
-#         try:
-#             all_quotes.append(symbol)
-#             return True
-#         except:
-#             return False
-
-#     @staticmethod
-#     def remove_symbol(symbol):
-#         if symbol in all_quotes:
-#             all_quotes.remove(symbol)
-#             return True
-#         return False
-
-#     @staticmethod
-#     def get_symbols():
-#         return all_quotes
+    def get_symbols(self):
+        return self.all_quotes
 
 # rest_act = Rest_Account('keys.json')
 # rest_handler = RestHandler(rest_act, ['TSLA', 'AMD_020521C84.5'])

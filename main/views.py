@@ -10,8 +10,7 @@ import json
 from .forms import CreateNewBuyPosition, CreateNewSellPosition
 from .models import Position, Order, Trade, EquityPosition, OptionPosition
 from utils.TDRestAPI import Rest_Account
-from utils.resthandler import DatabaseHandler
-import utils.resthandler as REST_HANDLER
+from utils.resthandler import RestHandler, DatabaseHandler
 from utils.apihandler import ActivityHandler
 import os
 import sqlite3
@@ -41,7 +40,7 @@ ORDER_EXPIRATION_CHOICES = {1: "Day", 2:"GTC"}
 DATABASE = r'tda_db.sqlite3'
 DATABASE_HANDLER = DatabaseHandler()
 DATABASE_CONNECTION = DATABASE_HANDLER.create_connection(DATABASE)
-#REST_HANDLER = RestHandler(REST_API)
+REST_HANDLER = RestHandler(REST_API)
 ACTIVITY_HANDLER = ActivityHandler()
 # STREAMER_HANDLER = StreamerHandler()
 
@@ -194,7 +193,7 @@ def account(response):
     for symbol in symbols:
         REST_HANDLER.add_symbol(symbol)
     positions = [calc_df(df) for df in dfs if calc_df(df) is not None]
-    return render(response, "main/account.html", {'positions': positions})
+    return render(response, "main/account.html", {'positions': positions, 'symbols':symbols})
 
 def history(response, order_trades):
     user = response.user
