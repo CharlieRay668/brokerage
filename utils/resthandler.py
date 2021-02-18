@@ -93,12 +93,11 @@ class DatabaseHandler():
 
 
 class RestHandler():
-    def __init__(self, rest_account, all_quotes=[]):
+    def __init__(self, rest_account):
         # VS CODE DB
         # database = r'C:\Users\charl\Desktop\BROkerage\papertrade\utils\tda_db.sqlite3'
         database = r'tda_db.sqlite3'
         self.rest_account = rest_account
-        self.all_quotes = all_quotes
         self.db_handler = DatabaseHandler()
         self.conn = self.db_handler.create_connection(database)
         thread.start_new_thread(self.loop, ())
@@ -123,11 +122,12 @@ class RestHandler():
 
     def get_symbol_batch(self):
         #return []
-        return list(divide_chunks(self.all_quotes, 300))
+        all_quotes = [item.strip() for item in open("tickers.txt", "r+").readlines.split("\n")]
+        return list(divide_chunks(all_quotes, 300))
     
     def add_symbol(self, symbol):
         try:
-            self.all_quotes.append(symbol)
+            open("tickers.txt", "a+").write(str(symbol)+"\n")
             return True
         except:
             return False
@@ -139,7 +139,7 @@ class RestHandler():
         return False
 
     def get_symbols(self):
-        return self.all_quotes
+        return [item.strip() for item in open("tickers.txt", "r+").readlines.split("\n")]
 
 # rest_act = Rest_Account('keys.json')
 # rest_handler = RestHandler(rest_act, ['TSLA', 'AMD_020521C84.5'])
