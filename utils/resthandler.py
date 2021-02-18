@@ -106,7 +106,7 @@ class RestHandler():
         self.rest_account = rest_account
         self.db_handler = DatabaseHandler()
         self.conn = self.db_handler.create_connection(database)
-        thread.start_new_thread(loop, ())
+        thread.start_new_thread(self.loop, ())
         
     def get_df(self, symbols):
         return self.rest_account.get_quotes(symbols)
