@@ -36,7 +36,7 @@ def get_activity(response):
         to_date = dt.datetime.fromisoformat(to_date)
         positions = Position.objects.filter(order_execution_date__range=(from_date,to_date))
     for position in positions:
-        print(position.fill_price)
+        return_dict[position.id]['fill_price'] = position.fill_price
         return_dict[position.id] = model_to_dict(position, fields=fields)
         if 'user' in fields:
             return_dict[position.id]['user'] = position.user.email
