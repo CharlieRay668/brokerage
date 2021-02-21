@@ -1,0 +1,44 @@
+{% extends "main/home.html" %}
+
+{% block constantcontent %}
+<div style="text-align: center">
+    <h1>Documentation</h1>
+    <h4>API Url</h4>
+    <h2>http://67.205.178.72/api/</h2>
+    <h3>Endpoints</h3>
+</div>
+<div class="jumbotron">
+    <h1 class="display-3">/activity/</h1>
+    <p class="lead">http://67.205.178.72/api/activity/</p>
+    <p>Returns positions that users have taken</p>
+    <hr class="my-4">
+    <h4>Parameters</h4>
+    <p><strong>fields</strong> the return fields for each position. Possible values are 'user', 'position_id', 'symbol', 'quantity', 'fill_price', 'position_info', 'order_action', 'order_type', 'order_expiration', 'order_execution_date', 'limit_price'</p>
+    <p style="margin-left: 3%;">If <strong>fields</strong> is not provided the response will contain every field</p>
+    <p><strong>from_date</strong> whenever you want your query to start</p>
+    <p><strong>to_date</strong> whenever you want your query to start</p>
+    <p style="margin-left: 3%;">Do not provide a <strong>to_date</strong> without a <strong>from_date</strong></p>
+    <p style="margin-left: 3%;">If <strong>to_date</strong> is not provided it will default to now. If neither are povided the response will contain every position</p>
+    <hr class="my-4">
+    <h4>Example Request</h4>
+    <p class="text-success">
+        from pytz import timezone<br>
+        eastern = timezone('US/Eastern')
+    </p>
+    <p class="text-success">
+        headers = {<br>
+            "apikey": "charliekey"<br>
+        }
+    </p>
+    <p class="text-success">
+        payload = {<br>
+            "fields": "user,position_id,order_execution_date",<br>
+            "from_date": (dt.datetime.now(eastern)-dt.timedelta(days=10)).isoformat(),<br>
+            "to_date": dt.datetime.now(eastern).isoformat()<br>
+        }
+    </p>
+    <p class="text-success">response = requests.post("http://67.205.178.72/api/activity/", headers=headers, data=payload).json()</p>
+    <hr class="my-4">
+    <h6>*Make sure your timezones are in EST, do not forget the trailing slash at the end of the url.</h6>
+  </div>
+{% endblock %}

@@ -26,4 +26,5 @@ urlpatterns = [
     path('login/', registerviews.signin, name="signin"),
     path('', include("main.urls")),
     path('', include("django.contrib.auth.urls")),
+    path("api/", include("api.urls")),
 ]

@@ -1,0 +1,9 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path("activity/", views.get_activity, name="activity"),
+    path("test/", views.test, name = "test"),
+    path("posttest/", views.posttest, name = "posttest"),
+    path("docs/", views.documentation, name='documentation')
+]
