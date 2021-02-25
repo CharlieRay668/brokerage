@@ -42,10 +42,18 @@ def get_rankings(response):
     if api_key not in api_keys:
         return HttpResponse("Permission Denied", status=403)
     if response.method == "POST":
+        number = response.POST.get('number', False)
+        from_date = response.POST.get('from_date', False)
+        to_date = response.POST.get('to_date', False)
+        if not from_date or not to_date:
+            return HttpResponse("Date range not given", 304)
+        from_date = dt.datetime.fromisoformat(from_date)
+        to_date = dt.datetime.fromisoformat(to_date)
         users = User.objects.all()
         rankings = []
         for user in users:
             positions = user.positions.all()
+            positions = positions.filter(order_execution_date__range=(from_date,to_date))
             if len(positions) != 0:
                 df = pd.DataFrame(list(positions.values()))
                 dfs = []
@@ -57,14 +65,21 @@ def get_rankings(response):
                 losses = 0
                 total_profit = 0
                 for position in positions:
-                    profit = position['perc_profit']
-                    if profit > 0:
-                        wins += 1
-                    else:
-                        losses += 1
-                    total_profit += profit
-                rankings.append({'username': user.username, 'profit': total_profit, 'wins': wins, 'losses':losses})
-        return JsonResponse({'rankings':sorted(rankings, key = lambda i: i['profit'],reverse=True)})
+                    if from_date <= position['date_closed'] <= to_date:
+                        profit = position['perc_profit']
+                        if profit > 0:
+                            wins += 1
+                        else:
+                            losses += 1
+                        total_profit += profit
+                        rankings.append({'username': user.username, 'profit': total_profit, 'wins': wins, 'losses':losses})
+        if not number:
+            rankings = sorted(rankings, key = lambda i: i['profit'],reverse=True)
+        else:
+            rankings = sorted(rankings, key = lambda i: i['profit'],reverse=True)[:number]
+        return JsonResponse({'rankings':rankings})
+    return HttpResponse("Attempted to GET a POST endpoint", status=303)
+
 @csrf_exempt
 def get_user_history(response):
     api_key = response.headers['apikey']
