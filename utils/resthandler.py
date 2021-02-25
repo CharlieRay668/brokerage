@@ -97,7 +97,7 @@ class DatabaseHandler():
 
 
 class RestHandler():
-    def __init__(self, rest_account):
+    def __init__(self, rest_account=None):
         # VS CODE DB
         # database = r'C:\Users\charl\Desktop\BROkerage\papertrade\utils\tda_db.sqlite3'
         database = r'tda_db.sqlite3'
@@ -107,7 +107,6 @@ class RestHandler():
 
     def get_df(self, symbols):
         return self.rest_account.get_quotes(symbols)
-
     
     def get_symbol_batch(self):
         all_quotes = [item.strip() for item in open("tickers.txt", "r").readlines()]

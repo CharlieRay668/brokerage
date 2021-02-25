@@ -1,0 +1,75 @@
+{% extends "main/home.html" %}
+
+{% block constantcontent %}
+<div style="margin: auto; text-align: center;">
+    <br>
+    <form autocomplete="off" action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <select class="custom-select" id="search_by" name="search_by" style="width: 20%; margin:auto">
+                <option selected="">Search By</option>
+                <option value="1">User</option>
+                <option value="2">Position ID</option>
+                <option value="3">ID</option>
+            </select>
+            <br>
+            <label class="col-form-label" for="inputDefault" id='usersearchlabel' style='display: none;'>User Search</label>
+            <input type="text" class="form-control" placeholder="User" id="usersearch" name='usersearch' style="width: 20%; margin:auto; display: none;">
+            <label class="col-form-label" for="inputDefault" id='positionsearchlabel' style='display: none;'>Position ID Search</label>
+            <input type="text" class="form-control" placeholder="Position ID" id="positionsearch" name='positionsearch' style="width: 20%; margin:auto; display: none;">
+            <label class="col-form-label" for="inputDefault" id='idsearchlabel' style='display: none;'>ID Search</label>
+            <input type="text" class="form-control" placeholder="ID" id="idsearch" name='idsearch' style="width: 20%; margin:auto; display: none;">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+{% for position in positions %}
+    <div class="card text-white bg-primary mb-3" style="max-width: 20rem; text-align: center; margin: auto;">
+        <div class="card-header"> {{ position.position_id }}</div>
+            <div class="card-body">
+            <h4 class="card-title">{{ position.symbol }}</h4>
+            <p class="card-text">ID: {{position.id}} USER: {{ position.user.username }}</p>
+            <form autocomplete="off" action="updatepos/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input class="form-control" id="readOnlyInput" type="text" id="uniqueid" name='uniqueid' placeholder="{{position.id}}" readonly="{{position.id}}", value="{{position.id}}">
+                    <input type="text" class="form-control" placeholder="fillprice" id="fillprice" name='fillprice' style="margin:auto; display: inline;" value='{{ position.fill_price }}'>
+                    <input type="text" class="form-control" placeholder="quantity" id="posquantity" name='posquantity' style="margin:auto; display: inline;" value='{{ position.quantity }}'>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endfor %}
+
+<script>
+    const selectElement = document.getElementById('search_by');
+    selectElement.addEventListener('change', (event) => {
+        selectedValue = event.target.value
+        if (selectedValue == 1){
+            document.getElementById("usersearchlabel").style.display = "block";
+            document.getElementById("usersearch").style.display = "block";
+            document.getElementById("positionsearchlabel").style.display = "none";
+            document.getElementById("positionsearch").style.display = "none";
+            document.getElementById("idsearchlabel").style.display = "none";
+            document.getElementById("idsearch").style.display = "none";
+        }
+        else if (selectedValue == 2) {
+            document.getElementById("usersearchlabel").style.display = "none";
+            document.getElementById("usersearch").style.display = "none";
+            document.getElementById("positionsearchlabel").style.display = "block";
+            document.getElementById("positionsearch").style.display = "block";
+            document.getElementById("idsearchlabel").style.display = "none";
+            document.getElementById("idsearch").style.display = "none";
+        }
+        else if (selectedValue == 3) {
+            document.getElementById("usersearchlabel").style.display = "none";
+            document.getElementById("usersearch").style.display = "none";
+            document.getElementById("positionsearchlabel").style.display = "none";
+            document.getElementById("positionsearch").style.display = "none";
+            document.getElementById("idsearchlabel").style.display = "block";
+            document.getElementById("idsearch").style.display = "block";
+        }
+    });
+</script>
+{% endblock %}

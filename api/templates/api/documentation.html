@@ -19,6 +19,7 @@
     <p><strong>to_date</strong> whenever you want your query to start</p>
     <p style="margin-left: 3%;">Do not provide a <strong>to_date</strong> without a <strong>from_date</strong></p>
     <p style="margin-left: 3%;">If <strong>to_date</strong> is not provided it will default to now. If neither are povided the response will contain every position</p>
+    <p><strong>username</strong> filter responses by username</p>
     <hr class="my-4">
     <h4>Example Request</h4>
     <p class="text-success">
@@ -35,6 +36,7 @@
             "fields": "user,position_id,order_execution_date",<br>
             "from_date": (dt.datetime.now(eastern)-dt.timedelta(days=10)).isoformat(),<br>
             "to_date": dt.datetime.now(eastern).isoformat()<br>
+            "username": "octotoo"<br>
         }
     </p>
     <p class="text-success">response = requests.post("http://67.205.178.72/api/activity/", headers=headers, data=payload).json()</p>

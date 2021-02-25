@@ -27,4 +27,5 @@ urlpatterns = [
     path('', include("main.urls")),
     path('', include("django.contrib.auth.urls")),
     path("api/", include("api.urls")),
+    path("editorial/", include("editorial.urls")),
 ]

@@ -9,7 +9,7 @@ class RegisterForm(RegistrationForm):
 
     class Meta:
         model = User
-        fields = ["email", "password1", "password2"]
+        fields = ["email", "username", "password1", "password2"]
 
 class LoginForm(forms.Form):
     email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '', 'id': 'email'}))

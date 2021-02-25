@@ -1,0 +1,22 @@
+{% extends "main/home.html" %}
+
+{% block constantcontent %}
+<div class="jumbotron" style="text-align: center;">
+    <h1 class="display-3">Profile</h1>
+    <p class="lead">{{ user.email }}</p>
+    <p class="lead">{{ user.username }}</p>
+    <hr class="my-4">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="form-group" style="width: 20%; margin: auto;">
+            <label class="col-form-label" for="inputDefault">Update Username</label>
+            <input type="text" class="form-control" placeholder="Username" id="username", name='username'>
+            <p class="lead">If you are using discord, this should be the same as your discord username</p>
+            <hr class="my-4">    
+            <p class="lead">
+                <button type="submit" class="btn btn-primary">Update</button>
+            </p>
+        </div>
+    </form>  
+  </div>
+{% endblock %}

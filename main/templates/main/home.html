@@ -40,12 +40,15 @@
                 <a class="nav-link" href="/trade">Trade</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="/profile">Profile</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="/logout">Logout</a>
             </li>
         {% endif %}
       </ul>
       <form class="form-inline my-2 my-lg-0">
-        <a>{{ user.email }}</a>
+        <a>{{user.username}}</a>
       </form>
     </div>
   </nav>
@@ -60,6 +63,13 @@
       {% block authform %}
       {% endblock %}
   </div>
+    {% if user.username == 'unkown' %}
+    <div class="alert alert-dismissible alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Warning!</h4>
+        <p class="mb-0">You don't seem to have a username yet!<a href="/profile" class="alert-link"> Click here to set one</a>.</p>
+    </div>
+    {% endif %}
   {% endif %}
   {% if not user.is_authenticated %}
       <div id = 'unauthenticated', name = 'unauthenticated', class = 'main'>
