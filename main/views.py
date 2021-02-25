@@ -73,9 +73,15 @@ def get_position_dict(position):
     return_dict = {}
     for col in columns:
         return_dict[col] = None
-    if not symbol in REST_HANDLER.get_symbols():
-        REST_HANDLER.add_symbol(symbol)
-        time.sleep(2)
+    added = False
+    while not DATABASE_HANDLER.check_symbol_exist(DATABASE_CONNECTION, symbol):
+        if not added:
+            REST_HANDLER.add_symbol(symbol)
+            added = True
+        time.sleep(1)
+    # if not symbol in REST_HANDLER.get_symbols():
+    #     REST_HANDLER.add_symbol(symbol)
+    #     time.sleep(2)
     if DATABASE_HANDLER.check_symbol_exist(DATABASE_CONNECTION, symbol):
         sql = "SELECT mark,closePrice,assetType,delta,gamma,theta,vega,description from tda_data WHERE symbol ='%s'"%(symbol)
         cur.execute(sql)
@@ -245,9 +251,15 @@ def tradesymbol(response, symbol, buy_sell="buy"):
     fmt = "%m/%d/%Y, %I:%M:%S"
     eastern = timezone('US/Eastern')
     curr_time = dt.datetime.now(eastern).strftime(fmt)
-    if not symbol in REST_HANDLER.get_symbols():
-        REST_HANDLER.add_symbol(symbol)
-        time.sleep(2)
+    # if not symbol in REST_HANDLER.get_symbols():
+    #     REST_HANDLER.add_symbol(symbol)
+    #     time.sleep(2)
+    added = False
+    while not DATABASE_HANDLER.check_symbol_exist(DATABASE_CONNECTION, symbol):
+        if not added:
+            REST_HANDLER.add_symbol(symbol)
+            added = True
+        time.sleep(1)
     if response.method == "POST":
         if buy_sell == "buy":
             form = CreateNewBuyPosition(response.POST)
@@ -292,8 +304,8 @@ def tradesymbol(response, symbol, buy_sell="buy"):
             # Check to see if the is in the database, if its not, add it and wait.
             while not DATABASE_HANDLER.check_symbol_exist(DATABASE_CONNECTION, symbol):
                 if not added:
+                    added = True
                     REST_HANDLER.add_symbol(symbol)
-                    print('Added ', symbol)
                 time.sleep(1)
             # If we are selling/buying we will go for either the bid or the ask price
             if quantity > 0:
@@ -380,9 +392,15 @@ def get_option_chain(response, symbol, description, strike_count):
 def getdata(response, symbol):
     json_response = {}
     cur = DATABASE_CONNECTION.cursor()
-    if not symbol in REST_HANDLER.get_symbols():
-        REST_HANDLER.add_symbol(symbol)
-        time.sleep(2)
+    added = False
+    while not DATABASE_HANDLER.check_symbol_exist(DATABASE_CONNECTION, symbol):
+        if not added:
+            REST_HANDLER.add_symbol(symbol)
+            added = True
+        time.sleep(1)
+    # if not symbol in REST_HANDLER.get_symbols():
+    #     REST_HANDLER.add_symbol(symbol)
+    #     time.sleep(2)
     sql = "SELECT bidPrice,askPrice,mark,markPercentChangeInDouble from tda_data WHERE symbol ='%s'"%(symbol)
     cur.execute(sql)
     data = cur.fetchall()[0]

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from main.models import Position
-from main.views import calc_df
+from main.views import calc_df, calc_trade
 from users.models import User
 from utils.resthandler import RestHandler, DatabaseHandler
 from django.forms.models import model_to_dict
@@ -34,7 +34,40 @@ def documentation(response):
 #             REST_HANDLER.add_symbol(symbol)
 #             time.sleep(2)
 #         cur = DATABASE_CONNECTION.cursor()
-#         sql = "SELECT * from tda_data WHERE symbol ='%s'"%(symbol)
+#
+#          sql = "SELECT * from tda_data WHERE symbol ='%s'"%(symbol)
+@csrf_exempt
+def get_user_stats(response):
+    api_key = response.headers['apikey']
+    if api_key not in api_keys:
+        return HttpResponse("Permission Denied", status=403)
+    if response.method == "POST":
+        username = response.POST.get('username', False)
+        try:
+            user = User.objects.get(username=username)
+        except:
+            return HttpResponse("Unkown username", status=305)
+        positions = user.positions.all()
+        if len(positions) == 0:
+            return render(response, "main/stats.html", {'wins': 0, 'losses': 0, 'profit':0})
+        df = pd.DataFrame(list(positions.values()))
+        dfs = []
+        ids = set(list(df['position_id']))
+        for pid in ids:
+            dfs.append(df[df['position_id'] == pid])
+        positions = [calc_trade(df) for df in dfs if calc_trade(df) is not None]
+        wins = 0
+        losses = 0
+        total_profit = 0
+        for position in positions:
+            profit = position['perc_profit']
+            if profit > 0:
+                wins += 1
+            else:
+                losses += 1
+            total_profit += profit
+        return JsonResponse({'profit':profit, 'wins':wins, 'losses':losses})
+    return HttpResponse("Attempted to GET a POST endpoint", status=303)
 
 @csrf_exempt
 def get_user_positions(response):
@@ -88,9 +121,15 @@ def create_position(response):
         except:
             return HttpResponse("Unkown username", status=305)
         order_execution_date = dt.datetime.now(eastern)
-        if not symbol in REST_HANDLER.get_symbols():
-            REST_HANDLER.add_symbol(symbol)
-            time.sleep(2)
+        added = False
+        while not DATABASE_HANDLER.check_symbol_exist(DATABASE_CONNECTION, symbol):
+            if not added:
+                REST_HANDLER.add_symbol(symbol)
+                added = True
+            time.sleep(1)
+        # if not symbol in REST_HANDLER.get_symbols():
+        #     REST_HANDLER.add_symbol(symbol)
+        #     time.sleep(2)
         # Get user positions
         positions = user.positions.all()
         # Generate ID
