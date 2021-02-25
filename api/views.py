@@ -36,7 +36,35 @@ def documentation(response):
 #         cur = DATABASE_CONNECTION.cursor()
 #
 #          sql = "SELECT * from tda_data WHERE symbol ='%s'"%(symbol)
-
+@csrf_exempt
+def get_rankings(response):
+    api_key = response.headers['apikey']
+    if api_key not in api_keys:
+        return HttpResponse("Permission Denied", status=403)
+    if response.method == "POST":
+        users = User.objects.all()
+        rankings = []
+        for user in users:
+            positions = user.positions.all()
+            if len(positions) != 0:
+                df = pd.DataFrame(list(positions.values()))
+                dfs = []
+                ids = set(list(df['position_id']))
+                for pid in ids:
+                    dfs.append(df[df['position_id'] == pid])
+                positions = [calc_trade(df) for df in dfs if calc_trade(df) is not None]
+                wins = 0
+                losses = 0
+                total_profit = 0
+                for position in positions:
+                    profit = position['perc_profit']
+                    if profit > 0:
+                        wins += 1
+                    else:
+                        losses += 1
+                    total_profit += profit
+                rankings.append({'username': user.username, 'profit': total_profit, 'wins': wins, 'losses':losses})
+        return JsonResponse({'rankings':sorted(rankings, key = lambda i: i['profit'],reverse=True)})
 @csrf_exempt
 def get_user_history(response):
     api_key = response.headers['apikey']
@@ -71,7 +99,7 @@ def get_user_stats(response):
             return HttpResponse("Unkown username", status=305)
         positions = user.positions.all()
         if len(positions) == 0:
-            return render(response, "main/stats.html", {'wins': 0, 'losses': 0, 'profit':0})
+            return JsonResponse({'profit':0, 'wins':0, 'losses':0})
         df = pd.DataFrame(list(positions.values()))
         dfs = []
         ids = set(list(df['position_id']))
@@ -88,7 +116,7 @@ def get_user_stats(response):
             else:
                 losses += 1
             total_profit += profit
-        return JsonResponse({'profit':profit, 'wins':wins, 'losses':losses})
+        return JsonResponse({'profit':total_profit, 'wins':wins, 'losses':losses})
     return HttpResponse("Attempted to GET a POST endpoint", status=303)
 
 @csrf_exempt
