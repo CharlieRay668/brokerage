@@ -36,6 +36,28 @@ def documentation(response):
 #         cur = DATABASE_CONNECTION.cursor()
 #
 #          sql = "SELECT * from tda_data WHERE symbol ='%s'"%(symbol)
+
+@csrf_exempt
+def get_user_history(response):
+    api_key = response.headers['apikey']
+    if api_key not in api_keys:
+        return HttpResponse("Permission Denied", status=403)
+    if response.method == "POST":
+        username = response.POST.get('username', False)
+        try:
+            user = User.objects.get(username=username)
+        except:
+            return HttpResponse("Unkown username", status=305)
+        positions = user.positions.all()
+        df = pd.DataFrame(list(positions.values()))
+        dfs = []
+        ids = set(list(df['position_id']))
+        for pid in ids:
+            dfs.append(df[df['position_id'] == pid])
+        positions = [calc_trade(df) for df in dfs if calc_trade(df) is not None]
+        return JsonResponse({"positions": positions})
+    return HttpResponse("Attempted to GET a POST endpoint", status=303)
+
 @csrf_exempt
 def get_user_stats(response):
     api_key = response.headers['apikey']

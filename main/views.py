@@ -157,7 +157,7 @@ def calc_df(df, exclude_zeros=True):
     if exclude_zeros:
         if not true_qty == 0:
             df.reset_index(inplace=True)
-            return get_position_dict({'symbol':df['symbol'][0], 'quantity':true_qty, 'fill_price':avg_price})
+            return get_position_dict({'symbol':df['symbol'][0], 'quantity':true_qty, 'fill_price':avg_price, 'description':df['description'][0]})
 
 def calc_trade(df):
     if sum(df['quantity']) == 0:
