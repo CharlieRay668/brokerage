@@ -26,7 +26,7 @@ SECRET_KEY = '*@kmyex=y@5c0cs71@xw_o$epshfu234+wwwxl9anit*9&!=re'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['67.205.178.72', '127.0.0.1', 'www.rillionbrokerage.com']
+ALLOWED_HOSTS = ['67.205.178.72', '127.0.0.1', 'www.rillionbrokerage.com', 'rillionbrokerage.com']
 
 
 # Application definition
