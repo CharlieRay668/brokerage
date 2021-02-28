@@ -21,17 +21,20 @@ def get_symbol_batch():
     
 while True:
         for batch in get_symbol_batch():
-            starttime = time.time()
-            symbols = ','.join(batch)
-            quotes = rest_account.get_quotes(symbols).reset_index().fillna('')
-            for index, row in quotes.iterrows():
-                row = row.to_dict()
-                true_dict = {}
-                for key in row.keys():
-                    if key in COLUMNS:
-                        true_dict[key] = row[key]
-                DATABASE_HANDLER.update_data(DATABASE_CONNECTION, true_dict, true_dict['symbol'])
-            if 1.0 - ((time.time() - starttime) % 60.0) <= 0:
-                continue
-            else:
-                time.sleep(1 - ((time.time() - starttime) % 60.0))
+            try:
+                starttime = time.time()
+                symbols = ','.join(batch)
+                quotes = rest_account.get_quotes(symbols).reset_index().fillna('')
+                for index, row in quotes.iterrows():
+                    row = row.to_dict()
+                    true_dict = {}
+                    for key in row.keys():
+                        if key in COLUMNS:
+                            true_dict[key] = row[key]
+                    DATABASE_HANDLER.update_data(DATABASE_CONNECTION, true_dict, true_dict['symbol'])
+                if 1.0 - ((time.time() - starttime) % 60.0) <= 0:
+                    continue
+                else:
+                    time.sleep(1 - ((time.time() - starttime) % 60.0))
+            except:
+                time.sleep(3)
