@@ -25,6 +25,8 @@ urlpatterns = [
     path("register/", registerviews.register, name="register"),
     path('login/', registerviews.signin, name="signin"),
     path('activate/<str:uid>/<str:token>', registerviews.activate, name='activate'),
+    path('passreset/<str:uid>/<str:token>', registerviews.activate, name='passreset'),
+    path("passreset/", registerviews.passrequest, name='passrequest'),
     path('', include("main.urls")),
     path('', include("django.contrib.auth.urls")),
     path("api/", include("api.urls")),

@@ -1,0 +1,30 @@
+{% extends "main/home.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block constantcontent %}
+<style>
+    #containerdiv {
+        margin: auto;
+        width: 30%;
+    }
+    @media all and (max-width: 499px) {
+        #containerdiv {
+            margin: auto;
+            width: 100%;
+        }
+    }
+</style>
+<div id="containerdiv">
+    <form method="POST" class="form-group">
+		{% csrf_token %}
+		{{ form|crispy }}
+		<button type="submit" class="btn btn-success">Send email</button>
+	</form>
+	<p style="color: red;">{{error_msg}}</p>
+	<p style="color: green;">{{success_msg}}</p>
+</div>
+{% endblock %}
+
+{% block authform %}
+{% endblock %}  

@@ -15,16 +15,16 @@
         }
     }
 </style>
-{% endblock %}
-
-{% block authform %}
 <div id="containerdiv">
     <form method="POST" class="form-group">
 		{% csrf_token %}
 		{{ form|crispy }}
-		<button type="submit" class="btn btn-success">Register</button>
+		<button type="submit" class="btn btn-success">Change Password</button>
 	</form>
 	<p style="color: red;">{{error_msg}}</p>
 	<p style="color: green;">{{success_msg}}</p>
 </div>
+{% endblock %}
+
+{% block authform %}
 {% endblock %}  
