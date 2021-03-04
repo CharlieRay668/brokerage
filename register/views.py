@@ -17,10 +17,10 @@ User = get_user_model()
 def home_view(response):
     return render(response, 'main/home.html')
 
-def change_passowrd(response, uidb64, token):
+def change_passowrd(response, uid, token):
     if response.method == "GET":
         try:
-            uid = force_text(urlsafe_base64_decode(uidb64))
+            uid = force_text(urlsafe_base64_decode(uid))
             user = User.objects.get(pk=uid)
         except(TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
@@ -41,10 +41,10 @@ def change_passowrd(response, uidb64, token):
             update_session_auth_hash(response, user) # Important, to update the session with the new password
             return redirect('/home')
 
-def activate(response, uidb64, token):
+def activate(response, uid, token):
     if response.method == "GET":
         try:
-            uid = force_text(urlsafe_base64_decode(uidb64))
+            uid = force_text(urlsafe_base64_decode(uid))
             user = User.objects.get(pk=uid)
         except(TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
