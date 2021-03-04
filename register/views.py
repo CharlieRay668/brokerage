@@ -53,9 +53,16 @@ def activate(response, uidb64, token):
             user.is_active = True
             user.save()
             login(response, user)
-            return redirect('/home')
+            form = PasswordChangeForm(response.user)
+            return render(response, 'register/activation.html', {'form': form})
         else:
             return HttpResponse('Activation link is invalid!')
+    elif response.method == "POST":
+        form = PasswordChangeForm(response.user, response.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(response, user) # Important, to update the session with the new password
+            return redirect('/home')
 
 def register(response):
     if response.method == "POST":
