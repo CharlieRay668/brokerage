@@ -172,7 +172,7 @@
     <hr class="my-4">
     <h6>*The rankings are ordered on total % profit. The resopnse will return % profit, # wins, # losses for further calculation if needed.</h6>
 </div>
-<div class="jumbotron" id="history" style="display: none;">
+<div class="jumbotron" id='histdiv' style="display: none;">
     <h1 class="display-3">/history/</h1>
     <p class="lead">https://rillionbrokerage.com/api/history/</p>
     <p>Returns the history of the specified user</p>
@@ -193,7 +193,7 @@
     </p>
     <p class="text-success">response = requests.post("https://rillionbrokerage.com/api/history/", headers=headers, data=payload).json()</p>
     <hr class="my-4">
-    <h6>*An invalid username will return a 305 error, returns a list of "trades" a trade is defined as a entry and exit of security. The entry is when the user holds a quantity > 0 for the first time and an exit is when the quantity is back to 0.</h6>
+    <h6>*An invalid username will return a 305 error.</h6>
 </div>
 <script>
     const selectElement = document.getElementById('endpoint_type');
@@ -203,7 +203,7 @@
         create = document.getElementById("create");
         userpositions = document.getElementById("userpositions");
         stats = document.getElementById("stats");
-        history = document.getElementById("history");
+        history = document.getElementById("histdiv");
         ranking = document.getElementById("ranking");
         activity.style.display = "none";
         create.style.display = "none";
