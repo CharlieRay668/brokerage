@@ -4,12 +4,23 @@
 <div style="text-align: center">
     <h1>Documentation</h1>
     <h4>API Url</h4>
-    <h2>http://67.205.178.72/api/</h2>
+    <h2>https://rillionbrokerage.com/api/</h2>
     <h3>Endpoints</h3>
+    <div class="form-group">
+        <label for="endpoint_type">Example select</label>
+        <select class="form-control" id="endpoint_type">
+          <option>/activity/</option>
+          <option>/create/</option>
+          <option>/userpositions/</option>
+          <option>/stats/</option>
+          <option>/history/</option>
+          <option>/ranking/</option>
+        </select>
+      </div>
 </div>
-<div class="jumbotron">
+<div class="jumbotron" id='activity' style="display: none;">
     <h1 class="display-3">/activity/</h1>
-    <p class="lead">http://67.205.178.72/api/activity/</p>
+    <p class="lead">https://rillionbrokerage.com/api/activity/</p>
     <p>Returns positions that users have taken</p>
     <hr class="my-4">
     <h4>Parameters</h4>
@@ -39,8 +50,79 @@
             "username": "octotoo"<br>
         }
     </p>
-    <p class="text-success">response = requests.post("http://67.205.178.72/api/activity/", headers=headers, data=payload).json()</p>
+    <p class="text-success">response = requests.post("https://rillionbrokerage.com/api/activity/", headers=headers, data=payload).json()</p>
     <hr class="my-4">
     <h6>*Make sure your timezones are in EST, do not forget the trailing slash at the end of the url.</h6>
-  </div>
+</div>
+<div class="jumbotron" id='create' style="display: none;">
+    <h1 class="display-3">/create/</h1>
+    <p class="lead">https://rillionbrokerage.com/api/create/</p>
+    <p>Creates a new position for a user in the db. Can only be used by administrators</p>
+    <hr class="my-4">
+    <h4>Parameters</h4>
+    <p><strong>username</strong> the user that the position will be created for</p>
+    <p><strong>symbol</strong> the symbol to trade, can be option or stock</p>
+    <p><strong>quantity</strong> the quantity to be traded</p>
+    <p><strong>action</strong> the action of the trade</p>
+    <p style="margin-left: 3%;">Order action are denoted by integers. (1 buy) (2 sell) (3 btc) (4 sell short)</p>
+    <p style="margin-left: 3%;">Currently, only valid <strong>actions</strong> are 1 and 2, buy and sell</p>
+    <p><strong>order_type</strong> the order type of the trade</p>
+    <p style="margin-left: 3%;">Order types are denoted by integers. (1 limit) (2 market) (3 stop market) (4 stop limit) (5 trailing stop %) (6 trailing stop $)</p>
+    <p style="margin-left: 3%;">Currently, only valid <strong>order_type</strong> is 2, market</p>
+    <p><strong>order_expiration</strong> the expiration of the order</p>
+    <p style="margin-left: 3%;">Currently does nothing, valid options are (1, day) or (2, gtc)</p>
+    <p><strong>limit_price</strong> the purchase limit</p>
+    <p style="margin-left: 3%;">Only use a <strong>limit_price</strong> when <strong>order_type</strong> is set to limit</p>
+    <hr class="my-4">
+    <h4>Example Request</h4>
+    <p class="text-success">
+        headers = {<br>
+            "apikey": apikey<br>
+        }
+    </p>
+    <p class="text-success">
+        payload = {<br>
+            "username": "Charlie678",<br>
+            "symbol": "TSLA",<br>
+            "quantity": 5<br>
+            "action": 1<br>
+            "ordet_type": 2<br>
+            "order_expiration": 1<br>
+        }
+    </p>
+    <p class="text-success">response = requests.post("https://rillionbrokerage.com/api/create/", headers=headers, data=payload).json()</p>
+    <hr class="my-4">
+    <h6>*Although order expiration does nothing, it must still be included.</h6>
+</div>
 {% endblock %}
+<script>
+    const selectElement = document.getElementById('endpoint_type');
+    selectElement.addEventListener('change', (event) => {
+        selectedValue = event.target.value
+        activity = document.getElementById("activity")
+        create = document.getElementById("create")
+        userpositions = document.getElementById("userpositions")
+        stats = document.getElementById("stats")
+        history = document.getElementById("history")
+        ranking = document.getElementById("ranking")
+        activity.style.display = "none";
+        create.style.display = "none";
+        userpositions.style.display = "none";
+        stats.style.display = "none";
+        history.style.display = "none";
+        ranking.style.display = "none";
+        if (selectedValue == '/activity/') {
+            activity.style.display = "block";
+        } else if (selectedValue == '/create/') {
+            create.style.display = "block";
+        } else if (selectedValue == '/userpositions/') {
+            userpositions.style.display = "block";
+        } else if (selectedValue == '/stats/') {
+            stats.style.display = "block";
+        } else if (selectedValue == '/history/') {
+            history.style.display = "block";
+        } else if (selectedValue == '/ranking/') {
+            ranking.style.display = "block";
+        }
+    });
+</script>

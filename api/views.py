@@ -163,9 +163,6 @@ def get_user_positions(response):
 
 @csrf_exempt
 def create_position(response):
-    print(response)
-    print(response.method)
-    print(response.headers)
     api_key = response.headers['apikey']
     if api_key not in api_keys:
         return HttpResponse("Permission Denied", status=403)
