@@ -5,7 +5,7 @@
 {% block constantcontent %}
 {% endblock %}
 
-{% block unauthform %}
+{% block authform %}
     <form method="POST" class="form-group">
 		{% csrf_token %}
 		{{ form|crispy }}
