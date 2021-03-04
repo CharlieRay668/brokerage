@@ -84,7 +84,7 @@ def register(response):
             #     form = RegisterForm()
             #     error_msg = "Failed to create account. Your password may be too simple or there may already be a user with this email."
             #     return render(response, 'register/register.html', {"form":form, "error_msg":error_msg})
-            return render(response, 'register/register.html', {"form":form, "success_msg":"A email should have been sent to " + email + ", please click the link enclosed to activate your account."})
+            return render(response, 'register/register.html', {"form":form, "success_msg":"A email should have been sent to " + to_email + ", please click the link enclosed to activate your account."})
     else:
         form = RegisterForm()
     return render(response, "register/register.html", {"form":form})
