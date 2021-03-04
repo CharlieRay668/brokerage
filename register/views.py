@@ -70,7 +70,6 @@ def register(response):
         if form.is_valid():
             user = form.save(commit=False)
             user.is_active = False
-            user.set_unusable_password()
             user.save()
             # form.save()
             # email = form.cleaned_data.get('email')
@@ -80,7 +79,7 @@ def register(response):
             current_site = get_current_site(response)
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = account_activation_token.make_token(user)
-            activation_link = "{0}/?uid={1}&token{2}".format(current_site, uid, token)
+            activation_link = "{0}/activate/{1}/{2}".format(current_site, uid, token)
             message = "Hello {0},\n {1}".format(user.username, activation_link)
             to_email = form.cleaned_data.get('email')
             email = EmailMessage(mail_subject, message, to=[to_email])
@@ -112,12 +111,4 @@ def signin(response):
             return redirect('/home')
     else:
         form = LoginForm()
-        send_mail(
-            'Test Subject',
-            'This is a test email!',
-            'support@rillionbrokerage.com',
-            ['charlie.ray84@gmail.com'],
-            fail_silently=False,
-        )
-    
     return render(response, 'registration/login.html', {"form":form})
