@@ -25,16 +25,16 @@ def prompt_pass_change(response):
             except(TypeError, ValueError, OverflowError, User.DoesNotExist):
                 user = None
             if user is not None:
-                mail_subject = 'Activate your account.'
+                mail_subject = 'Reset Password'
                 current_site = get_current_site(response)
                 uid = urlsafe_base64_encode(force_bytes(user.pk))
                 token = account_activation_token.make_token(user)
-                activation_link = "{0}/activate/{1}/{2}".format(current_site, uid, token)
-                message = "Hello {0},\n {1}".format(user.username, activation_link)
+                activation_link = "{0}/passreset/{1}/{2}".format(current_site, uid, token)
+                message = "Hello {0},\n Recently someone requested to change your password for Rillion Brokerage. If that was not you ignore this email. Click the link below to change you password.\n {1}".format(user.username, activation_link)
                 to_email = form.cleaned_data.get('email')
                 email = EmailMessage(mail_subject, message, to=[to_email])
                 email.send()
-                return render(response, 'register/passrequest.html', {"form":form, "success_msg":"A email should have been sent to " + to_email + ", please click the link enclosed to activate your account."})
+                return render(response, 'register/passrequest.html', {"form":form, "success_msg":"A email should have been sent to " + to_email + ", please click the link enclosed to reset your password."})
             return render(response, 'register/passrequest.html', {"form":form, "error_msg":"Unable to find user with specified email"})
         return render(response, 'register/passrequest.html', {"form":form, "error_msg":"Invalid form"})
     else:
