@@ -7,7 +7,6 @@
     <h2>https://rillionbrokerage.com/api/</h2>
     <h3>Endpoints</h3>
     <div class="form-group" style="width: 10%; margin: auto;">
-        <label for="endpoint_type">Example select</label>
         <select class="form-control" id="endpoint_type">
           <option>activity</option>
           <option>create</option>
@@ -18,7 +17,7 @@
         </select>
       </div>
 </div>
-<div class="jumbotron" id='activity' style="display: none;">
+<div class="jumbotron" id='activity' style="display: block;">
     <h1 class="display-3">/activity/</h1>
     <p class="lead">https://rillionbrokerage.com/api/activity/</p>
     <p>Returns positions that users have taken</p>
@@ -93,6 +92,108 @@
     <p class="text-success">response = requests.post("https://rillionbrokerage.com/api/create/", headers=headers, data=payload).json()</p>
     <hr class="my-4">
     <h6>*Although order expiration does nothing, it must still be included.</h6>
+</div>
+<div class="jumbotron" id='userpositions' style="display: none;">
+    <h1 class="display-3">/userpositions/</h1>
+    <p class="lead">https://rillionbrokerage.com/api/userpositions/</p>
+    <p>Returns a list of the specified user's current positions</p>
+    <hr class="my-4">
+    <h4>Parameters</h4>
+    <p><strong>username</strong> the desired user</p>
+    <hr class="my-4">
+    <h4>Example Request</h4>
+    <p class="text-success">
+        headers = {<br>
+            "apikey": apikey<br>
+        }
+    </p>
+    <p class="text-success">
+        payload = {<br>
+            "username": "Charlie678",<br>
+        }
+    </p>
+    <p class="text-success">response = requests.post("https://rillionbrokerage.com/api/username/", headers=headers, data=payload).json()</p>
+    <hr class="my-4">
+    <h6>*An invalid username will return a 305 error.</h6>
+</div>
+<div class="jumbotron" id='stats' style="display: none;">
+    <h1 class="display-3">/stats/</h1>
+    <p class="lead">https://rillionbrokerage.com/api/stats/</p>
+    <p>Returns the stats of the specified user</p>
+    <hr class="my-4">
+    <h4>Parameters</h4>
+    <p><strong>username</strong> the desired user</p>
+    <hr class="my-4">
+    <h4>Example Request</h4>
+    <p class="text-success">
+        headers = {<br>
+            "apikey": apikey<br>
+        }
+    </p>
+    <p class="text-success">
+        payload = {<br>
+            "username": "Charlie678",<br>
+        }
+    </p>
+    <p class="text-success">response = requests.post("https://rillionbrokerage.com/api/stats/", headers=headers, data=payload).json()</p>
+    <hr class="my-4">
+    <h6>*An invalid username will return a 305 error.</h6>
+</div>
+<div class="jumbotron" id='history' style="display: none;">
+    <h1 class="display-3">/history/</h1>
+    <p class="lead">https://rillionbrokerage.com/api/history/</p>
+    <p>Returns the history of the specified user</p>
+    <hr class="my-4">
+    <h4>Parameters</h4>
+    <p><strong>username</strong> the desired user</p>
+    <hr class="my-4">
+    <h4>Example Request</h4>
+    <p class="text-success">
+        headers = {<br>
+            "apikey": apikey<br>
+        }
+    </p>
+    <p class="text-success">
+        payload = {<br>
+            "username": "Charlie678",<br>
+        }
+    </p>
+    <p class="text-success">response = requests.post("https://rillionbrokerage.com/api/history/", headers=headers, data=payload).json()</p>
+    <hr class="my-4">
+    <h6>*An invalid username will return a 305 error, returns a list of "trades" a trade is defined as a entry and exit of security. The entry is when the user holds a quantity > 0 for the first time and an exit is when the quantity is back to 0.</h6>
+</div>
+<div class="jumbotron" id='ranking' style="display: none;">
+    <h1 class="display-3">/ranking/</h1>
+    <p class="lead">https://rillionbrokerage.com/api/ranking/</p>
+    <p>Returns the history of the specified user</p>
+    <hr class="my-4">
+    <h4>Parameters</h4>
+    <p><strong>number</strong> number of ranings you want, ex: 10 = top 10</p>
+    <p><strong>from_date</strong> whenever you want your query to start</p>
+    <p><strong>to_date</strong> whenever you want your query to start</p>
+    <p style="margin-left: 3%;">Do not provide a <strong>to_date</strong> without a <strong>from_date</strong></p>
+    <p style="margin-left: 3%;">If <strong>to_date</strong> is not provided it will default to now. If neither are povided the response will calculate lifetime rankings</p>
+    <hr class="my-4">
+    <h4>Example Request</h4>
+    <p class="text-success">
+        from pytz import timezone<br>
+        eastern = timezone('US/Eastern')
+    </p>
+    <p class="text-success">
+        headers = {<br>
+            "apikey": apikey<br>
+        }
+    </p>
+    <p class="text-success">
+        payload = {<br>
+            "number": 10,<br>
+            "from_date": (dt.datetime.now(eastern)-dt.timedelta(days=10)).isoformat(),<br>
+            "to_date": dt.datetime.now(eastern).isoformat()<br>
+        }
+    </p>
+    <p class="text-success">response = requests.post("https://rillionbrokerage.com/api/ranking/", headers=headers, data=payload).json()</p>
+    <hr class="my-4">
+    <h6>*The rankings are ordered on total % profit. The resopnse will return % profit, # wins, # losses for further calculation if needed.</h6>
 </div>
 <script>
     const selectElement = document.getElementById('endpoint_type');

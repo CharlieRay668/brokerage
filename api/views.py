@@ -52,8 +52,17 @@ def get_rankings(response):
         users = User.objects.all()
         rankings = []
         for user in users:
-            positions = user.positions.all()
-            positions = positions.filter(order_execution_date__range=(from_date,to_date))
+            if not from_date and not to_date:
+                positions = Position.objects.all()
+            elif not to_date:
+                from_date = dt.datetime.fromisoformat(from_date)
+                positions = Position.objects.filter(order_execution_date__range=(from_date,dt.datetime.now(eastern)))
+            else:
+                from_date = dt.datetime.fromisoformat(from_date)
+                to_date = dt.datetime.fromisoformat(to_date)
+                positions = Position.objects.filter(order_execution_date__range=(from_date,to_date))
+            # positions = user.positions.all()
+            # positions = positions.filter(order_execution_date__range=(from_date,to_date))
             if len(positions) != 0:
                 df = pd.DataFrame(list(positions.values()))
                 dfs = []
