@@ -6,15 +6,15 @@
     <h4>API Url</h4>
     <h2>https://rillionbrokerage.com/api/</h2>
     <h3>Endpoints</h3>
-    <div class="form-group">
+    <div class="form-group" style="width: 10%;">
         <label for="endpoint_type">Example select</label>
         <select class="form-control" id="endpoint_type">
-          <option>/activity/</option>
-          <option>/create/</option>
-          <option>/userpositions/</option>
-          <option>/stats/</option>
-          <option>/history/</option>
-          <option>/ranking/</option>
+          <option>activity</option>
+          <option>create</option>
+          <option>userpositions</option>
+          <option>stats</option>
+          <option>history</option>
+          <option>ranking</option>
         </select>
       </div>
 </div>
@@ -99,6 +99,7 @@
     const selectElement = document.getElementById('endpoint_type');
     selectElement.addEventListener('change', (event) => {
         selectedValue = event.target.value
+        alert(selectedValue)
         activity = document.getElementById("activity")
         create = document.getElementById("create")
         userpositions = document.getElementById("userpositions")
@@ -111,17 +112,17 @@
         stats.style.display = "none";
         history.style.display = "none";
         ranking.style.display = "none";
-        if (selectedValue == '/activity/') {
+        if (selectedValue == 'activity') {
             activity.style.display = "block";
-        } else if (selectedValue == '/create/') {
+        } else if (selectedValue == 'create') {
             create.style.display = "block";
-        } else if (selectedValue == '/userpositions/') {
+        } else if (selectedValue == 'userpositions') {
             userpositions.style.display = "block";
-        } else if (selectedValue == '/stats/') {
+        } else if (selectedValue == 'stats') {
             stats.style.display = "block";
-        } else if (selectedValue == '/history/') {
+        } else if (selectedValue == 'history') {
             history.style.display = "block";
-        } else if (selectedValue == '/ranking/') {
+        } else if (selectedValue == 'ranking') {
             ranking.style.display = "block";
         }
     });
