@@ -59,6 +59,7 @@ def change_passowrd(response, uid, token):
         form = PasswordChangeForm(response.POST)
         if form.is_valid():
             password = form.cleaned_data.get("password1")
+            user = response.user
             user.password = password
             user.save()
             update_session_auth_hash(response, user) # Important, to update the session with the new password
