@@ -139,29 +139,6 @@
     <hr class="my-4">
     <h6>*An invalid username will return a 305 error.</h6>
 </div>
-<div class="jumbotron" id="history" style="display: none;">
-    <h1 class="display-3">/history/</h1>
-    <p class="lead">https://rillionbrokerage.com/api/history/</p>
-    <p>Returns the history of the specified user</p>
-    <hr class="my-4">
-    <h4>Parameters</h4>
-    <p><strong>username</strong> the desired user</p>
-    <hr class="my-4">
-    <h4>Example Request</h4>
-    <p class="text-success">
-        headers = {<br>
-            "apikey": apikey<br>
-        }
-    </p>
-    <p class="text-success">
-        payload = {<br>
-            "username": "Charlie678",<br>
-        }
-    </p>
-    <p class="text-success">response = requests.post("https://rillionbrokerage.com/api/history/", headers=headers, data=payload).json()</p>
-    <hr class="my-4">
-    <h6>*An invalid username will return a 305 error, returns a list of "trades" a trade is defined as a entry and exit of security. The entry is when the user holds a quantity > 0 for the first time and an exit is when the quantity is back to 0.</h6>
-</div>
 <div class="jumbotron" id='ranking' style="display: none;">
     <h1 class="display-3">/ranking/</h1>
     <p class="lead">https://rillionbrokerage.com/api/ranking/</p>
@@ -195,6 +172,29 @@
     <hr class="my-4">
     <h6>*The rankings are ordered on total % profit. The resopnse will return % profit, # wins, # losses for further calculation if needed.</h6>
 </div>
+<div class="jumbotron" id="history" style="display: none;">
+    <h1 class="display-3">/history/</h1>
+    <p class="lead">https://rillionbrokerage.com/api/history/</p>
+    <p>Returns the history of the specified user</p>
+    <hr class="my-4">
+    <h4>Parameters</h4>
+    <p><strong>username</strong> the desired user</p>
+    <hr class="my-4">
+    <h4>Example Request</h4>
+    <p class="text-success">
+        headers = {<br>
+            "apikey": apikey<br>
+        }
+    </p>
+    <p class="text-success">
+        payload = {<br>
+            "username": "Charlie678",<br>
+        }
+    </p>
+    <p class="text-success">response = requests.post("https://rillionbrokerage.com/api/history/", headers=headers, data=payload).json()</p>
+    <hr class="my-4">
+    <h6>*An invalid username will return a 305 error, returns a list of "trades" a trade is defined as a entry and exit of security. The entry is when the user holds a quantity > 0 for the first time and an exit is when the quantity is back to 0.</h6>
+</div>
 <script>
     const selectElement = document.getElementById('endpoint_type');
     selectElement.addEventListener('change', (event) => {
@@ -209,7 +209,7 @@
         create.style.display = "none";
         userpositions.style.display = "none";
         stats.style.display = "none";
-        //history.style.display = "none";
+        history.style.display = "none";
         ranking.style.display = "none";
         if (selectedValue == 'activity') {
             activity.style.display = "block";
