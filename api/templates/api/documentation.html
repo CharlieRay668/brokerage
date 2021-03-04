@@ -175,7 +175,7 @@
 <div class="jumbotron" id='histdiv' style="display: none;">
     <h1 class="display-3">/history/</h1>
     <p class="lead">https://rillionbrokerage.com/api/history/</p>
-    <p>Returns the stats of the specified user</p>
+    <p>Returns the trade history of the specified user</p>
     <hr class="my-4">
     <h4>Parameters</h4>
     <p><strong>username</strong> the desired user</p>
@@ -220,7 +220,7 @@
         } else if (selectedValue == 'stats') {
             stats.style.display = "block";
         } else if (selectedValue == 'history') {
-            history.style.display = "block";
+            histdiv.style.display = "block";
         } else if (selectedValue == 'ranking') {
             ranking.style.display = "block";
         }
