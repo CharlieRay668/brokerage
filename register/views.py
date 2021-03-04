@@ -50,13 +50,13 @@ def change_passowrd(response, uid, token):
             user = None
         if user is not None and account_activation_token.check_token(user, token):
             login(response, user)
-            form = PasswordChangeForm(response.user)
+            form = PasswordChangeForm()
             return render(response, 'register/passreset.html', {'form': form})
         else:
             return HttpResponse('Password reset link is invalid!')
             
     elif response.method == "POST":
-        form = PasswordChangeForm(response.user, response.POST)
+        form = PasswordChangeForm(response.POST)
         if form.is_valid():
             password = form.cleaned_data.get("password1")
             user.password = password

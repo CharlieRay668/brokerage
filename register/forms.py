@@ -7,6 +7,7 @@ class PasswordRequest(forms.Form):
     email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '', 'id': 'email'}))
 
 class PasswordChangeForm(RegistrationForm):
+    email = forms.EmailField()
     class Meta:
         model = User
         fields = ["password1", "password2"]
