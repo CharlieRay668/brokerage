@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from users.models import User
 from django import forms
 
-class PasswordRequest(forsm.Form):
+class PasswordRequest(forms.Form):
     email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '', 'id': 'email'}))
 
 class PasswordChangeForm(RegistrationForm):
