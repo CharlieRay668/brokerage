@@ -196,9 +196,6 @@ def account(response):
     positions = [calc_df(df) for df in dfs if calc_df(df) is not None]
     return render(response, "main/account.html", {'positions': positions})
 
-def googlever(response):
-    return render(response, "main/googleca71daef6ae22891.html")
-
 def history(response, order_trades):
     user = response.user
     positions = user.positions.all()

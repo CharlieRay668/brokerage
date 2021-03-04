@@ -21,5 +21,4 @@ urlpatterns = [
     path("test/", views.testview, name='test'),
     path("testping/", views.get_symbols_from_rh, name='testping'),
     path("profile/", views.profile, name='profile'),
-    path("googleca71daef6ae22891", views.googlever, name='googlever'),
 ]

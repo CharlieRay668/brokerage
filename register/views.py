@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from .forms import RegisterForm, LoginForm
 from django.shortcuts import render
 from django.contrib.auth import login, authenticate
+from django.core.mail import send_mail
+
+
 
 def home_view(response):
     return render(response, 'main/home.html')
@@ -41,5 +44,12 @@ def signin(response):
             return redirect('/home')
     else:
         form = LoginForm()
+        send_mail(
+            'Test Subject',
+            'This is a test email!',
+            'support@rillionbrokerage.com',
+            ['charlie.ray84@gmail.com'],
+            fail_silently=False,
+        )
     
     return render(response, 'registration/login.html', {"form":form})
