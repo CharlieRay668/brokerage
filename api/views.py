@@ -169,9 +169,7 @@ def create_position(response):
     api_key = response.headers['apikey']
     if api_key not in api_keys:
         return HttpResponse("Permission Denied", status=403)
-    return HttpResponse("response method " + str(response.method) + " headers " + str(response.headers), status=200)
     if response.method == "POST":
-        return HttpResponse("Successfully posted", status=200)
         username = response.POST.get('username', False)
         symbol = response.POST.get('symbol', False)
         quantity = response.POST.get('quantity', False)
