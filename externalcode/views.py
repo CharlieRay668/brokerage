@@ -7,4 +7,8 @@ def dashboard(response):
     return render(response, "externalcode/dashboard.html")
 
 def check_external(response):
-    return JsonResponse({"tda_db_result": "ONLINE", "discord_bot_result":"ONLINE"})
+    lines = open("r", "status.txt").readlines()
+    status_json = {}
+    for line in lines:
+        status_json[line.split(":")[0]] = line.split(":")[1]
+    return JsonResponse(status_json)
