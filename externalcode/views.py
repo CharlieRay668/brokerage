@@ -10,5 +10,5 @@ def check_external(response):
     lines = open("status.txt", "r").readlines()
     status_json = {}
     for line in lines:
-        status_json[line.split(":")[0]] = line.split(":")[1]
+        status_json[line.split(":")[0].strip()] = line.split(":")[1].strip()
     return JsonResponse(status_json)
