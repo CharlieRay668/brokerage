@@ -58,16 +58,22 @@
                 if (tda_db_result == "OFFLINE") {
                     document.getElementById("tda-db-online").style.display = "none";
                     document.getElementById("tda-db-offline").style.display = "inline-block";
-                } else {
+                } else if (tda_db_result == "ONLINE") {
                     document.getElementById("tda-db-online").style.display = "inline-block";
                     document.getElementById("tda-db-offline").style.display = "none";
+                } else {
+                    document.getElementById("tda-db-online").style.display = "inline-block";
+                    document.getElementById("tda-db-offline").style.display = "inline-block";
                 }
                 if (discord_bot_result == "OFFLINE") {
                     document.getElementById("discord-bot-online").style.display = "none";
                     document.getElementById("discord-bot-offline").style.display = "inline-block";
-                } else {
+                } else if (discord_bot_result == "ONLINE") {
                     document.getElementById("discord-bot-online").style.display = "inline-block";
                     document.getElementById("discord-bot-offline").style.display = "none";
+                } else {
+                    document.getElementById("tda-db-online").style.display = "inline-block";
+                    document.getElementById("tda-db-offline").style.display = "inline-block";
                 }
             }
         };
