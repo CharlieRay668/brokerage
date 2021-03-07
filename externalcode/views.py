@@ -7,4 +7,4 @@ def dashboard(response):
     return render(response, "externalcode/dashboard.html")
 
 def check_external(response):
-    return JsonResponse({"tda_db_result": "OFFLINE", "discord_bot_result":"ONLINE"})
+    return JsonResponse({"tda_db_result": "ONLINE", "discord_bot_result":"ONLINE"})

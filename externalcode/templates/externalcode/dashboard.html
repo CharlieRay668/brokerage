@@ -54,7 +54,7 @@
             if (this.readyState == 4 && this.status == 200) {
                 var responseText = JSON.parse(this.responseText);
                 tda_db_result = responseText['tda_db_result'];
-                discord_bot_result = responseText['tda_db_result'];
+                discord_bot_result = responseText['discord_bot_result'];
                 if (tda_db_result == "OFFLINE") {
                     document.getElementById("tda-db-online").style.display = "none";
                     document.getElementById("tda-db-offline").style.display = "inline-block";
