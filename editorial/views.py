@@ -5,7 +5,6 @@ from main.models import Position
 def edit(response):
     if response.method == "POST":
         selector = response.POST['search_by']
-        print(selector)
         if selector == '1':
             username = response.POST['usersearch']   
             positions = Position.objects.filter(user__username=username)
