@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'register.apps.RegisterConfig',
     'api.apps.ApiConfig',
     'editorial.apps.EditorialConfig',
+    'externalcode.apps.ExternalcodeConfig',
     'crispy_forms',
 ]
 
