@@ -28,6 +28,7 @@ urlpatterns = [
     path('passreset/<str:uid>/<str:token>', registerviews.change_passowrd, name='passreset'),
     path("passreset/", registerviews.prompt_pass_change, name='passrequest'),
     path('', include("main.urls")),
+    path('', include("externalcode.urls")),
     path('', include("django.contrib.auth.urls")),
     path("api/", include("api.urls")),
     path("editorial/", include("editorial.urls")),
