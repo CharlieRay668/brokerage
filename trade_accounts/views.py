@@ -27,6 +27,7 @@ def create(response):
             new_account = Account(user=user, name=account_name, cash_amount=cash_amount, equity_amount=0, option_amount=0, short_equity_amount=0, short_option_amount=0)
             new_account.save()
             user.accounts.add(new_account)
+            return redirect("/accounts/")
     form = CreateAccount()
     return render(response, "trade_accounts/create.html", {'form':form})
 
