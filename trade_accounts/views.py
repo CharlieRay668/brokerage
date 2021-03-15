@@ -34,7 +34,7 @@ def prompt_view(response):
     user = response.user
     accounts = user.accounts.all()
     if len(accounts) == 0:
-        return redirect("accounts/create/")
+        return redirect("/accounts/create/")
     if len(accounts) == 1:
         account = accounts[0]
         return redirect("/accounts/view/"+str(account.id)+"/")
