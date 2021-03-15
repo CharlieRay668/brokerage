@@ -47,7 +47,7 @@ def view(response, act_id):
     accounts = user.accounts.all()
     account = user.accounts.get(id=act_id)
     positions = account.acct_positions.all()
-    account_balance = account.option_amount + account.cash_amount
+    account_balance = account.option_amount + account.cash_amount + account.equity_amount
     # Index Change Handling
     indexes = ['SPY', 'DIA', 'QQQ']
     index_prices = []
