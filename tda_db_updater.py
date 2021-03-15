@@ -32,9 +32,9 @@ while True:
                         if key in COLUMNS:
                             true_dict[key] = row[key]
                     DATABASE_HANDLER.update_data(DATABASE_CONNECTION, true_dict, true_dict['symbol'])
-                if 1.0 - ((time.time() - starttime) % 60.0) <= 0:
+                if 5.0 - ((time.time() - starttime) % 60.0) <= 0:
                     continue
                 else:
-                    time.sleep(1 - ((time.time() - starttime) % 60.0))
+                    time.sleep(5 - ((time.time() - starttime) % 60.0))
             except:
                 time.sleep(3)

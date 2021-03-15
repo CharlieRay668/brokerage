@@ -1,0 +1,29 @@
+{% extends "main/home.html" %}
+
+{% block constantcontent %}
+    <style>
+    #accountdropdown:hover .dropdown-menu {
+        display: block;
+    }
+    </style>
+    <div style="text-align: center;">
+        <h6>Welcome {{user.username}}, please select an account</h6>
+    </div>
+    <div style="margin: auto; text-align: center;">
+        <ul class="nav nav-tabs">
+            <div style="margin: auto;">
+                <li class="nav-item dropdown"  id='accountdropdown'style="display: inline-block;">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown-menu" role="button" aria-haspopup="true" aria-expanded="false">Select Account</a>
+                    <div class="dropdown-menu">
+                      {% for account in accounts %}
+                      <a class="dropdown-item" href="view/{{account.id}}/">{{account.name}}</a>
+                      {% endfor %}
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="create/">Create New Account</a>
+                    </div>
+                  </li>
+            </div>
+        </ul>
+    </div>
+{% endblock %}
+

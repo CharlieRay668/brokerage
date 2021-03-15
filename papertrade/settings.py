@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'editorial.apps.EditorialConfig',
     'externalcode.apps.ExternalcodeConfig',
+    'trade_accounts.apps.TradeAccountsConfig',
+    'trade.apps.TradeConfig',
     'crispy_forms',
 ]
 
@@ -81,7 +83,7 @@ WSGI_APPLICATION = 'papertrade.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-if False:
+if True:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',

@@ -1,0 +1,38 @@
+{% extends "main/home.html" %}
+
+{% load crispy_forms_tags %}
+{% block constantcontent %}
+<style>
+    #account_create_div {
+        margin: auto;
+        text-align: center;
+    }
+    #trade_account_create {
+        margin: 0;
+        position: absolute;
+        width: 15%;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+<div style="text-align: center;">
+    
+</div>
+<div class="form-group", id='account_create_div'>
+    <form id="trade_account_create" action="" method="post" enctype="multipart/form-data">
+        <div class="card border-light mb-3" style="max-width: 20rem;">
+            <div class="card-header">Create account</div>
+            <div class="card-body">
+                {% csrf_token %}
+                <fieldset>
+                    {{form | crispy}}
+                </fieldset>
+                <fieldset style="text-align: center;">
+                <button name="submit" type="submit" id='formsubmit' class="btn btn-success" >Create Account</button>
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

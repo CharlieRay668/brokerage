@@ -1,0 +1,211 @@
+{% extends "main/home.html" %}
+
+{% block otherlinks %}
+<a href = '/home/'>Home</a>
+{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block constantcontent %}
+    <style>
+        html, body {
+            max-width: 100%;
+        }
+        .welcomemessage {
+            margin: auto;
+            text-align: center;
+        }
+        
+        .outer {
+            margin:auto;
+            width: 50%;
+            display: flex;
+            border: thin solid #3a3f44;
+        }
+        @media all and (max-width: 499px) {
+            .outer {
+                margin:auto;
+                width: 90%;
+                display: flex;
+                border: thin solid #3a3f44;
+            }
+        }
+        .equityform{
+            margin: 20px;
+            width: 25%;
+        }
+        #stock_vs_option {
+            margin:auto;
+            display: flex;
+            width: 10%;
+        }
+        #id_quantity {
+            width: 100%;
+        }
+        #id_action {
+            width: 100%;
+        }
+        #id_order_type {
+            width: 100%;
+        }
+        #id_order_expiration {
+            width: 100%;
+        }
+        #id_limit_price {
+            width: 100%;
+        }
+        input {
+            border: 1px solid transparent;
+            background-color: #f1f1f1;
+            padding: 10px;
+            font-size: 16px;
+        }
+        input[type=text] {
+            background-color: #f1f1f1;
+            width: 100%;
+        }
+        .warningdiv {
+            margin: auto;
+            text-align: center;
+            color: red;
+        }
+        .securitydata {
+            text-align: center;
+            flex: 1;
+        }
+        #secuirityBAPC {
+            margin: auto;
+            margin-top: 3%;
+            text-align: center;
+            font-size:x-large;
+        }
+        #securityChange[data-status="negative"] {
+            color : red
+        }
+
+        #securityChange[data-status="positive"] {
+            color : green
+        }
+    </style>
+    <div class= 'welcomemessage'>
+        <h1>{{stock_symbol}}</h1>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-info btn-lg" onclick="stockSwitch()">Stock</button>
+            <button type="button" class="btn btn-info btn-lg" onclick="optionSwitch()">Option</button>
+        </div>
+        <br>
+        <h4 id ='timeclock'>{{curr_time}}</h4>
+    </div>
+    <div class = "outer">
+        <div class='equityform'>
+            <form id="contact" action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <fieldset>
+                    {{form | crispy}}
+                </fieldset>
+                <p>As of now, order expiration does nothing</p>
+                <fieldset>
+                <button name="submit" type="submit" id='formsubmit' class="btn btn-success">Place Trade</button>
+                </fieldset>
+            </form>
+        </div>
+        <div class ='securitydata'>
+            <div id = 'secuirityBAPC'>
+                <div id='securityBidDiv'>
+                    <h3>Bid</h3>
+                    <p id = 'securityBid'></p>
+                </div>
+                <br>
+                <div id='securityAskDiv'>
+                    <h3>Ask</h3>
+                    <p id = 'securityAsk'></p>
+                </div>
+                <br>
+                <div id='securityMarkDiv'>
+                    <h3>Mark</h3>
+                    <p id = 'securityMark'></p>
+                </div>
+                <br>
+                <div id='securityChangeDiv'>
+                    <h3>Day Change %</h3>
+                    <p id = 'securityChange'></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class ='warningdiv' id ='warning_div'><p id="warning_text"></p></div>
+    <script>
+        limit_price = document.getElementById("div_id_limit_price").style.display = "none";
+        function stockSwitch() {
+            var url = window.location.href
+            if (url.includes('_')) {
+                ticker = url.split('_')[0]
+                window.location.replace(ticker+"/")
+            }
+        }
+        function optionSwitch() {
+            var url = window.location.href
+            var url = window.location.href
+            if (url.includes('_')) {
+                ticker = url.split('_')[0]
+                window.location.replace(ticker+"/option/")
+            } else {
+                window.location.replace(url+"option/")
+            }
+        }
+        const selectElement = document.getElementById('id_order_type');
+        selectElement.addEventListener('change', (event) => {
+            selectedValue = event.target.value
+            limit_price = document.getElementById("div_id_limit_price")
+            submit_btn = document.getElementById("formsubmit")
+            warning_msg = document.getElementById("warning_text")
+            warning_div = document.getElementById("warning_div")
+            warning_div.style.display = "none"
+            limit_price.style.display = "none";
+            submit_btn.style.display = "block";
+            if (selectedValue != 2){
+                //limit_price.style.display = "block";
+                submit_btn.style.display = "none";
+                warning_msg.innerHTML = "WARNING: As of now, only market orders are allowed";
+                warning_div.style.display = "block";
+            }
+        });
+        function switchOption() {
+
+        }
+        //var update_loop = setInterval(update_price, 1000);
+        update_price(); 
+        function update_price() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var BAPC = document.getElementById('secuirityBAPC')
+                    var responseText = JSON.parse(this.responseText)
+                    // alert(responseText['symbols'])
+                    document.getElementById("securityBid").innerText = responseText['bid']
+                    document.getElementById("securityAsk").innerText = responseText['ask']
+                    document.getElementById("securityMark").innerText = responseText['mark']
+                    document.getElementById("securityChange").innerText = responseText['mark_percent_change'] + '%'
+                }
+            };
+            xhttp.open("GET", "/getdata/"+"{{stock_symbol}}", true);
+            xhttp.send();
+        }
+        
+        // var update_loop = setInterval(clock, 1000);
+        //clock();
+        function clock(){
+            var xhttp = new XMLHttpRequest();
+            var prevtime = document.getElementById("timeclock").innerHTML
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("timeclock").innerHTML = JSON.parse(this.responseText).clocktime;
+                } else {
+                    document.getElementById("timeclock").innerHTML = prevtime;
+                }
+            };
+            xhttp.open("GET", "clock/", true);
+            xhttp.send();
+        }
+    </script>
+{% endblock %}

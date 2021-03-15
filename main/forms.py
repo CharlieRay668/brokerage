@@ -1,6 +1,6 @@
 from django import forms
 import datetime as dt
-from .models import Trade, EquityPosition, OptionPosition, Position
+from .models import Position
 
 
 class CreateNewBuyPosition(forms.ModelForm):

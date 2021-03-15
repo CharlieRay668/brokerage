@@ -1,8 +1,6 @@
 {% extends "main/home.html" %}
 
-{% block otherlinks %}
-<a href = '/home/'>Home</a>
-{% endblock %}
+{% load crispy_forms_tags %}
 
 {% block constantcontent %}
     <style>
@@ -28,17 +26,35 @@
                 overflow-x: scroll;
             }
         }
-
+        #accountdropdown:hover .dropdown-menu {
+            display: block;
+        }
     </style>
     
     <div style="text-align: center;">
-        <h6>Welcome {{user.email}}, Market indexes are up/down an average of __ % today</h6>
+        <h6>Welcome {{user.username}}, Market indexes are {{average_dir}} an average of {{average}}% today</h6>
+    </div>
+    <div style="margin: auto; text-align: center;">
+        <ul class="nav nav-tabs">
+            <div style="margin: auto;">
+                <li class="nav-item dropdown"  id='accountdropdown'style="display: inline-block;">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown-menu" role="button" aria-haspopup="true" aria-expanded="false">{{account.name}}</a>
+                    <div class="dropdown-menu">
+                        {% for alt_account in accounts %}
+                        <a class="dropdown-item" href="/accounts/view/{{alt_account.id}}/">{{alt_account.name}}</a>
+                        {% endfor %}
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/accounts/create/">Create New Account</a>
+                    </div>
+                </li>
+            </div>
+        </ul>
     </div>
     <br>
     <div class="card text-white bg-primary mb-3" style="max-width: 20rem; text-align: center; margin: auto;">
         <div class="card-header">Account Balance</div>
         <div class="card-body">
-            <h4 class="card-title">$1,000,000</h4>
+            <h4 class="card-title">${{account_balance}}</h4>
             <p class="card-text">View chart</p>
         </div>
     </div>
@@ -94,43 +110,23 @@
                         <td><button type="button" class="btn btn-info btn-sm">Chart</button></td>
                     </tr>
                 {% endfor %}
-              <!-- <tr>
-                <th scope="row">Default</th>
-                <td>Column content</td>
-                <td>Column content</td>
-                <td>Column content</td>
-              </tr> -->
             </tbody>
           </table>
     </div>
     <br>
     <div style="text-align: center;">
-        <button type="button" class="btn btn-success" onclick="window.location.href='/trade'">Place Trade</button>
+        <button type="button" class="btn btn-success" onclick="window.location.href='/trade/{{account.id}}/'">Place Trade</button>
     </div>
     <script>
         function close_position(symbol) {
-            window.location.replace('/tradesymbol/'+symbol +'/sell')
+            window.location.replace('/trade/{{account.id}}/'+symbol +'/sell/')
         }
         function add_position(symbol) {
-            window.location.replace('/tradesymbol/'+symbol + '/buy')
+            window.location.replace('/trade/{{account.id}}/'+symbol +'/buy/')
         }
-        var update_account_loop = setInterval(update_account, 1000);
+        var update_account_loop = setInterval(update_account, 5000);
         //setInterval(test_ping, 3000);
         update_account();
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
         function change_cells(table, cell_loc, name, responseText) {
             for(i = 0; i < responseText[name].length; i++) {
                 var responseSymbol = Object.keys(responseText[name][i])[0]
@@ -170,7 +166,7 @@
                 }
             };
             params = {symbols:symbol_list};
-            xhttp.open("GET", "/updateaccountdata/", true);
+            xhttp.open("GET", "/updateaccountdata/{{account.id}}/", true);
             xhttp.send();
         }
 
