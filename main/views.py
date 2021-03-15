@@ -224,7 +224,7 @@ def trade(response):
     user = response.user
     accounts = user.accounts.all()
     if len(accounts) == 0:
-        return redirect("accounts/create/")
+        return redirect("/accounts/create/")
     if len(accounts) == 1:
         account = accounts[0]
         return redirect("/trade/"+str(account.id)+"/")
