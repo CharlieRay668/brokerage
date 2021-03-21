@@ -2,7 +2,7 @@
 
 
 {% block constantcontent %}
-<div class="tradingview-widget-container" style="margin: auto; height: 80vh;">
+<!-- <div class="tradingview-widget-container" style="margin: auto; height: 80vh;">
     <div id="tradingview_5f9ba" style="margin: auto; height: 100%; width: 80%;"></div>
     <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NASDAQ-AAPL/" rel="noopener" target="_blank"><span class="blue-text">AAPL Chart</span></a> by TradingView</div>
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
@@ -21,12 +21,10 @@
             "container_id": "tradingview_5f9ba"}
         );
     </script>
-</div>
-<script type="module" src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+</div> -->
+<script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 <script>
-    import { createChart } from 'lightweight-charts';
-
-    const chart = createChart(document.body, { width: 400, height: 300 });
+    const chart = LightweightCharts.createChart(document.body, { width: 400, height: 300 });
     const lineSeries = chart.addLineSeries();
     lineSeries.setData([
         { time: '2019-04-11', value: 80.01 },
