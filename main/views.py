@@ -58,6 +58,9 @@ def testview(response):
 def home(response):
     return render(response, "main/home.html")
 
+def charts(response):
+    return render(response, "main/charts.html")
+
 def get_position_dict(position):
     if type(position) == dict:
         symbol = position['symbol']
@@ -269,18 +272,23 @@ def getdata(response, symbol):
     json_response = {}
     cur = DATABASE_CONNECTION.cursor()
     added = False
+    x = 0
     while not DATABASE_HANDLER.check_symbol_exist(DATABASE_CONNECTION, symbol):
+        if x == 10:
+            json_response['bid'] = 0
+            json_response['ask'] = 0
+            json_response['mark'] = 0
+            json_response['mark_percent_change'] = 0
+            json_response['symbols'] = REST_HANDLER.get_symbols()
+            return JsonResponse(json_response)
         if not added:
             REST_HANDLER.add_symbol(symbol)
             added = True
         time.sleep(1)
-    # if not symbol in REST_HANDLER.get_symbols():
-    #     REST_HANDLER.add_symbol(symbol)
-    #     time.sleep(2)
+        x += 1
     sql = "SELECT bidPrice,askPrice,mark,markPercentChangeInDouble from tda_data WHERE symbol ='%s'"%(symbol)
     cur.execute(sql)
     data = cur.fetchall()[0]
-
     json_response['bid'] = round(data[0],2)
     json_response['ask'] = round(data[1],2)
     json_response['mark'] = round(data[2],2)

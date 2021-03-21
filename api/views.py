@@ -5,12 +5,15 @@ from main.models import Position
 from main.views import calc_df, calc_trade
 from users.models import User
 from utils.resthandler import RestHandler, DatabaseHandler
+from utils.TDRestAPI import Rest_Account
 from django.forms.models import model_to_dict
 from pytz import timezone
 import datetime as dt
 import time
 import uuid
 import pandas as pd
+
+REST_API = Rest_Account('keys.json')
 
 api_keys = ["charliekey", "billkey"]
 eastern = timezone('US/Eastern')
@@ -22,20 +25,6 @@ REST_HANDLER = RestHandler()
 def documentation(response):
     return render(response, "api/documentation.html")
 
-# @csrf_exempt
-# def get_price_data(response):
-#     api_key = response.headers['apikey']
-#     if api_key not in api_keys:
-#         return HttpResponse("Permission Denied", status=403)
-#     if response.method == "POST":
-#         symbol = response.POST['symbol']
-#         fields = response.POST['fields']
-#         if not symbol in REST_HANDLER.get_symbols():
-#             REST_HANDLER.add_symbol(symbol)
-#             time.sleep(2)
-#         cur = DATABASE_CONNECTION.cursor()
-#
-#          sql = "SELECT * from tda_data WHERE symbol ='%s'"%(symbol)
 @csrf_exempt
 def get_rankings(response):
     api_key = response.headers['apikey']
@@ -183,9 +172,10 @@ def create_position(response):
         order_type = response.POST.get('order_type', False)
         order_expiration = response.POST.get('order_expiration', False)
         limit_price = response.POST.get('limit_price', False)
-        info = [username, symbol, quantity, action, order_type, order_expiration]
+        account_id = response.POST.get("account_id", False)
+        info = [username, symbol, quantity, action, order_type, order_expiration, account_id]
         if False in info:
-            return False
+            return HttpResponse("Null argument was passed", status=300)
         quantity = int(quantity)
         action = int(action)
         order_type = int(order_type)
@@ -195,15 +185,10 @@ def create_position(response):
         except:
             return HttpResponse("Unkown username", status=305)
         order_execution_date = dt.datetime.now(eastern)
-        added = False
-        while not DATABASE_HANDLER.check_symbol_exist(DATABASE_CONNECTION, symbol):
-            if not added:
-                REST_HANDLER.add_symbol(symbol)
-                added = True
-            time.sleep(1)
-        # if not symbol in REST_HANDLER.get_symbols():
-        #     REST_HANDLER.add_symbol(symbol)
-        #     time.sleep(2)
+        # Get a quote for the symbol
+        quote = REST_API.get_quotes(symbol)
+        if quote is None:
+            return HttpResponse("Invalid Symbol", status=304)
         # Get user positions
         positions = user.positions.all()
         # Generate ID
@@ -231,34 +216,39 @@ def create_position(response):
             if group_quantity != 0:
                 position_id = position_group[0].position_id
         # Handle order info
-        cur = DATABASE_CONNECTION.cursor()
         # if the action was 2, (sell) flip quantity sign
         if action == 2:
             quantity = quantity*-1
         # If we are selling/buying we will go for either the bid or the ask price
+        # Get our fill price for this specific order.
         if quantity > 0:
-            sql = "SELECT askPrice from tda_data WHERE symbol ='%s'"%(symbol)
+            fill_price = quote['askPrice']
         elif quantity < 0:  
-            sql = "SELECT bidPrice from tda_data WHERE symbol ='%s'"%(symbol)
+            fill_price = quote['bidPrice']
         else:
             # If the quantity is 0 return quantity 0 error
-            return False
-        cur.execute(sql)
-        # Get our fill price for this specific order.
-        fill_price = round(cur.fetchall()[0][0],2)
+            return HttpResponse("Invalid Quantity", status=305)
         # If our limit price is none, ie market price, set it to -999 to avoid db conflicts.
         if limit_price is False:
             limit_price = -999
-        sql = "SELECT * from tda_data WHERE symbol ='%s'"%(symbol)
-        cur.execute(sql)
-        # Zip the db row into a dictionary to save in a different db, this just takes a snapshot of the market at order execution
-        description = cur.description
-        columns = [col[0] for col in description]
-        position_info = [dict(zip(columns, row)) for row in cur.fetchall()]
-        # Create ans save the new position.
+        # Grab the snapshot of the market conditions, make dataframe into a dict and then save it in database.
+            position_info = quote.to_dict()
+        # Create and save the new position.
         new_position = Position(position_id=position_id, symbol=symbol, quantity=quantity, fill_price=fill_price, position_info=position_info, order_action=action, order_type=order_type, order_expiration=order_expiration, order_execution_date=order_execution_date, limit_price=limit_price)
         new_position.save()
+        try:
+            account = user.accounts.get(id=account_id)
+        except:
+            return HttpResponse("Invalid user account id", status=305)
+        asset_type = quote['assetType']
+        if asset_type == "EQUITY":
+            account.cash_amount -= quantity*fill_price
+        elif asset_type == "OPTION":
+            account.cash_amount -= (quantity*fill_price)*100
+        account.acct_positions.add(new_position)
+        account.save(update_fields=['option_amount', 'equity_amount', 'cash_amount'])
         user.positions.add(new_position)
+        
         return HttpResponse("Success", status=200)
     return HttpResponse("Attempted to GET a POST endpoint", status=303)
 

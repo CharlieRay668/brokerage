@@ -2,7 +2,6 @@ from django import forms
 import datetime as dt
 from .models import Position
 
-
 class CreateNewBuyPosition(forms.ModelForm):
     #symbol = forms.CharField(max_length=30)
     quantity = forms.IntegerField()
