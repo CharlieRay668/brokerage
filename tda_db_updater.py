@@ -22,7 +22,7 @@ def get_symbol_batch():
     return list(divide_chunks(all_quotes, 300))
 x = 0
 while True:
-        if len(get_symbol_batch) == 0:
+        if len(get_symbol_batch()) == 0:
             reading_file = open("status.txt", "r").readlines()
             new_file_content = ""
             for line in reading_file:
