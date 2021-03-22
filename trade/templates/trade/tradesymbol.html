@@ -130,7 +130,7 @@
                     <h3>Day Change %</h3>
                     <p id = 'securityChange'></p>
                 </div>
-                <div id = 'loadingsign'>
+                <div id = 'loadingsign' style="display: block;">
                     <p>Loading...</p>
                 </div>
             </div>
@@ -186,9 +186,9 @@
                     var responseText = JSON.parse(this.responseText)
                     // alert(responseText['symbols'])
                     if (responseText['bid'] == '0') {
-                        document.getElementById("loadingsign").display = "block";
+                        document.getElementById("loadingsign").style.display = "block";
                     } else {
-                        document.getElementById("lodaingsign").display = "none";
+                        document.getElementById("lodaingsign").style.display = "none";
                     }
                     document.getElementById("securityBid").innerText = responseText['bid']
                     document.getElementById("securityAsk").innerText = responseText['ask']
