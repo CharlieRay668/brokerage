@@ -96,7 +96,7 @@ def tradesymbol(response, symbol, act_id, buy_sell="buy"):
             new_position.save()
             # Add he position to the correnct account, edit the cash amount in the account accordingly.
             account = user.accounts.get(id=act_id)
-            asset_type = quote['assetType']
+            asset_type = quote['assetType'][0]
             if asset_type == "EQUITY":
                 account.cash_amount -= quantity*fill_price
             elif asset_type == "OPTION":
