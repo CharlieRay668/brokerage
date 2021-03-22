@@ -40,6 +40,7 @@ while True:
                     stripped_line = line.strip()
                     if "tda_db_result" in line:
                         new_line = "tda_db_result:"+dt.datetime.now().strftime("%m/%d/%Y, %H-%M-%S")
+                        print(new_line)
                     else:
                         new_line = stripped_line
                     new_file_content += new_line +"\n"

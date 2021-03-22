@@ -12,7 +12,7 @@ def check_external(response):
     statuses = ["discord_bot_result", "tda_db_result"]
     for line in lines:
         if "tda_db_result:" in line:
-            result = line.split(":")[1]
+            result = line.split(":")[1].strip()
             last_update = dt.datetime.strptime(result, "%m/%d/%Y, %H-%M-%S")
             now = dt.datetime.now()
             difference = now-last_update
