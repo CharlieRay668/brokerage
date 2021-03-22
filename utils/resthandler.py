@@ -129,3 +129,8 @@ class RestHandler():
 
     def get_symbols(self):
         return [item.strip() for item in open("tickers.txt", "r").readlines()]
+    
+    def clear_symbols(self):
+        tickers = open("tickers.txt", "w")
+        tickers.close()
+        return True

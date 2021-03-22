@@ -8,16 +8,11 @@ import json
 from main.forms import CreateNewBuyPosition, CreateNewSellPosition
 from main.models import Position
 from utils.TDRestAPI import Rest_Account
-from utils.resthandler import RestHandler, DatabaseHandler
 import time
 import uuid
 
 REST_API = Rest_Account('keys.json')
 
-DATABASE = r'tda_db.sqlite3'
-DATABASE_HANDLER = DatabaseHandler()
-DATABASE_CONNECTION = DATABASE_HANDLER.create_connection(DATABASE)
-REST_HANDLER = RestHandler(REST_API)
 
 def trade(response, act_id):
     if response.method == "POST":

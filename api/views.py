@@ -150,10 +150,9 @@ def get_user_positions(response):
         for pid in ids:
             dfs.append(df[df['position_id'] == pid])
         symbols = [position.symbol for position in positions if position.symbol not in REST_HANDLER.get_symbols()]
-        updates = []
         for symbol in symbols:
-            REST_HANDLER.add_symbol(symbol)
-            updates.append(symbol)
+            if symbol not in REST_HANDLER.get_symbols():
+                REST_HANDLER.add_symbol(symbol)
         positions = [calc_df(df) for df in dfs if calc_df(df) is not None]
         return JsonResponse({"positions": positions})
     return HttpResponse("Attempted to GET a POST endpoint", status=303)

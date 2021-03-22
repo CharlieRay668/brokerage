@@ -12,8 +12,6 @@ urlpatterns = [
     path("deleteall/", views.clear_positions, name='deleteall'),
     path("history/<str:order_trades>", views.history, name='history'),
     path("stats/", views.stats, name='stats'),
-    path("test/", views.testview, name='test'),
-    path("testping/", views.get_symbols_from_rh, name='testping'),
     path("profile/", views.profile, name='profile'),
     path("charts/", views.charts, name="charts"),
 ]

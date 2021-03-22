@@ -22,22 +22,18 @@
         );
     </script>
 </div> -->
+<div id="chartcontainer" style="position: absolute; left: 200px; top: 200px;"></div>
 <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 <script>
-    const chart = LightweightCharts.createChart(document.body, { width: 400, height: 300 });
-    const lineSeries = chart.addLineSeries();
-    lineSeries.setData([
-        { time: '2019-04-11', value: 80.01 },
-        { time: '2019-04-12', value: 96.63 },
-        { time: '2019-04-13', value: 76.64 },
-        { time: '2019-04-14', value: 81.89 },
-        { time: '2019-04-15', value: 74.43 },
-        { time: '2019-04-16', value: 80.01 },
-        { time: '2019-04-17', value: 96.63 },
-        { time: '2019-04-18', value: 76.64 },
-        { time: '2019-04-19', value: 81.89 },
-        { time: '2019-04-20', value: 74.43 },
-    ]);
+    const chart = LightweightCharts.createChart(document.getElementById("chartcontainer"), { width: 400, height: 300 });
+    const candlestickSeries = chart.addCandlestickSeries();
+// set data
+    var jsstock_data = {{ stock_data|safe}};
+    var true_data = [];
+    for (var i = 0; i < jsstock_data.length; i++) {
+        true_data.push({time: jsstock_data[i][0], open: jsstock_data[i][1], high: jsstock_data[i][2], low: jsstock_data[i][3], close: jsstock_data[i][4]})
+    }
+    candlestickSeries.setData(true_data);
 </script>
 {% endblock %}
 

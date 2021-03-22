@@ -73,7 +73,6 @@ def view(response, act_id):
         average_dir = "up"
     else:
         average_dir = "down"
-
     # Position Handling
     if len(positions) == 0:
         return render(response, "trade_accounts/view.html", {'account': account, 'accounts': accounts, 'account_balance': account_balance, 'positions': positions, 'average':average, 'average_dir':average_dir}) 
@@ -83,10 +82,7 @@ def view(response, act_id):
     for pid in ids:
         dfs.append(df[df['position_id'] == pid])
     symbols = [position.symbol for position in positions if position.symbol not in REST_HANDLER.get_symbols()]
-    updates = []
     for symbol in symbols:
         REST_HANDLER.add_symbol(symbol)
-        updates.append(symbol)
     positions = [calc_df(df) for df in dfs if calc_df(df) is not None]
-    
     return render(response, "trade_accounts/view.html", {'account': account, 'accounts': accounts, 'account_balance': account_balance, 'positions': positions, 'average':average, 'average_dir':average_dir})

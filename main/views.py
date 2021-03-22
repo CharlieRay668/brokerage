@@ -59,8 +59,13 @@ def home(response):
     return render(response, "main/home.html")
 
 def charts(response):
-    return render(response, "main/charts.html")
+    history = REST_API.history('TSLA', frequency=1, days=100, frequency_type='daily', period_type='month')
+    data = []
+    for index, row in history.iterrows():
+        data.append([str(index), row['open'], row['high'], row['low'], row['close']])
+    return render(response, "main/charts.html", {'stock_data':data})
 
+# REST CHANGE
 def get_position_dict(position):
     if type(position) == dict:
         symbol = position['symbol']
@@ -75,15 +80,14 @@ def get_position_dict(position):
     return_dict = {}
     for col in columns:
         return_dict[col] = None
-    added = False
-    while not DATABASE_HANDLER.check_symbol_exist(DATABASE_CONNECTION, symbol):
-        if not added:
-            REST_HANDLER.add_symbol(symbol)
-            added = True
-        time.sleep(1)
-    # if not symbol in REST_HANDLER.get_symbols():
-    #     REST_HANDLER.add_symbol(symbol)
-    #     time.sleep(2)
+    # added = False
+    # while not DATABASE_HANDLER.check_symbol_exist(DATABASE_CONNECTION, symbol):
+    #     if not added:
+    #         REST_HANDLER.add_symbol(symbol)
+    #         added = True
+    #     time.sleep(1)
+    if not symbol in REST_HANDLER.get_symbols():
+        REST_HANDLER.add_symbol(symbol)
     if DATABASE_HANDLER.check_symbol_exist(DATABASE_CONNECTION, symbol):
         sql = "SELECT mark,closePrice,assetType,delta,gamma,theta,vega,description from tda_data WHERE symbol ='%s'"%(symbol)
         cur.execute(sql)
@@ -116,10 +120,8 @@ def get_position_dict(position):
         if quantity < 0:
             gain_perc *= -1
             day_gain_perc *= -1
-        
     else:
         REST_HANDLER.add_symbol(symbol)
-        print('Added ', symbol)
         mark = None
         asset = None
         day_gain_dollar = None
@@ -268,24 +270,21 @@ def get_option_chain(response, symbol, description, strike_count):
     indexes = json.dumps(indexes)
     return JsonResponse({'chain':chain, 'indexes':indexes})
 
+# REST CHANGER
 def getdata(response, symbol):
     json_response = {}
     cur = DATABASE_CONNECTION.cursor()
     added = False
     x = 0
-    while not DATABASE_HANDLER.check_symbol_exist(DATABASE_CONNECTION, symbol):
-        if x == 10:
-            json_response['bid'] = 0
-            json_response['ask'] = 0
-            json_response['mark'] = 0
-            json_response['mark_percent_change'] = 0
-            json_response['symbols'] = REST_HANDLER.get_symbols()
-            return JsonResponse(json_response)
-        if not added:
-            REST_HANDLER.add_symbol(symbol)
-            added = True
-        time.sleep(1)
-        x += 1
+    if symbol not in REST_HANDLER.get_symbols():
+        REST_HANDLER.add_symbol(symbol)
+    if not DATABASE_HANDLER.check_symbol_exist(DATABASE_CONNECTION, symbol):
+        json_response['bid'] = 0
+        json_response['ask'] = 0
+        json_response['mark'] = 0
+        json_response['mark_percent_change'] = 0
+        json_response['symbols'] = REST_HANDLER.get_symbols()
+        return JsonResponse(json_response)
     sql = "SELECT bidPrice,askPrice,mark,markPercentChangeInDouble from tda_data WHERE symbol ='%s'"%(symbol)
     cur.execute(sql)
     data = cur.fetchall()[0]
@@ -317,6 +316,12 @@ def account_positions(response, act_id):
         return_dict[col] = []
     option_value = 0
     equity_value = 0
+    symbols = []
+    for df in dfs:
+        symbols.append(df.reset_index['symbol'][0])
+    for symbol in symbols:
+        if symbol not in REST_HANDLER.get_symbols():
+            REST_HANDLER.add_symbol(symbol)
     for df in dfs:
         symbol = df.reset_index()['symbol'][0]
         position_dict = calc_df(df)
@@ -334,8 +339,3 @@ def account_positions(response, act_id):
     account.equity_amount = equity_value
     account.save(update_fields=['option_amount', 'equity_amount'])
     return JsonResponse(return_dict)
-
-def get_symbols_from_rh(response):
-    json_response = {}
-    json_response['symbols'] = REST_HANDLER.get_symbols()
-    return JsonResponse(json_response)
