@@ -23,9 +23,10 @@ def get_symbol_batch():
 x = 0
 while True:
         if len(get_symbol_batch()) == 0:
-            reading_file = open("status.txt", "r").readlines()
+            reading_file = open("status.txt", "r")
+            lines = reading_file.readlines()
             new_file_content = ""
-            for line in reading_file:
+            for line in lines:
                 stripped_line = line.strip()
                 if "tda_db_result" in line:
                     new_line = "tda_db_result:"+dt.datetime.now().strftime("%m/%d/%Y, %H-%M-%S")
@@ -37,6 +38,7 @@ while True:
             writing_file = open("status.txt", "w")
             writing_file.write(new_file_content)
             writing_file.close()
+            time.sleep(3)
         for batch in get_symbol_batch():
             try:
                 starttime = time.time()
@@ -49,9 +51,10 @@ while True:
                         if key in COLUMNS:
                             true_dict[key] = row[key]
                     DATABASE_HANDLER.update_data(DATABASE_CONNECTION, true_dict, true_dict['symbol'])
-                reading_file = open("status.txt", "r").readlines()
+                reading_file = open("status.txt", "r")
+                lines = reading_file.readlines()
                 new_file_content = ""
-                for line in reading_file:
+                for line in lines:
                     stripped_line = line.strip()
                     if "tda_db_result" in line:
                         new_line = "tda_db_result:"+dt.datetime.now().strftime("%m/%d/%Y, %H-%M-%S")
