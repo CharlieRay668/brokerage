@@ -318,7 +318,7 @@ def account_positions(response, act_id):
     equity_value = 0
     symbols = []
     for df in dfs:
-        symbols.append(df.reset_index['symbol'][0])
+        symbols.append(df.reset_index()['symbol'][0])
     for symbol in symbols:
         if symbol not in REST_HANDLER.get_symbols():
             REST_HANDLER.add_symbol(symbol)
