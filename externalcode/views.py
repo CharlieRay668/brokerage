@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 import datetime as dt
+from utils.resthandler import RestHandler
 # Create your views here.
+
+rest_handler = RestHandler()
 
 def dashboard(response):
     return render(response, "externalcode/dashboard.html")
@@ -21,4 +24,5 @@ def check_external(response):
             else:
                 status_json['tda_db_result'] = "ONLINE"
     status_json['discord_bot_result'] = "ONLINE"
+    status_json['symbols'] = rest_handler.get_symbols()
     return JsonResponse(status_json)
