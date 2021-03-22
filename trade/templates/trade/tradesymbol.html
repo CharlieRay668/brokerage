@@ -130,6 +130,9 @@
                     <h3>Day Change %</h3>
                     <p id = 'securityChange'></p>
                 </div>
+                <div id = 'loadingsign'>
+                    <p>Loading...</p>
+                </div>
             </div>
         </div>
     </div>
@@ -173,7 +176,7 @@
         function switchOption() {
 
         }
-        //var update_loop = setInterval(update_price, 1000);
+        var update_loop = setInterval(update_price, 1000);
         update_price(); 
         function update_price() {
             var xhttp = new XMLHttpRequest();
@@ -182,6 +185,11 @@
                     var BAPC = document.getElementById('secuirityBAPC')
                     var responseText = JSON.parse(this.responseText)
                     // alert(responseText['symbols'])
+                    if (responseText['bid'] == '0') {
+                        document.getElementById("loadingsign").display = "block";
+                    } else {
+                        document.getElementById("lodaingsign").display = "none";
+                    }
                     document.getElementById("securityBid").innerText = responseText['bid']
                     document.getElementById("securityAsk").innerText = responseText['ask']
                     document.getElementById("securityMark").innerText = responseText['mark']
@@ -192,20 +200,34 @@
             xhttp.send();
         }
         
-        // var update_loop = setInterval(clock, 1000);
-        //clock();
+        var update_loop = setInterval(clock, 1000);
+        clock();
         function clock(){
-            var xhttp = new XMLHttpRequest();
-            var prevtime = document.getElementById("timeclock").innerHTML
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("timeclock").innerHTML = JSON.parse(this.responseText).clocktime;
-                } else {
-                    document.getElementById("timeclock").innerHTML = prevtime;
-                }
-            };
-            xhttp.open("GET", "clock/", true);
-            xhttp.send();
+            var date = new Date();
+            var h = date.getHours(); // 0 - 23
+            var m = date.getMinutes(); // 0 - 59
+            var s = date.getSeconds(); // 0 - 59
+            var session = "AM";
+            
+            if(h == 0){
+                h = 12;
+            }
+            
+            if(h > 12){
+                h = h - 12;
+                session = "PM";
+            }
+            
+            h = (h < 10) ? "0" + h : h;
+            m = (m < 10) ? "0" + m : m;
+            s = (s < 10) ? "0" + s : s;
+            
+            var time = h + ":" + m + ":" + s + " " + session;
+            document.getElementById("timeclock").innerText = time;
+            document.getElementById("timeclock").textContent = time;
+            
+            setTimeout(clock, 1000);
+            
         }
     </script>
 {% endblock %}
