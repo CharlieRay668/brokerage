@@ -22,6 +22,21 @@ def get_symbol_batch():
     return list(divide_chunks(all_quotes, 300))
 x = 0
 while True:
+        if len(get_symbol_batch) == 0:
+            reading_file = open("status.txt", "r").readlines()
+            new_file_content = ""
+            for line in reading_file:
+                stripped_line = line.strip()
+                if "tda_db_result" in line:
+                    new_line = "tda_db_result:"+dt.datetime.now().strftime("%m/%d/%Y, %H-%M-%S")
+                    print(new_line)
+                else:
+                    new_line = stripped_line
+                new_file_content += new_line +"\n"
+            reading_file.close()
+            writing_file = open("status.txt", "w")
+            writing_file.write(new_file_content)
+            writing_file.close()
         for batch in get_symbol_batch():
             try:
                 starttime = time.time()

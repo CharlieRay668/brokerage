@@ -16,7 +16,7 @@ def check_external(response):
             last_update = dt.datetime.strptime(result, "%m/%d/%Y, %H-%M-%S")
             now = dt.datetime.now()
             difference = now-last_update
-            if difference.minute > 0:
+            if difference.total_seconds > 60:
                 status_json['tda_db_result'] = "OFFLINE"
             else:
                 status_json['tda_db_result'] = "ONLINE"
