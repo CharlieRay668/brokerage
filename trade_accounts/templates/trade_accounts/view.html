@@ -154,7 +154,6 @@
                 if (this.readyState == 4 && this.status == 200) {
                     var responseText = JSON.parse(this.responseText)
                     var account_balance = responseText['account_balance']
-                    alert(account_balance)
                     document.getElementById("account_balance").innerText = account_balance
                     var responseText = responseText['other_info']
                     change_cells(table, 2, 'day_gain_dollar', responseText)
