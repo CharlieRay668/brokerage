@@ -331,5 +331,5 @@ def account_positions(response, act_id):
     account.option_amount = option_value*100
     account.equity_amount = equity_value
     account.save(update_fields=['option_amount', 'equity_amount'])
-    account_balance = account.option_amount + account.cash_amount + account.equity_amount
+    account_balance = round(account.option_amount + account.cash_amount + account.equity_amount,2)
     return JsonResponse({"account_balance": account_balance, "other_info": return_dict})

@@ -47,7 +47,7 @@ def view(response, act_id):
     accounts = user.accounts.all()
     account = user.accounts.get(id=act_id)
     positions = account.acct_positions.all()
-    account_balance = account.option_amount + account.cash_amount + account.equity_amount
+    account_balance = round(account.option_amount + account.cash_amount + account.equity_amount,2)
     # Index Change Handling
     indexes = ['SPY', 'DIA', 'QQQ']
     for index in indexes:
