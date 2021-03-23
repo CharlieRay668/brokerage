@@ -8,7 +8,6 @@ urlpatterns = [
     path("getchain/<str:symbol>/<str:description>/<int:strike_count>", views.get_option_chain, name='getchain'),
     path("tradesymbol/clock/", views.tradesymbolclock, name='clockupdate'),
     path("updateaccountdata/<int:act_id>/", views.account_positions, name='updateaccount'),
-    path("test/", views.testview, name='testview'),
     path("deleteall/", views.clear_positions, name='deleteall'),
     path("history/<str:order_trades>", views.history, name='history'),
     path("stats/", views.stats, name='stats'),

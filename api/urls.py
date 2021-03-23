@@ -8,7 +8,6 @@ urlpatterns = [
     path("stats/", views.get_user_stats, name="userstats"),
     path("history/", views.get_user_history, name="userhistory"),
     path("ranking/", views.get_rankings, name="rankings"),
-    path("test/", views.test, name = "test"),
     path("posttest/", views.posttest, name = "posttest"),
     path("docs/", views.documentation, name='documentation')
 ]

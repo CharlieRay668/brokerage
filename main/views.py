@@ -48,13 +48,6 @@ def clear_positions(response):
         position.delete()
     return render(response, "main/home.html")
 
-def testview(response):
-    json_response = {}
-    file_symbols = [item.strip() for item in open("tickers.txt").readlines()]
-    db_symbols = DATABASE_HANDLER.get_all_symbols(DATABASE_CONNECTION)
-    rest_symbols = REST_HANDLER.get_symbols()
-    return render(response, "main/test.html", {'file_symbols':file_symbols, 'db_symbols':db_symbols, "rest_symbols":rest_symbols})
-
 def home(response):
     return render(response, "main/home.html")
 

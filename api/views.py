@@ -284,18 +284,3 @@ def get_activity(response):
         if 'fill_price' in fields:
             return_dict[position.id]['fill_price'] = position.fill_price
     return JsonResponse(return_dict)
-
-def test(response):
-    return_dict = {}
-    return_dict['Hello'] = "World"
-    return JsonResponse(return_dict)
-
-@csrf_exempt
-def posttest(response):
-    return_dict = {}
-    post_data = response.POST
-    api_key = response.headers['apikey']
-    if api_key not in api_keys:
-        return HttpResponse("Permission Denied", status=403)
-    return_dict['Hello'] = post_data['repeat']
-    return JsonResponse(return_dict)
