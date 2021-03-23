@@ -75,6 +75,9 @@ while True:
         x += 1
         if x == 5:
             REST_HANDLER.clear_symbols()
+            REST_HANDLER.add_symbol("SPY")
+            REST_HANDLER.add_symbol("QQQ")
+            REST_HANDLER.add_symbol("DIA")
             x = 0
 
             
