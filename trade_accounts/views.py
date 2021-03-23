@@ -50,15 +50,11 @@ def view(response, act_id):
     account_balance = account.option_amount + account.cash_amount + account.equity_amount
     # Index Change Handling
     indexes = ['SPY', 'DIA', 'QQQ']
+    for index in indexes:
+        if index not in REST_HANDLER.get_symbols():
+            REST_HANDLER.add_symbol(index)
     index_prices = []
     for index in indexes:
-        added = False
-        # Check to see if the is in the database, if its not, add it and wait.
-        while not DATABASE_HANDLER.check_symbol_exist(DATABASE_CONNECTION, index):
-            if not added:
-                added = True
-                REST_HANDLER.add_symbol(index)
-            time.sleep(1)
         cur = DATABASE_CONNECTION.cursor()
         if DATABASE_HANDLER.check_symbol_exist(DATABASE_CONNECTION, index):
             sql = "SELECT mark,closePrice from tda_data WHERE symbol ='%s'"%(index)

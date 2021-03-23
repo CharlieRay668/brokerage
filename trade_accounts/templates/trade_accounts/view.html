@@ -54,8 +54,8 @@
     <div class="card text-white bg-primary mb-3" style="max-width: 20rem; text-align: center; margin: auto;">
         <div class="card-header">Account Balance</div>
         <div class="card-body">
-            <h4 class="card-title">${{account_balance}}</h4>
-            <p class="card-text">View chart</p>
+            <h4 class="card-title" id="account_balance">${{account_balance}}</h4>
+            <!-- <p class="card-text">View chart</p> -->
         </div>
     </div>
     <h4 style="text-align: center;">Positions</h4>
@@ -153,6 +153,10 @@
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     var responseText = JSON.parse(this.responseText)
+                    var account_balance = responseText['account_balance']
+                    alert(account_balance)
+                    document.getElementById("account_balance").innerText = account_balance
+                    var responseText = responseText['other_info']
                     change_cells(table, 2, 'day_gain_dollar', responseText)
                     change_cells(table, 3, 'day_gain_perc', responseText)
                     change_cells(table, 4, 'mark', responseText)
