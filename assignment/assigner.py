@@ -5,4 +5,6 @@ def assign():
     for user in users:
         positions = user.positions.all()
         for position in positions:
-            return position.position_info
+            position_info = position.position_info[0]
+            if position_info['assetType'] == "OPTION":
+                return position.position_info
