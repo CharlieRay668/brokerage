@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'externalcode.apps.ExternalcodeConfig',
     'trade_accounts.apps.TradeAccountsConfig',
     'trade.apps.TradeConfig',
+    'assignment.apps.AssignmentConfig',
     'crispy_forms',
 ]
 
