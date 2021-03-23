@@ -34,4 +34,5 @@ urlpatterns = [
     path("editorial/", include("editorial.urls")),
     path("accounts/", include("trade_accounts.urls")),
     path("trade/<int:act_id>/", include("trade.urls")),
+    path("assignment/", include("assignment.urls")),
 ]
