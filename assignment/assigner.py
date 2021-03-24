@@ -16,7 +16,7 @@ def assign():
                 expiration_day = position_info['expirationDay']
                 expiration_month = position_info['expirationMonth']
                 expiration_year = position_info['expirationYear']
-                expiration = dt.date(expiration_year, expiration_month, expiration_day)
+                expiration = dt.date(int(expiration_year), int(expiration_month), int(expiration_day))
                 now = dt.date.today()
                 if now > expiration:
                     total_positions.append(position)
