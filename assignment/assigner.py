@@ -11,7 +11,10 @@ def assign():
     for user in users:
         positions = user.positions.all()
         for position in positions:
-            position_info = position.position_info[0]
+            if type(position.position_info) is list:
+                position_info = position.position_info[0]
+            else:
+                position_info = position.position_info
             if position_info['assetType'] == "OPTION":
                 expiration_day = position_info['expirationDay']
                 expiration_month = position_info['expirationMonth']
