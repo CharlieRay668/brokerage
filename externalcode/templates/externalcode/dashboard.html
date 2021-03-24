@@ -51,6 +51,11 @@
 
 </div>
 <script>
+    function removeAllChildNodes(parent) {
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
+    }
     var check_status_loop = setInterval(check_status, 1000);
     function check_status(){
         var xhttp = new XMLHttpRequest();
@@ -91,6 +96,8 @@
                 var responseText = JSON.parse(this.responseText);
                 var symbols = responseText['symbols'];
                 var div_body = document.getElementById("symbols");
+                removeAllChildNodes(div_body);
+                div_body.innerText = "Total Symbols: " + string(symbols.length);
                 for (i=0; i<symbols.length; i++) {
                     var para = document.createElement("p");
                     var node = document.createTextNode(symbols[i]);
