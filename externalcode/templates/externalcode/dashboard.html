@@ -97,7 +97,7 @@
                 var symbols = responseText['symbols'];
                 var div_body = document.getElementById("symbols");
                 removeAllChildNodes(div_body);
-                div_body.innerText = "Total Symbols: " + string(symbols.length);
+                div_body.innerText = "Total Symbols: " + symbols.length;
                 for (i=0; i<symbols.length; i++) {
                     var para = document.createElement("p");
                     var node = document.createTextNode(symbols[i]);
