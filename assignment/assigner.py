@@ -26,5 +26,13 @@ def assign():
                     underlyings.append(position_info['underlying'])
     quotes = REST_API.get_quotes(underlyings)
     for position in total_positions:
-        strike_price = position.position_info[0]['strikePrice']
-    return quotes
+        if type(position.position_info) is list:
+            position_info = position.position_info[0]
+        else:
+            position_info = position.position_info
+        strike_price = position_info['strikePrice']
+        underlying = position_info['underlying']
+        returns = []
+        for index, row in quotes():
+            returns.append((index, row))
+    return returns
