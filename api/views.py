@@ -172,6 +172,7 @@ def create_position(response):
         order_expiration = response.POST.get('order_expiration', False)
         limit_price = response.POST.get('limit_price', False)
         account_id = response.POST.get("account_id", False)
+        override_price = response.POST.get("price_override", False)
         info = [username, symbol, quantity, action, order_type, order_expiration, account_id]
         if False in info:
             return HttpResponse("Null argument was passed", status=300)
@@ -233,6 +234,10 @@ def create_position(response):
         # Grab the snapshot of the market conditions, make dataframe into a dict and then save it in database.
             position_info = quote.to_dict()
         # Create and save the new position.
+        # Add check for override price, Only Charlie can do this
+        if override_price is not False:
+            if api_key == "charliekey":
+                fill_price = override_price
         new_position = Position(position_id=position_id, symbol=symbol, quantity=quantity, fill_price=fill_price, position_info=position_info, order_action=action, order_type=order_type, order_expiration=order_expiration, order_execution_date=order_execution_date, limit_price=limit_price)
         new_position.save()
         try:
