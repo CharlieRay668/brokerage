@@ -6,27 +6,28 @@ from utils.TDRestAPI import Rest_Account
 
 REST_API = Rest_Account('keys.json')
 
-def make_order(order, username, underlying, account_id):
-    quantity = order[0]
-    order_type = order[1]
-    headers = {"apikey": "charliekey"}
-    if quantity > 0:
-        action = 1
-    else:
-        action = 2
-    
-    payload = {
-        "username": username,
-        "symbol": underlying,
-        "quantity": abs(quantity),
-        "action": action,
-        "order_type": 2,
-        "order_expiration": 1,
-        "account_id": account_id, 
-    }
-    if order_type == "str":
-        payload['price_override'] = order[2]
-    response = requests.post("https://rillionbrokerage.com/api/create/", headers=headers, data=payload, verify=True)
+def make_order(orders, username, underlying, account_id):
+    for order in orders:
+        quantity = order[0]
+        order_type = order[1]
+        headers = {"apikey": "charliekey"}
+        if quantity > 0:
+            action = 1
+        else:
+            action = 2
+        
+        payload = {
+            "username": username,
+            "symbol": underlying,
+            "quantity": abs(quantity),
+            "action": action,
+            "order_type": 2,
+            "order_expiration": 1,
+            "account_id": account_id, 
+        }
+        if order_type == "str":
+            payload['price_override'] = order[2]
+        response = requests.post("https://rillionbrokerage.com/api/create/", headers=headers, data=payload, verify=True)
 
 def assign():
     total_positions = []
