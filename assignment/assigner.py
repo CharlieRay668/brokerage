@@ -30,9 +30,15 @@ def assign():
             position_info = position.position_info[0]
         else:
             position_info = position.position_info
+        #contract_type = position_info['']
         strike_price = position_info['strikePrice']
         underlying = position_info['underlying']
         returns = []
-        for index, row in quotes.iterrows():
-            returns.append((index, row))
-    return returns
+        for symbol, row in quotes.iterrows():
+            if symbol == underlying:
+                market_price = row['mark']
+        quantity = position.quantity
+        if quantity > 0:
+            # User held option contract
+            pass
+    return position_info
