@@ -33,6 +33,6 @@ def assign():
         strike_price = position_info['strikePrice']
         underlying = position_info['underlying']
         returns = []
-        for index, row in quotes():
+        for index, row in quotes.iterrows():
             returns.append((index, row))
     return returns
