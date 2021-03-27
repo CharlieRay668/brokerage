@@ -207,7 +207,6 @@ def create_position(response):
             for position in matching_positions:
                 if position.position_id == pos_id:
                     groups[index].append(position)
-        return HttpResponse("Checkpoint", status=204)
         # For each group, get the quantity held, if it is not 0 (The user is currently holding some of this stuff) set this new trade ID to be the group
         for position_group in groups:
             group_quantity = 0
@@ -238,6 +237,7 @@ def create_position(response):
         if override_price is not False:
             if api_key == "charliekey":
                 fill_price = override_price
+        return HttpResponse("Checkpoint", status=204)
         new_position = Position(position_id=position_id, symbol=symbol, quantity=quantity, fill_price=fill_price, position_info=position_info, order_action=action, order_type=order_type, order_expiration=order_expiration, order_execution_date=order_execution_date, limit_price=limit_price)
         new_position.save()
         try:
