@@ -238,13 +238,13 @@ def create_position(response):
             if api_key == "charliekey":
                 fill_price = override_price
         new_position = Position(position_id=position_id, symbol=symbol, quantity=quantity, fill_price=fill_price, position_info=position_info, order_action=action, order_type=order_type, order_expiration=order_expiration, order_execution_date=order_execution_date, limit_price=limit_price)
-        new_position.save()
+        #new_position.save()
         try:
             account = user.accounts.get(id=account_id)
         except:
             return HttpResponse("Invalid user account id", status=305)
         asset_type = quote['assetType'][0]
-        return JsonResponse({"nut":"Checkpoint " + str(asset_type)})
+        return JsonResponse({"nut":"Checkpoint " + str(account.name)})
         if asset_type == "EQUITY":
             account.cash_amount -= quantity*fill_price
         elif asset_type == "OPTION":
