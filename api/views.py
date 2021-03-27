@@ -236,7 +236,7 @@ def create_position(response):
         # Add check for override price, Only Charlie can do this
         if override_price is not False:
             if api_key == "charliekey":
-                fill_price = override_price
+                fill_price = float(override_price)
         new_position = Position(position_id=position_id, symbol=symbol, quantity=quantity, fill_price=fill_price, position_info=position_info, order_action=action, order_type=order_type, order_expiration=order_expiration, order_execution_date=order_execution_date, limit_price=limit_price)
         #new_position.save()
         try:

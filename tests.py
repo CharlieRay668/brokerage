@@ -28,6 +28,7 @@ def make_order(orders, username, underlying, account_id):
         if order_type == "str":
             payload['price_override'] = order[2]
         response = requests.post("https://rillionbrokerage.com/api/create/", headers=headers, data=payload, verify=True)
+        print(response.status_code)
         print(response.json())
 
 make_order(orders, username, underlying, account_id)
