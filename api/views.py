@@ -244,11 +244,11 @@ def create_position(response):
         except:
             return HttpResponse("Invalid user account id", status=305)
         asset_type = quote['assetType']
-        return HttpResponse("Checkpoint", status=204)
         if asset_type == "EQUITY":
             account.cash_amount -= quantity*fill_price
         elif asset_type == "OPTION":
             account.cash_amount -= (quantity*fill_price)*100
+        return HttpResponse("Checkpoint", status=204)
         account.acct_positions.add(new_position)
         account.save(update_fields=['option_amount', 'equity_amount', 'cash_amount'])
         user.positions.add(new_position)
