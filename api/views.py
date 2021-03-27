@@ -243,7 +243,7 @@ def create_position(response):
             account = user.accounts.get(id=account_id)
         except:
             return HttpResponse("Invalid user account id", status=305)
-        asset_type = quote['assetType']
+        asset_type = quote['assetType'][0]
         if asset_type == "EQUITY":
             account.cash_amount -= quantity*fill_price
         elif asset_type == "OPTION":
