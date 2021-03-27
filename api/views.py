@@ -246,10 +246,8 @@ def create_position(response):
         asset_type = quote['assetType'][0]
         if asset_type == "EQUITY":
             account.cash_amount -= quantity*fill_price
-            return JsonResponse({"nut":"Checkpoint " + str(account.cash_amount)})
         elif asset_type == "OPTION":
             account.cash_amount -= (quantity*fill_price)*100
-        return HttpResponse("Checkpoint " + str(asset_type), status=204)
         account.acct_positions.add(new_position)
         account.save(update_fields=['option_amount', 'equity_amount', 'cash_amount'])
         user.positions.add(new_position)
