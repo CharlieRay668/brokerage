@@ -109,7 +109,7 @@ def assign():
         order_execution_date = dt.datetime.now(eastern)
         limit_price = -999
         new_position = Position(position_id=position_id, symbol=symbol, quantity=quantity, fill_price=fill_price, position_info=position_info, order_action=action, order_type=order_type, order_expiration=order_expiration, order_execution_date=order_execution_date, limit_price=limit_price)
-        new_position.save
+        new_position.save()
         account.acct_positions.add(new_position)
         user.positions.add(new_position)
     return responses
