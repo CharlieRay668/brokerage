@@ -180,7 +180,6 @@ def create_position(response):
         action = int(action)
         order_type = int(order_type)
         order_expiration = int(order_expiration)
-        return HttpResponse("Checkpoint", status=204)
         try:
             user = User.objects.get(username=username)
         except:
@@ -206,9 +205,9 @@ def create_position(response):
         for index, pos_id in enumerate(ids):
             groups.append([])
             for position in matching_positions:
-                print(position.position_id, pos_id)
                 if position.position_id == pos_id:
                     groups[index].append(position)
+        return HttpResponse("Checkpoint", status=204)
         # For each group, get the quantity held, if it is not 0 (The user is currently holding some of this stuff) set this new trade ID to be the group
         for position_group in groups:
             group_quantity = 0
