@@ -88,5 +88,5 @@ def assign():
                     # User sold call contract, add @ market then remove shares @ strike price (net loss)
                     orders = [[100, "mkt"],[-100, "str", strike_price]]
         responses = make_order(orders, username, underlying, account_id)
-        return (username, account_id, position)
+        return (username, account_id, position.symbol, quantity, underlying, strike_price)
     return responses
