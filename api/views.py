@@ -244,7 +244,7 @@ def create_position(response):
         except:
             return HttpResponse("Invalid user account id", status=305)
         asset_type = quote['assetType'][0]
-        return HttpResponse(headers={"nut":"Checkpoint " + str(asset_type)}, status=204)
+        return JsonResponse({"nut":"Checkpoint " + str(asset_type)})
         if asset_type == "EQUITY":
             account.cash_amount -= quantity*fill_price
         elif asset_type == "OPTION":
