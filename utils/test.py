@@ -90,8 +90,8 @@ class DatabaseHandler():
         cur.execute(sql)
         conn.commit()
         return cur.lastrowid
-
 class StreamerHandler():
+
     def __init__(self):
         self.db_handler = DatabaseHandler()
         database = r'C:\Users\charl\Desktop\BROkerage\papertrade\db.sqlite3'

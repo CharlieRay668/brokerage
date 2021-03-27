@@ -7,6 +7,7 @@ from utils.TDRestAPI import Rest_Account
 REST_API = Rest_Account('keys.json')
 
 def make_order(orders, username, underlying, account_id):
+    responses = []
     for order in orders:
         quantity = order[0]
         order_type = order[1]
@@ -28,6 +29,8 @@ def make_order(orders, username, underlying, account_id):
         if order_type == "str":
             payload['price_override'] = order[2]
         response = requests.post("https://rillionbrokerage.com/api/create/", headers=headers, data=payload, verify=True)
+        responses.append(response.status_code)
+    return responses
 
 def assign():
     total_positions = []
@@ -84,6 +87,5 @@ def assign():
                 elif quantity < 0:
                     # User sold call contract, add @ market then remove shares @ strike price (net loss)
                     orders = [[100, "mkt"],[-100, "str", strike_price]]
-        make_order(orders, username, underlying, account_id)
-        true_account_id = account_id
-    return true_account_id
+        responses = make_order(orders, username, underlying, account_id)
+    return responses
