@@ -1,4 +1,10 @@
 import requests
+
+
+orders = [[100, 'str', 45.0]]
+username = "JoMama"
+underlying = "MAXR"
+account_id = 3
 def make_order(orders, username, underlying, account_id):
     responses = []
     for order in orders:
@@ -22,5 +28,6 @@ def make_order(orders, username, underlying, account_id):
         if order_type == "str":
             payload['price_override'] = order[2]
         response = requests.post("https://rillionbrokerage.com/api/create/", headers=headers, data=payload, verify=True)
-        responses.append(response.status_code)
-    return responses
+        print(response)
+
+make_order(orders, username, underlying, account_id)

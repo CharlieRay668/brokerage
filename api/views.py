@@ -180,6 +180,7 @@ def create_position(response):
         action = int(action)
         order_type = int(order_type)
         order_expiration = int(order_expiration)
+        return HttpResponse("Checkpoint", status=204)
         try:
             user = User.objects.get(username=username)
         except:
