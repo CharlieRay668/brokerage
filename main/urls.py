@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     path("", views.home, name="home"),
     path("home/", views.home, name="home"),
+    path("trade/", views.trade, name="trade"),
     path("getdata/<str:symbol>", views.getdata, name='getdata'),
     path("getchain/<str:symbol>/<str:description>/<int:strike_count>", views.get_option_chain, name='getchain'),
     path("tradesymbol/clock/", views.tradesymbolclock, name='clockupdate'),
