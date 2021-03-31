@@ -162,7 +162,7 @@ def calc_df(df, exclude_zeros=True):
 
 def calc_trade(df):
     if sum(df['quantity']) == 0:
-        asset_type = df['position_info'].iloc[0][0]['assetType']
+        asset_type = df['position_info'].iloc[0]['assetType']
         received = 0
         spent = 0
         for index, row in df.iterrows():
