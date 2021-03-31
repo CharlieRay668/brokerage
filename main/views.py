@@ -177,7 +177,7 @@ def calc_trade(df):
         close_date = df['order_execution_date'].iloc[-1]
         if asset_type == 'OPTION':
             dollar_profit = dollar_profit*100
-        return {'symbol':df['symbol'][0], 'perc_profit':perc_profit, 'dollar_profit':dollar_profit, 'date_opened':open_date, 'date_close':close_date}
+        return {'symbol':df['symbol'][0], 'perc_profit':perc_profit, 'dollar_profit':dollar_profit, 'date_opened':open_date, 'date_close':close_date, 'position_id':df['position_id'][0]}
 
 def history(response, order_trades):
     user = response.user
