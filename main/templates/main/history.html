@@ -28,6 +28,17 @@
         }
     </style>
     <div style="margin: auto; text-align: center;">
+        <div class="toast show" id="id_toast_box" role="alert" aria-live="assertive" aria-atomic="true" style="position: -webkit-sticky; position: sticky; display: none;">
+            <div class="toast-header">
+              <strong class="mr-auto">Rillion</strong>
+              <small>Position ID</small>
+              <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="toast-body" id="id_toast">
+            </div>
+        </div>
         <h6>Welcome {{user.email}}, here are your past orders</h6>
         <div class="btn-group" role="group" aria-label="Basic example">
             <button type="button" class="btn btn-info btn-lg" onclick="window.location.href='/history/orders'">Orders</button>
@@ -57,7 +68,7 @@
                             <td>{{ position.dollar_profit }}</td>
                             <td>{{ position.date_opened}} EST</td>
                             <td>{{ position.date_close}} EST</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" onclick="alert('{{position.position_id}}')">ID</button></td>
+                            <td><button type="button" class="btn btn-primary btn-sm" onclick="toastMsg('{{position.position_id}}')">ID</button></td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -86,5 +97,11 @@
             </table>
         {% endif %}
     </div>
+<script>
+    function toastMsg(msg) {
+        document.getElementById("id_toast_box").style.display = "block";
+        document.getElementById("id_toast").innerText = msg
+    }
+</script>
 {% endblock %}
 
