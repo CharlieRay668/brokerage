@@ -261,6 +261,7 @@ def get_activity(response):
     if api_key not in api_keys:
         return HttpResponse("Permission Denied", status=403)
     return_dict = {}
+    exceptions = []
     fields = ['user', 'position_id', 'symbol', 'quantity', 'fill_price', 'position_info', 'order_action', 'order_type', 'order_expiration', 'order_execution_date', 'limit_price']
     from_date = False
     to_date = False
@@ -289,5 +290,7 @@ def get_activity(response):
             if 'fill_price' in fields:
                 return_dict[position.id]['fill_price'] = position.fill_price
         except Exception as e:
-            return JsonResponse({"exception":str(e)})
+            exceptions.append(str(e))
+    if len(exceptions) > 0:
+        return JsonResponse({"data":return_dict, "exceptions":exceptions})
     return JsonResponse(return_dict)
