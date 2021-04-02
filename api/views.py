@@ -282,10 +282,12 @@ def get_activity(response):
     if username is not False:
         positions = positions.filter(user__username=username)
     for position in positions:
-        return_dict[position.id] = model_to_dict(position, fields=fields)
-        if 'user' in fields:
-            return_dict[position.id]['user'] = position.user.username
-        if 'fill_price' in fields:
-            return_dict[position.id]['fill_price'] = position.fill_price
-        return JsonResponse(return_dict)
+        try:
+            return_dict[position.id] = model_to_dict(position, fields=fields)
+            if 'user' in fields:
+                return_dict[position.id]['user'] = position.user.username
+            if 'fill_price' in fields:
+                return_dict[position.id]['fill_price'] = position.fill_price
+        except Exception as e:
+            return JsonResponse({"exception":str(e)})
     return JsonResponse(return_dict)
