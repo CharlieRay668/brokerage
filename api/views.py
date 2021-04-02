@@ -279,6 +279,7 @@ def get_activity(response):
         from_date = dt.datetime.fromisoformat(from_date)
         to_date = dt.datetime.fromisoformat(to_date)
         positions = Position.objects.filter(order_execution_date__range=(from_date,to_date))
+    return HttpResponse("ERROR", status=304)
     if username is not False:
         positions = positions.filter(user__username=username)
     for position in positions:
