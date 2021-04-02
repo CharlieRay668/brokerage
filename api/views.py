@@ -283,9 +283,9 @@ def get_activity(response):
         positions = positions.filter(user__username=username)
     for position in positions:
         return_dict[position.id] = model_to_dict(position, fields=fields)
-        return HttpResponse("ERROR", status=304)
         if 'user' in fields:
             return_dict[position.id]['user'] = position.user.username
         if 'fill_price' in fields:
             return_dict[position.id]['fill_price'] = position.fill_price
+        return HttpResponse("ERROR", status=304)
     return JsonResponse(return_dict)
