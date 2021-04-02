@@ -279,11 +279,11 @@ def get_activity(response):
         from_date = dt.datetime.fromisoformat(from_date)
         to_date = dt.datetime.fromisoformat(to_date)
         positions = Position.objects.filter(order_execution_date__range=(from_date,to_date))
-    return HttpResponse("ERROR", status=304)
     if username is not False:
         positions = positions.filter(user__username=username)
     for position in positions:
         return_dict[position.id] = model_to_dict(position, fields=fields)
+        return HttpResponse("ERROR", status=304)
         if 'user' in fields:
             return_dict[position.id]['user'] = position.user.username
         if 'fill_price' in fields:
