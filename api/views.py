@@ -287,5 +287,5 @@ def get_activity(response):
             return_dict[position.id]['user'] = position.user.username
         if 'fill_price' in fields:
             return_dict[position.id]['fill_price'] = position.fill_price
-        return HttpResponse("ERROR", status=304)
+    return HttpResponse("ERROR", status=304)
     return JsonResponse(return_dict)
