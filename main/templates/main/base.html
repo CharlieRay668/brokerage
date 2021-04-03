@@ -5,77 +5,18 @@
     <head>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/slate/bootstrap.min.css" integrity="sha384-8iuq0iaMHpnH2vSyvZMSIqQuUnQA7QM+f6srIdlgBrTSEyd//AWNMyEaSF2yPzNQ" crossorigin="anonymous">
-        <!-- <style type="text/css">
-            * {
-            margin: 0;
-            padding: 0;
-            }
-
-            body {
-            background: #F5F6F4;
-            }
-            .form {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            /* bring your own prefixes */
-            transform: translate(-50%, -50%);
-            }
-
-
-            /* CSS HEX */
-            /* --razzmic-berry: #7b517bff;
-            --black-coffee: #363032ff;
-            --alabaster: #e0e3ddff;
-            --uranian-blue: #9ed8faff;
-            --star-command-blue: #2875a4ff; */
-
-            /* CSS HSL */
-            /* --razzmic-berry: hsla(300, 21%, 40%, 1);
-            --black-coffee: hsla(340, 6%, 20%, 1);
-            --alabaster: hsla(90, 10%, 88%, 1);
-            --uranian-blue: hsla(202, 90%, 80%, 1);
-            --star-command-blue: hsla(203, 61%, 40%, 1); */
-
-            /* SCSS HEX */
-            /* $razzmic-berry: #7b517bff;
-            $black-coffee: #363032ff;
-            $alabaster: #e0e3ddff;
-            $uranian-blue: #9ed8faff;
-            $star-command-blue: #2875a4ff; */
-
-            /* SCSS HSL */
-            /* $razzmic-berry: hsla(300, 21%, 40%, 1);
-            $black-coffee: hsla(340, 6%, 20%, 1);
-            $alabaster: hsla(90, 10%, 88%, 1);
-            $uranian-blue: hsla(202, 90%, 80%, 1);
-            $star-command-blue: hsla(203, 61%, 40%, 1); */
-
-            /* SCSS RGB */
-            /* $razzmic-berry: rgba(123, 81, 123, 1);
-            $black-coffee: rgba(54, 48, 50, 1);
-            $alabaster: rgba(224, 227, 221, 1);
-            $uranian-blue: rgba(158, 216, 250, 1);
-            $star-command-blue: rgba(40, 117, 164, 1); */
-
-            /* SCSS Gradient */
-            /* $gradient-top: linear-gradient(0deg, #7b517bff, #363032ff, #e0e3ddff, #9ed8faff, #2875a4ff);
-            $gradient-right: linear-gradient(90deg, #7b517bff, #363032ff, #e0e3ddff, #9ed8faff, #2875a4ff);
-            $gradient-bottom: linear-gradient(180deg, #7b517bff, #363032ff, #e0e3ddff, #9ed8faff, #2875a4ff);
-            $gradient-left: linear-gradient(270deg, #7b517bff, #363032ff, #e0e3ddff, #9ed8faff, #2875a4ff);
-            $gradient-top-right: linear-gradient(45deg, #7b517bff, #363032ff, #e0e3ddff, #9ed8faff, #2875a4ff);
-            $gradient-bottom-right: linear-gradient(135deg, #7b517bff, #363032ff, #e0e3ddff, #9ed8faff, #2875a4ff);
-            $gradient-top-left: linear-gradient(225deg, #7b517bff, #363032ff, #e0e3ddff, #9ed8faff, #2875a4ff);
-            $gradient-bottom-left: linear-gradient(315deg, #7b517bff, #363032ff, #e0e3ddff, #9ed8faff, #2875a4ff);
-            $gradient-radial: radial-gradient(#7b517bff, #363032ff, #e0e3ddff, #9ed8faff, #2875a4ff); */
-
-            /* Cool Scheme 32292F and 99E1D9 */
-
-        </style> -->
-        <title>{% block title %}Brokerage{% endblock %}</title>
+        <title>{% block title %}Rillion{% endblock %}</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
-        
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'main/images/apple-touch-icon.png' %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'main/images/favicon-32x32.png' %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'main/images/favicon-16x16.png' %}">
+        <link rel="manifest" href="{% static 'main/images/site.webmanifest' %}">
+        <link rel="mask-icon" href="{% static 'main/images/safari-pinned-tab.svg' %}" color="#5bbad5">
+        <link rel="shortcut icon" href="{% static 'main/images/favicon.ico' %}">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="msapplication-config" content="{% static 'main/images/browserconfig.xml' %}">
+        <meta name="theme-color" content="#ffffff">
     </head>
     <body data-new-gr-c-s-check-loaded="14.996.0" data-gr-ext-installed="" class="" style="" data-new-gr-c-s-loaded="14.996.0">
         {% block content %}

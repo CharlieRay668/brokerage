@@ -7,6 +7,8 @@
         #containerdiv {
             margin: auto;
             width: 30%;
+            -ms-transform: translateY(25%);
+            transform: translateY(25%);
         }
         @media all and (max-width: 499px) {
             #containerdiv {
@@ -22,7 +24,8 @@
         <form method="POST" class="form-group">
             {% csrf_token %}
             {{ form|crispy }}
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <small id="emailHelp" class="form-text text-muted" style="line-height: 0.25em;">We'll never share your email with anyone else.</small>
+            <br>
             <button type="submit" class="btn btn-success">Register</button>
         </form>
         <p style="color: red;">{{error_msg}}</p>
