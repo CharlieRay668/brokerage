@@ -2,31 +2,32 @@
 {% load crispy_forms_tags %}
 
 {% block constantcontent %}
-<style>
-    #containerdiv {
-        margin: auto;
-        width: 30%;
-    }
-    @media all and (max-width: 499px) {
+    <style>
         #containerdiv {
             margin: auto;
-            width: 100%;
+            width: 30%;
         }
-    }
-</style>
-{% endblock %}
+        @media all and (max-width: 499px) {
+            #containerdiv {
+                margin: auto;
+                width: 100%;
+            }
+        }
+    </style>
 
-<div class = 'loginform'>
-    {% block unauthform %}
-    <div id='containerdiv'>
-        <form method="POST" class="from-group">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <p>Don't have an accoount? Create one <a href="/register">here</a></p>
-            <p><a href="/passreset">Forgot Password</a></p>
-            <button type="submit" class="btn btn-success">Login</button>	
-        </form>
-        <p style="color: red;">{{error_msg}}</p>
+
+    <div class = 'loginform'>
+        {% block unauthform %}
+        <div id='containerdiv'>
+            <form method="POST" class="from-group">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <p>Don't have an accoount? Create one <a href="/register">here</a></p>
+                <p><a href="/passreset">Forgot Password</a></p>
+                <button type="submit" class="btn btn-success">Login</button>	
+            </form>
+            <p style="color: red;">{{error_msg}}</p>
+        </div>
+        {% endblock %}
     </div>
-    {% endblock %}
-</div>
+{% endblock %}

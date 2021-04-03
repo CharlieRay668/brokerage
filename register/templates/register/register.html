@@ -3,30 +3,31 @@
 {% load crispy_forms_tags %}
 
 {% block constantcontent %}
-<style>
-    #containerdiv {
-        margin: auto;
-        width: 30%;
-    }
-    @media all and (max-width: 499px) {
+    <style>
         #containerdiv {
             margin: auto;
-            width: 100%;
+            width: 30%;
         }
-    }
-</style>
-{% endblock %}
+        @media all and (max-width: 499px) {
+            #containerdiv {
+                margin: auto;
+                width: 100%;
+            }
+        }
+    </style>
 
-{% block unauthform %}
-<div id='containerdiv'>
-    <form method="POST" class="form-group">
-		{% csrf_token %}
-		{{ form|crispy }}
-        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-		<button type="submit" class="btn btn-success">Register</button>
-	</form>
-	<p style="color: red;">{{error_msg}}</p>
-	<p style="color: green;">{{success_msg}}</p>
-</div>
-{% endblock %}  
+
+    {% block unauthform %}
+    <div id='containerdiv'>
+        <form method="POST" class="form-group">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <button type="submit" class="btn btn-success">Register</button>
+        </form>
+        <p style="color: red;">{{error_msg}}</p>
+        <p style="color: green;">{{success_msg}}</p>
+    </div>
+    {% endblock %}
+{% endblock %}
 
