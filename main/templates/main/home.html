@@ -55,6 +55,14 @@
     {% if user.is_authenticated %}
     <div id="authenticated", name="authenticated", class = 'main'>
         {% block authenticated %}
+        <div class="card border-secondary mb-3" style="max-width: fit-content; margin: auto; -ms-transform: translateY(50%); transform: translateY(50%); opacity: 75%;">
+            <div class="card-body" style="margin: auto; text-align: center;">
+              <h1 class="card-title">Trade analytics for everyone</h1>
+              <h4 class="card-text">Quickly and easily analyize your trades, compete in competitions, and better your game.</h4>
+              <a type="button" class="btn btn-outline-info" style="border-radius: 10%;" href="/accounts/">Your Account</a>
+              <a type="button" class="btn btn-outline-warning" style="border-radius: 10%;" href="/logout/">Logout</a>
+            </div>
+        </div>
         {% endblock %}
     </div>
     <div id = 'authform', name = 'authform', class = 'form'>
@@ -65,7 +73,7 @@
         <div class="alert alert-dismissible alert-warning">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <h4 class="alert-heading">Warning!</h4>
-            <p class="mb-0">You don't seem to have a username yet!<a href="/profile" class="alert-link"> Click here to set one</a>.</p>
+            <p class="mb-0">You don't seem to have a username yet!<a href="/profile/" class="alert-link"> Click here to set one</a>.</p>
         </div>
         {% endif %}
     {% endif %}
@@ -76,6 +84,8 @@
                 <div class="card-body" style="margin: auto; text-align: center;">
                   <h1 class="card-title">Trade analytics for everyone</h1>
                   <h4 class="card-text">Quickly and easily analyize your trades, compete in competitions, and better your game.</h4>
+                  <a type="button" class="btn btn-success" style="border-radius: 10%;" href="/register/">Get Started</a>
+                  <a type="button" class="btn btn-success" style="border-radius: 10%;" href="/login/">Login</a>
                 </div>
             </div>
             {% endblock %}
