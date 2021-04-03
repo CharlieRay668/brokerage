@@ -73,8 +73,10 @@
   {% if not user.is_authenticated %}
       <div id = 'unauthenticated', name = 'unauthenticated', class = 'main'>
           {% block unauthenticated %}
-          <h1>Trade analytics for everyone</h1>
-          <h4>Quickly and easily analyize your trades, compete in competitions, and better your game</h4>
+            <div style="margin: auto; text-align: center;">
+                <h1>Trade analytics for everyone</h1>
+                <h4>Quickly and easily analyize your trades, compete in competitions, and better your game</h4>
+            </div>
           {% endblock %}
       </div>
       <div id = 'unauthform', name = 'unauthform', class = 'form'>
