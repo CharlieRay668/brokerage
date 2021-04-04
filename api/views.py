@@ -34,7 +34,28 @@ def get_users(response):
     for user in users:
         usernames.append(user.username)
     return JsonResponse({"usernames":usernames})
+
+@csrf_exempt
+def get_user_account(response):
+    api_key = response.headers['apikey']
+    if api_key not in api_keys:
+        return HttpResponse("Permission Denied", status=403)
+    if response.method == "POST":
+        username = response.POST.get('username', False)
+        account_name = response.POST.get('account_name',False)
+        try:
+            user = User.objects.get(username=username)
+        except:
+            return HttpResponse("Unkown username", status=305)
+        accounts = user.accounts.all()
+        found = False
+        for account in accounts:
+            if account.name == account_name:
+                found = True
+        return JsonResponse({'result':found})
+    return HttpResponse("Attempted to GET a POST endpoint", status=303)
     
+
 @csrf_exempt
 def get_rankings(response):
     api_key = response.headers['apikey']
@@ -149,20 +170,26 @@ def get_user_positions(response):
         return HttpResponse("Permission Denied", status=403)
     if response.method == "POST":
         username = response.POST.get('username', False)
+        account_name = response.POST.get('account', False)
+        if not username:
+            return HttpResponse("Username not supplied", status=305)
         try:
             user = User.objects.get(username=username)
         except:
             return HttpResponse("Unkown username", status=305)
-        positions = Position.objects.filter(user=user)
+        if account_name:
+            try:
+                account = user.accounts.get(name=account_name)
+            except:
+                return HttpResponse("User doesn't have that account", status=305)
+            positions = account.acct_positions.all()
+        else:
+            positions = user.positions.all()
         df = pd.DataFrame(list(positions.values()))
         dfs = []
         ids = set(list(df['position_id']))
         for pid in ids:
             dfs.append(df[df['position_id'] == pid])
-        symbols = [position.symbol for position in positions if position.symbol not in REST_HANDLER.get_symbols()]
-        for symbol in symbols:
-            if symbol not in REST_HANDLER.get_symbols():
-                REST_HANDLER.add_symbol(symbol)
         positions = [calc_df(df) for df in dfs if calc_df(df) is not None]
         return JsonResponse({"positions": positions})
     return HttpResponse("Attempted to GET a POST endpoint", status=303)

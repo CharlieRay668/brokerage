@@ -9,5 +9,6 @@ urlpatterns = [
     path("history/", views.get_user_history, name="userhistory"),
     path("ranking/", views.get_rankings, name="rankings"),
     path("users/", views.get_users, name='users'),
+    path("useraccount/", views.get_user_account, name='useraccount'),
     path("docs/", views.documentation, name='documentation')
 ]
