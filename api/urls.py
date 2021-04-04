@@ -8,5 +8,6 @@ urlpatterns = [
     path("stats/", views.get_user_stats, name="userstats"),
     path("history/", views.get_user_history, name="userhistory"),
     path("ranking/", views.get_rankings, name="rankings"),
+    path("users/", views.get_users, name='users'),
     path("docs/", views.documentation, name='documentation')
 ]

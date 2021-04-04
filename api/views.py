@@ -25,6 +25,16 @@ REST_HANDLER = RestHandler()
 def documentation(response):
     return render(response, "api/documentation.html")
 
+def get_users(response):
+    api_key = response.headers['apikey']
+    if api_key not in api_keys:
+        return HttpResponse("Permission Denied", status=403)
+    users = User.objects.all()
+    usernames = []
+    for user in users:
+        usernames.append(user.username)
+    return JsonResponse({"usernames":usernames})
+    
 @csrf_exempt
 def get_rankings(response):
     api_key = response.headers['apikey']
