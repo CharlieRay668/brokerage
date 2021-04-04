@@ -49,10 +49,12 @@ def get_user_account(response):
             return HttpResponse("Unkown username", status=305)
         accounts = user.accounts.all()
         found = False
+        account_id = 0
         for account in accounts:
             if account.name == account_name:
                 found = True
-        return JsonResponse({'result':found})
+                account_id = account.id
+        return JsonResponse({'result':found, 'account_id':account_id})
     return HttpResponse("Attempted to GET a POST endpoint", status=303)
     
 
@@ -193,7 +195,6 @@ def get_user_positions(response):
         positions = [calc_df(df) for df in dfs if calc_df(df) is not None]
         return JsonResponse({"positions": positions})
     return HttpResponse("Attempted to GET a POST endpoint", status=303)
-    
 
 @csrf_exempt
 def create_position(response):
