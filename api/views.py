@@ -197,6 +197,34 @@ def get_user_positions(response):
     return HttpResponse("Attempted to GET a POST endpoint", status=303)
 
 @csrf_exempt
+def get_balance(response):
+    api_key = response.headers['apikey']
+    if api_key not in api_keys:
+        return HttpResponse("Permission Denied", status=403)
+    if response.method == "POST":
+        username = response.POST.get('username', False)
+        account_name = response.POST.get('account', False)
+        if not username:
+            return HttpResponse("Username not supplied", status=305)
+        try:
+            user = User.objects.get(username=username)
+        except:
+            return HttpResponse("Unkown username", status=305)
+        if account_name:
+            try:
+                account = user.accounts.get(name=account_name)
+            except:
+                return HttpResponse("User doesn't have that account", status=305)
+        else:
+            return HttpResponse("Failed to supply account name", status=305)
+        option_balance = round(account.option_amount,2)
+        equity_balance = round(account.equity_amount,2)
+        cash_balance = round(account.cash_amount,2)
+        account_balance = round(account.option_amount + account.cash_amount + account.equity_amount,2)
+        return JsonResponse({"account_balance": account_balance, "cash_balance": cash_balance, "equity_balance": equity_balance, "option_balance": option_balance})
+    return HttpResponse("Attempted to GET a POST endpoint", status=303)
+
+@csrf_exempt
 def create_position(response):
     api_key = response.headers['apikey']
     if api_key not in api_keys:
